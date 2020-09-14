@@ -1,0 +1,15 @@
+{
+  "short_name": "ERD Maker",
+  "name": "ERD Maker",
+  "icons": [
+    {
+      "src": "erdM-browserIcon",
+      "type": "image/png",
+      "sizes": "400x400"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
