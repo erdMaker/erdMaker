@@ -2,7 +2,7 @@ import axios from "axios";
 import { store } from "../index";
 
 const serverHost =
-  process.env.NODE_ENV === "production" ? process.env.REACT_APP_DO_HOST : process.env.REACT_APP_LOCAL_HOST;
+  process.env.NODE_ENV === "production" ? process.env.REACT_APP_DO_HOST : process.env.REACT_APP_LOCALHOST;
 const timeout = 10000;
 
 export const getdiagram = (diagramId, cancelToken) => {
