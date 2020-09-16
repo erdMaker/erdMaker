@@ -41,8 +41,8 @@ class EntityProperties extends React.Component {
     this.props.repositionComponents();
     this.props.select({
       type: "attribute",
-      id: this.props.components.count,
-      parentid: this.props.selector.current.id,
+      id: this.props.components.count + 1,
+      parentId: this.props.selector.current.id,
     });
   };
 
@@ -126,8 +126,8 @@ class EntityProperties extends React.Component {
             onClick={() => {
               this.props.deleteConnection({
                 id: null,
-                parentid: null,
-                connectid: this.props.selector.current.id,
+                parentId: null,
+                connectId: this.props.selector.current.id,
               });
               this.props.deleteChildren({ id: this.props.selector.current.id });
               this.props.deleteEntity({ id: this.props.selector.current.id });

@@ -15,7 +15,7 @@ import { getRandomInt } from "../../global/utils";
 class AttributeProperties extends React.Component {
   findAttributeIndex = (attribute) => attribute.id === this.props.selector.current.id;
 
-  findParentIndex = (parent) => parent.id === this.props.selector.current.parentid;
+  findParentIndex = (parent) => parent.id === this.props.selector.current.parentId;
 
   nameValueChange = (e) =>
     this.props.setNameAttribute({
@@ -56,15 +56,15 @@ class AttributeProperties extends React.Component {
         y = this.props.stager.stageHeight / 2;
     }
     this.props.addAttribute({
-      id: this.props.selector.current.parentid,
+      id: this.props.selector.current.parentId,
       x: x,
       y: y,
     });
     this.props.repositionComponents();
     this.props.select({
       type: "attribute",
-      id: this.props.components.count,
-      parentid: this.props.selector.current.parentid,
+      id: this.props.components.count + 1,
+      parentId: this.props.selector.current.parentId,
     });
   };
 
@@ -81,8 +81,8 @@ class AttributeProperties extends React.Component {
     this.props.repositionComponents();
     this.props.select({
       type: "attribute",
-      id: this.props.components.count,
-      parentid: this.props.selector.current.id,
+      id: this.props.components.count + 1,
+      parentId: this.props.selector.current.id,
     });
   };
 

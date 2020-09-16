@@ -82,7 +82,7 @@ class Surface extends React.Component {
       <Attribute
         key={attribute.id}
         id={attribute.id}
-        parentid={attribute.parentid}
+        parentId={attribute.parentId}
         name={attribute.name}
         type={attribute.type}
         x={attribute.x}
@@ -119,7 +119,7 @@ class Surface extends React.Component {
     var keyIndex = 0;
 
     for (let i in this.props.components.attributes) {
-      connectId = this.props.components.attributes[i].parentid;
+      connectId = this.props.components.attributes[i].parentId;
       if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
         parent = {
           x: this.props.components.entities[index].x,
@@ -152,8 +152,8 @@ class Surface extends React.Component {
 
     for (let i = 0; i < this.props.components.relationships.length; i++) {
       for (let j = 0; j < this.props.components.relationships[i].connections.length; j++) {
-        if (this.props.components.relationships[i].connections[j].connectid !== "") {
-          connectId = this.props.components.relationships[i].connections[j].connectid;
+        if (this.props.components.relationships[i].connections[j].connectId !== 0) {
+          connectId = this.props.components.relationships[i].connections[j].connectId;
           index = this.props.components.entities.findIndex(locateIndex);
           anchor = this.findNearestAnchor(lockedAnchorPoints, index, i);
           specificValuesPoints = this.calculateSpecificValuesPoints(anchor, this.props.components.relationships[i]);

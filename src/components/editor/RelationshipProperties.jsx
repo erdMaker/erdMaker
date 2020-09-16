@@ -42,8 +42,8 @@ class RelationshipProperties extends React.Component {
     this.props.repositionComponents();
     this.props.select({
       type: "attribute",
-      id: this.props.components.count,
-      parentid: this.props.selector.current.id,
+      id: this.props.components.count + 1,
+      parentId: this.props.selector.current.id,
     });
   };
 

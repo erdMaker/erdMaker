@@ -35,8 +35,8 @@ const componentsReducer = (state = initialState, action) => {
         entities: [
           ...state.entities,
           {
-            id: state.count,
-            name: "<New>" + state.count,
+            id: state.count + 1,
+            name: "<New>" + (state.count + 1),
             x: stage.scrollLeft + screenWidth / 2,
             y: stage.scrollTop + screenHeight / 2,
             type: "regular",
@@ -69,7 +69,7 @@ const componentsReducer = (state = initialState, action) => {
       return {
         ...state,
         entities: state.entities.filter((entity) => entity.id !== action.payload.id),
-        attributes: state.attributes.filter((attribute) => attribute.parentid !== action.payload.id),
+        attributes: state.attributes.filter((attribute) => attribute.parentId !== action.payload.id),
       };
     case "ADD_RELATIONSHIP":
       return {
@@ -77,8 +77,8 @@ const componentsReducer = (state = initialState, action) => {
         relationships: [
           ...state.relationships,
           {
-            id: state.count,
-            name: "<New>" + state.count,
+            id: state.count + 1,
+            name: "<New>" + (state.count + 1),
             x: stage.scrollLeft + screenWidth / 2,
             y: stage.scrollTop + screenHeight / 2,
             type: {
@@ -133,9 +133,9 @@ const componentsReducer = (state = initialState, action) => {
                 connections: [
                   ...relationship.connections,
                   {
-                    id: state.count,
-                    parentid: action.payload.id,
-                    connectid: "",
+                    id: state.count + 1,
+                    parentId: action.payload.id,
+                    connectId: 0,
                     min: "",
                     max: "",
                     exactMin: "",
@@ -152,14 +152,14 @@ const componentsReducer = (state = initialState, action) => {
       return {
         ...state,
         relationships: state.relationships.map((relationship) =>
-          relationship.id === action.payload.parentid
+          relationship.id === action.payload.parentId
             ? {
                 ...relationship,
                 connections: relationship.connections.map((connection) =>
-                  connection.id === action.payload.id && connection.parentid === action.payload.parentid
+                  connection.id === action.payload.id && connection.parentId === action.payload.parentId
                     ? {
                         ...connection,
-                        connectid: action.payload.connectid,
+                        connectId: action.payload.connectId,
                       }
                     : connection
                 ),
@@ -171,7 +171,7 @@ const componentsReducer = (state = initialState, action) => {
       newState = {};
       Object.assign(newState, state);
       for (let i in newState.relationships) {
-        if (newState.relationships[i].id === action.payload.parentid)
+        if (newState.relationships[i].id === action.payload.parentId)
           for (let j in newState.relationships[i].connections) {
             if (newState.relationships[i].connections[j].id === action.payload.id) {
               newState.relationships[i].connections[j] = {
@@ -188,7 +188,7 @@ const componentsReducer = (state = initialState, action) => {
         return {
           ...state,
           relationships: state.relationships.map((relationship) =>
-            relationship.id === action.payload.parentid
+            relationship.id === action.payload.parentId
               ? {
                   ...relationship,
                   connections: relationship.connections.filter((connection) => connection.id !== action.payload.id),
@@ -201,8 +201,7 @@ const componentsReducer = (state = initialState, action) => {
         Object.assign(newState, state);
         for (let i in newState.relationships) {
           newState.relationships[i].connections = newState.relationships[i].connections.filter(
-            // eslint-disable-next-line
-            (connection) => connection.connectid != action.payload.connectid
+            (connection) => connection.connectId !== action.payload.connectId
           );
         }
         return newState;
@@ -213,9 +212,9 @@ const componentsReducer = (state = initialState, action) => {
         attributes: [
           ...state.attributes,
           {
-            id: state.count,
-            parentid: action.payload.id,
-            name: "<New>" + state.count,
+            id: state.count + 1,
+            parentId: action.payload.id,
+            name: "<New>" + (state.count + 1),
             x: action.payload.x,
             y: action.payload.y,
             type: {
@@ -289,8 +288,8 @@ const componentsReducer = (state = initialState, action) => {
         labels: [
           ...state.labels,
           {
-            id: state.count,
-            text: "<New>" + state.count,
+            id: state.count + 1,
+            text: "<New>" + (state.count + 1),
             x: stage.scrollLeft + screenWidth / 2,
             y: stage.scrollTop + screenHeight / 2,
             width: labelMinWidth,

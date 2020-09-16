@@ -80,7 +80,7 @@ class Attribute extends React.Component {
         onDragMove={(e) => {
           this.props.updatePositionAttribute({
             id: this.props.id,
-            parentid: this.props.parentid,
+            parentId: this.props.parentId,
             x: e.target.x(),
             y: e.target.y(),
           });
@@ -98,14 +98,14 @@ class Attribute extends React.Component {
           this.props.select({
             type: "attribute",
             id: this.props.id,
-            parentid: this.props.parentid,
+            parentId: this.props.parentId,
           });
         }}
         onClick={() => {
           this.props.select({
             type: "attribute",
             id: this.props.id,
-            parentid: this.props.parentid,
+            parentId: this.props.parentId,
           });
         }}
         dragBoundFunc={(pos) => this.stageBound(pos)}

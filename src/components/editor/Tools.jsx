@@ -180,8 +180,8 @@ class Tools extends React.Component {
               this.props.addEntity();
               this.props.select({
                 type: "entity",
-                id: this.props.components.count,
-                parentid: null,
+                id: this.props.components.count + 1,
+                parentId: null,
               });
               this.setState({ toolsListActive: !this.state.toolsListActive });
             }}
@@ -195,8 +195,8 @@ class Tools extends React.Component {
               this.props.addRelationship();
               this.props.select({
                 type: "relationship",
-                id: this.props.components.count,
-                parentid: null,
+                id: this.props.components.count + 1,
+                parentId: null,
               });
               this.setState({ toolsListActive: !this.state.toolsListActive });
             }}
@@ -210,8 +210,8 @@ class Tools extends React.Component {
               this.props.addLabel();
               this.props.select({
                 type: "label",
-                id: this.props.components.count,
-                parentid: null,
+                id: this.props.components.count + 1,
+                parentId: null,
               });
               this.setState({ toolsListActive: !this.state.toolsListActive });
             }}

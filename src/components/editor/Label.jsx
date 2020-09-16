@@ -110,14 +110,14 @@ class Label extends React.Component {
             this.props.select({
               type: "label",
               id: this.props.id,
-              parentid: null,
+              parentId: null,
             });
           }}
           onClick={() => {
             this.props.select({
               type: "label",
               id: this.props.id,
-              parentid: null,
+              parentId: null,
             });
           }}
           dragBoundFunc={(pos) => this.stageBound(pos)}

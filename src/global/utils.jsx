@@ -22,7 +22,7 @@ export function minJsonArray(arr, prop) {
 
 export const getChildren = (list, array, id) => {
   for (let i in array) {
-    if (array[i].parentid === id) {
+    if (array[i].parentId === id) {
       list.push(array[i].id);
       getChildren(list, array, array[i].id);
     }

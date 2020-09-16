@@ -62,7 +62,7 @@ class Relationship extends React.Component {
         ]}
       />
     ) : null;
-    
+
     return (
       <Group
         x={this.props.x}
@@ -88,14 +88,14 @@ class Relationship extends React.Component {
           this.props.select({
             type: "relationship",
             id: this.props.id,
-            parentid: null,
+            parentId: null,
           });
         }}
         onClick={() => {
           this.props.select({
             type: "relationship",
             id: this.props.id,
-            parentid: null,
+            parentId: null,
           });
         }}
         dragBoundFunc={(pos) => this.stageBound(pos)}

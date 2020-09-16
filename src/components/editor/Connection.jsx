@@ -19,14 +19,14 @@ class Connection extends React.Component {
   handleEntityChange = (e) =>
     this.props.changeConnection({
       id: this.props.connection.id,
-      parentid: this.props.relationshipId,
-      connectid: e.target.value,
+      parentId: this.props.relationshipId,
+      connectId: Number(e.target.value),
     });
 
   handleModifyConnection = (e) =>
     this.props.modifyConnection({
       id: this.props.connection.id,
-      parentid: this.props.relationshipId,
+      parentId: this.props.relationshipId,
       prop: e.target.id,
       value: e.target.value,
     });
@@ -71,7 +71,7 @@ class Connection extends React.Component {
             <input
               id="role"
               className="small-editor-input"
-              style={{width: "150px", marginTop: "10px"}}
+              style={{ width: "150px", marginTop: "10px" }}
               type="text"
               maxLength="15"
               value={this.props.connection.role}
@@ -85,21 +85,22 @@ class Connection extends React.Component {
     var expandIcon = this.state.expand ? <ExpandLessIcon /> : <ExpandMoreIcon />;
 
     return (
-      <div className="connection" style={{backgroundColor: this.props.index%2 ? "#c9c9c9" : "#dfdfdf"}}>
+      <div className="connection" style={{ backgroundColor: this.props.index % 2 ? "#c9c9c9" : "#dfdfdf" }}>
         <div className="connection-input-group">
           <label>
             <b>Entity: </b>
             <select
-              value={this.props.components.relationships[parentIndex].connections[childIndex].connectid}
+              value={this.props.components.relationships[parentIndex].connections[childIndex].connectId}
               onChange={this.handleEntityChange}
             >
-              <option value="" disabled>
+              <option value={0} disabled>
                 Select an Entity
               </option>
-              <EntityList
-                entities={this.props.components.entities}
-                connections={this.props.components.relationships[this.props.relationshipIndex].connections}
-              />
+              {this.props.components.entities.map((entity) => (
+                <option key={entity.id} value={entity.id}>
+                  {entity.name}
+                </option>
+              ))}
             </select>
           </label>
         </div>
@@ -107,8 +108,8 @@ class Connection extends React.Component {
           onClick={() => {
             this.props.deleteConnection({
               id: this.props.connection.id,
-              parentid: this.props.selector.current.id,
-              connectid: this.props.connection.connectid,
+              parentId: this.props.selector.current.id,
+              connectId: this.props.connection.connectId,
             });
           }}
         >
@@ -143,6 +144,11 @@ class Connection extends React.Component {
   }
 }
 
+/*<EntityList
+                entities={this.props.components.entities}
+                connections={this.props.components.relationships[this.props.relationshipIndex].connections}
+              />
+
 const EntityList = (props) => {
   let entityList = [];
   for (let i in props.entities) {
@@ -153,7 +159,7 @@ const EntityList = (props) => {
     );
   }
   return entityList;
-};
+};*/
 
 const mapStateToProps = (state) => ({
   components: state.components,

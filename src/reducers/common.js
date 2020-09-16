@@ -28,7 +28,7 @@ const selectionInitialState = {
   current: {
     type: null,
     id: null,
-    parentid: null,
+    parentId: null,
   },
   selectionExists: false,
 };
@@ -76,7 +76,7 @@ export const selectionReducer = (state = selectionInitialState, action) => {
         current: {
           type: action.payload.type,
           id: action.payload.id,
-          parentid: action.payload.parentid,
+          parentId: action.payload.parentId,
         },
         selectionExists: true,
       };
