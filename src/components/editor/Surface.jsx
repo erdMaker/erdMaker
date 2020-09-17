@@ -104,7 +104,7 @@ class Surface extends React.Component {
     ));
 
   drawLines = () => {
-    function locateIndex(element, index, array) {
+    function locateIndex(element) {
       return element.id === connectId;
     }
 
@@ -155,6 +155,7 @@ class Surface extends React.Component {
         if (this.props.components.relationships[i].connections[j].connectId !== 0) {
           connectId = this.props.components.relationships[i].connections[j].connectId;
           index = this.props.components.entities.findIndex(locateIndex);
+          if (this.props.components.entities[index].connectionCount > 8) continue;
           anchor = this.findNearestAnchor(lockedAnchorPoints, index, i);
           specificValuesPoints = this.calculateSpecificValuesPoints(anchor, this.props.components.relationships[i]);
           lineList.push(

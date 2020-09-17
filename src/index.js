@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "production" && typeof window.__REACT_DEVTOOLS_GLOB
   }
 } //*/
 
-/*
+//*
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem("state");
@@ -38,15 +38,15 @@ const persistedStore = loadState();
 export const store =
   process.env.NODE_ENV === "production"
     ? createStore(finalReducer
-      //, persistedStore
+      , persistedStore
       )
     : createStore(
         finalReducer,
-        //persistedStore,
+        persistedStore,
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
       );
 
-/*
+//*
 store.subscribe(() => {
   saveState(store.getState());
 });
