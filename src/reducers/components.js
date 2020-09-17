@@ -26,6 +26,7 @@ const initialState = {
 
 const componentsReducer = (state = initialState, action) => {
   var newState = {};
+  Object.assign(newState, state);
   var childrenList = [];
   const stage = document.querySelector(".stage");
   switch (action.type) {
@@ -40,6 +41,7 @@ const componentsReducer = (state = initialState, action) => {
             x: stage.scrollLeft + screenWidth / 2,
             y: stage.scrollTop + screenHeight / 2,
             type: "regular",
+            connectionCount: 0,
           },
         ],
         count: state.count + 1,
@@ -106,8 +108,6 @@ const componentsReducer = (state = initialState, action) => {
         ),
       };
     case "SET_TYPE_RELATIONSHIP":
-      newState = {};
-      Object.assign(newState, state);
       for (let i in newState.relationships) {
         if (newState.relationships[i].id === action.payload.id) {
           newState.relationships[i].type = {
@@ -119,10 +119,17 @@ const componentsReducer = (state = initialState, action) => {
       }
       return newState;
     case "DELETE_RELATIONSHIP":
-      return {
-        ...state,
-        relationships: state.relationships.filter((relationship) => relationship.id !== action.payload.id),
-      };
+      function adjustEntities(connection) {
+        for (let j in newState.entities) {
+          if (newState.entities[j].id === connection.connectId) newState.entities[j].connectionCount--;
+        }
+      }
+      for (let i in newState.relationships) {
+        if (newState.relationships[i].id === action.payload.id)
+          newState.relationships[i].connections.forEach(adjustEntities);
+      }
+      newState.relationships = newState.relationships.filter((relationship) => relationship.id !== action.payload.id);
+      return newState;
     case "ADD_CONNECTION":
       return {
         ...state,
@@ -149,27 +156,33 @@ const componentsReducer = (state = initialState, action) => {
         count: state.count + 1,
       };
     case "CHANGE_CONNECTION":
-      return {
-        ...state,
-        relationships: state.relationships.map((relationship) =>
-          relationship.id === action.payload.parentId
-            ? {
-                ...relationship,
-                connections: relationship.connections.map((connection) =>
-                  connection.id === action.payload.id && connection.parentId === action.payload.parentId
-                    ? {
-                        ...connection,
-                        connectId: action.payload.connectId,
-                      }
-                    : connection
-                ),
-              }
-            : relationship
-        ),
-      };
+      var prevConnectId = 0;
+      for (let i in newState.relationships) {
+        if (newState.relationships[i].id === action.payload.parentId)
+          for (let j in newState.relationships[i].connections) {
+            if (newState.relationships[i].connections[j].id === action.payload.id) {
+              prevConnectId = newState.relationships[i].connections[j].connectId;
+              newState.relationships[i].connections[j] = {
+                ...newState.relationships[i].connections[j],
+                connectId: action.payload.connectId,
+              };
+            }
+          }
+      }
+      for (let i in newState.entities) {
+        if (newState.entities[i].id === prevConnectId)
+          newState.entities[i] = {
+            ...newState.entities[i],
+            connectionCount: newState.entities[i].connectionCount - 1,
+          };
+        if (newState.entities[i].id === action.payload.connectId)
+          newState.entities[i] = {
+            ...newState.entities[i],
+            connectionCount: newState.entities[i].connectionCount + 1,
+          };
+      }
+      return newState;
     case "MODIFY_CONNECTION":
-      newState = {};
-      Object.assign(newState, state);
       for (let i in newState.relationships) {
         if (newState.relationships[i].id === action.payload.parentId)
           for (let j in newState.relationships[i].connections) {
@@ -185,20 +198,21 @@ const componentsReducer = (state = initialState, action) => {
       return newState;
     case "DELETE_CONNECTION":
       if (action.payload.id) {
-        return {
-          ...state,
-          relationships: state.relationships.map((relationship) =>
-            relationship.id === action.payload.parentId
-              ? {
-                  ...relationship,
-                  connections: relationship.connections.filter((connection) => connection.id !== action.payload.id),
-                }
-              : relationship
-          ),
-        };
+        for (let i in newState.entities) {
+          if (newState.entities[i].id === action.payload.connectId)
+            newState.entities[i] = {
+              ...newState.entities[i],
+              connectionCount: newState.entities[i].connectionCount - 1,
+            };
+        }
+        for (let i in newState.relationships) {
+          if (newState.relationships[i].id === action.payload.parentId)
+            newState.relationships[i].connections = newState.relationships[i].connections.filter(
+              (connection) => connection.id !== action.payload.id
+            );
+        }
+        return newState;
       } else {
-        newState = {};
-        Object.assign(newState, state);
         for (let i in newState.relationships) {
           newState.relationships[i].connections = newState.relationships[i].connections.filter(
             (connection) => connection.connectId !== action.payload.connectId
@@ -243,8 +257,6 @@ const componentsReducer = (state = initialState, action) => {
         ),
       };
     case "SET_TYPE_ATTRIBUTE":
-      newState = {};
-      Object.assign(newState, state);
       for (let i in newState.attributes) {
         if (newState.attributes[i].id === action.payload.id) {
           newState.attributes[i].type = {
@@ -261,14 +273,12 @@ const componentsReducer = (state = initialState, action) => {
         attributes: state.attributes.filter((attribute) => attribute.id !== action.payload.id),
       };
     case "DELETE_CHILDREN":
-      childrenList = [];
       getChildren(childrenList, state.attributes, action.payload.id);
       return {
         ...state,
         attributes: state.attributes.filter((attribute) => !childrenList.includes(attribute.id)),
       };
     case "UPDATE_POSITION_CHILDREN":
-      childrenList = [];
       getChildren(childrenList, state.attributes, action.payload.id);
       return {
         ...state,
@@ -341,10 +351,8 @@ const componentsReducer = (state = initialState, action) => {
         labels: state.labels.filter((label) => label.id !== action.payload.id),
       };
     case "REPOSITION_COMPONENTS":
-      newState = {};
       var entOffsetX = entityWidth / 2;
       var entOffsetY = entityHeight / 2;
-      Object.assign(newState, state);
       for (let i in newState.entities) {
         if (newState.entities[i].x > stageWidth - entOffsetX) newState.entities[i].x = stageWidth - entOffsetX;
         if (newState.entities[i].y > stageHeight - entOffsetY) newState.entities[i].y = stageHeight - entOffsetY;

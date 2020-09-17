@@ -105,7 +105,7 @@ class Surface extends React.Component {
 
   drawLines = () => {
     function locateIndex(element, index, array) {
-      return element.id === Number(connectId);
+      return element.id === connectId;
     }
 
     var lineList = [];
