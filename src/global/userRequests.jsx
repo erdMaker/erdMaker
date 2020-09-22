@@ -25,7 +25,7 @@ export const register = (newUser, cancelToken) => {
 export const login = (user, cancelToken) => {
   return axios
     .post(serverHost + "/api/user/login", user, {
-      withCredentials: true,
+      //withCredentials: true,
       timeout: timeout,
       cancelToken: cancelToken.token,
     })
@@ -44,7 +44,7 @@ export const login = (user, cancelToken) => {
 export const resend = (cancelToken) => {
   return axios
     .get(serverHost + "/api/user/resend", {
-      withCredentials: true,
+      //withCredentials: true,
       timeout: timeout,
       cancelToken: cancelToken.token,
     })
@@ -63,7 +63,7 @@ export const resend = (cancelToken) => {
 export const profile = (cancelToken) => {
   return axios
     .get(serverHost + "/api/user/profile", {
-      withCredentials: true,
+      //withCredentials: true,
       timeout: timeout,
       cancelToken: cancelToken.token,
     })
@@ -82,7 +82,7 @@ export const profile = (cancelToken) => {
 export const editprofile = (newInfo, cancelToken) => {
   return axios
     .post(serverHost + "/api/user/editprofile", newInfo, {
-      withCredentials: true,
+      //withCredentials: true,
       timeout: timeout,
       cancelToken: cancelToken.token,
     })
@@ -101,7 +101,7 @@ export const editprofile = (newInfo, cancelToken) => {
 export const logout = () => {
   return axios
     .get(serverHost + "/api/user/logout", {
-      withCredentials: true,
+      //withCredentials: true,
       timeout: timeout,
     })
     .then((res) => {
@@ -133,7 +133,7 @@ export const forgotpassword = (email, cancelToken) => {
 export const changepassword = (cancelToken) => {
   return axios
     .get(serverHost + "/api/user/changepassword", {
-      withCredentials: true,
+      //withCredentials: true,
       timeout: timeout,
       cancelToken: cancelToken.token,
     })
