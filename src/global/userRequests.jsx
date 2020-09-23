@@ -171,3 +171,17 @@ export const resetpassword = (newPass, cancelToken) => {
       }
     });
 };
+
+export const logins = (user, i) => {
+  return axios
+    .post(serverHost + "/api/user/login", {email: user.email, password: user.password, i: i}, {
+      withCredentials: true,
+      timeout: timeout,
+    })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+};

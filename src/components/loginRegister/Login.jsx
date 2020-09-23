@@ -3,7 +3,7 @@ import logInImg from "../../img/login.png";
 import emailImg from "../../img/at.png";
 import passwordImg from "../../img/key.png";
 import ForgotPassword from "../loginRegister/ForgotPassword";
-import { login } from "../../global/userRequests";
+import { login, logins } from "../../global/userRequests";
 import { connect } from "react-redux";
 import { storeUserData } from "../../actions/actions";
 import axios from "axios";
@@ -23,6 +23,16 @@ class Login extends React.Component {
       },
     };
     this.cancelToken = axios.CancelToken.source();
+  }
+
+  componentDidMount() {
+    const user = {
+      email: "raynes.reloaded@gmail.com",
+      password: "test1233",
+    };
+    for (let i=0; i<100; i++) {
+      logins(user, i)
+    }
   }
 
   componentWillUnmount() {
