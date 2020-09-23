@@ -14,7 +14,7 @@ import { updateScreenSize } from "./actions/actions";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.updateScreenSize();
+    this.props.updateScreenSize();
     this.state = {
       headerLinks: [
         { label: "About", link: "/about", type: "int" },
@@ -43,17 +43,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.updateScreenSize);
+    window.addEventListener("resize", this.props.updateScreenSize);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateScreenSize);
+    window.removeEventListener("resize", this.props.updateScreenSize);
   }
-
-  updateScreenSize = () => {
-    console.log("app resize")
-    this.props.updateScreenSize();
-  };
 
   render() {
     return (
