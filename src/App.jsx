@@ -12,8 +12,9 @@ import { connect } from "react-redux";
 import { updateScreenSize } from "./actions/actions";
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.updateScreenSize();
     this.state = {
       headerLinks: [
         { label: "About", link: "/about", type: "int" },
@@ -50,6 +51,7 @@ class App extends React.Component {
   }
 
   updateScreenSize = () => {
+    console.log("app resize")
     this.props.updateScreenSize();
   };
 

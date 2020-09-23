@@ -3,19 +3,21 @@ import Surface from "./Surface";
 import Tools from "./Tools";
 import { getDiagram } from "../../global/globalFuncs";
 import { connect } from "react-redux";
-import { deselect, updateScreenSize, updateSidepanelWidth, resetComponents, resetMeta } from "../../actions/actions";
+import { deselect, 
+  //updateScreenSize, 
+  updateSidepanelWidth, resetComponents, resetMeta } from "../../actions/actions";
 import axios from "axios";
 
 class Editor extends React.Component {
   constructor(props) {
     super(props);
-    this.updateScreenAndPanelSize();
+    this.updateSidepanelSize();
     this.cancelToken = axios.CancelToken.source();
   }
 
   componentDidMount = () => {
     document.title = "ERD Maker - Designer";
-    window.addEventListener("resize", this.updateScreenAndPanelSize);
+    window.addEventListener("resize", this.updateSidepanelSize);
     window.addEventListener("beforeunload", this.clearEditor);
     this.props.deselect();
     if (this.props.user.isLogged && this.props.general.activeDiagramId) {
@@ -26,12 +28,13 @@ class Editor extends React.Component {
   componentWillUnmount() {
     this.clearEditor();
     this.cancelToken.cancel("Request is being canceled");
-    window.removeEventListener("resize", this.updateScreenAndPanelSize);
+    window.removeEventListener("resize", this.updateSidepanelSize);
     window.removeEventListener("beforeunload", this.clearEditor);
   }
 
-  updateScreenAndPanelSize = () => {
-    this.props.updateScreenSize();
+  updateSidepanelSize = () => {
+    console.log("editor resize")
+    //this.props.updateScreenSize();
     this.props.updateSidepanelWidth();
   };
 
@@ -60,7 +63,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   deselect,
-  updateScreenSize,
+  //updateScreenSize,
   updateSidepanelWidth,
   resetComponents,
   resetMeta,

@@ -11,7 +11,7 @@ export const getdiagram = (diagramId, cancelToken) => {
       serverHost + "/api/diagram/getdiagram",
       { id: diagramId },
       {
-        //withCredentials: true,
+        withCredentials: true,
         timeout: timeout,
         cancelToken: cancelToken.token,
       }
@@ -39,9 +39,11 @@ export const savediagram = (cancelToken) => {
           meta: store.getState().meta,
         },
       },
-      { 
-        //withCredentials: true, 
-        timeout: timeout, cancelToken: cancelToken.token }
+      {
+        withCredentials: true,
+        timeout: timeout,
+        cancelToken: cancelToken.token,
+      }
     )
     .then((res) => {
       return res;
@@ -62,9 +64,11 @@ export const duplicatediagram = (diagramid, cancelToken) => {
       {
         id: diagramid,
       },
-      { 
-        //withCredentials: true, 
-        timeout: timeout, cancelToken: cancelToken.token }
+      {
+        withCredentials: true,
+        timeout: timeout,
+        cancelToken: cancelToken.token,
+      }
     )
     .then((res) => {
       return res;
@@ -85,9 +89,11 @@ export const deletediagram = (diagramid, cancelToken) => {
       {
         id: diagramid,
       },
-      { 
-        //withCredentials: true, 
-        timeout: timeout, cancelToken: cancelToken.token }
+      {
+        withCredentials: true,
+        timeout: timeout,
+        cancelToken: cancelToken.token,
+      }
     )
     .then((res) => {
       return res;
