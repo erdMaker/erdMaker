@@ -6,8 +6,13 @@ const About = () => {
     <div className="about">
       <div className="container">
         <h2>About this App</h2>
+        <p className="about-text">{text}</p>
         <p className="about-text">
-          {text}
+          <b>
+            **DISCLAIMER: THIS APP IS STILL UNDER DEVELOPMENT AND IS NOT PRODUCTION READY. THIS WEBSITE IS USED FOR
+            TESTING AND ANY ACCOUNTS OR DATA STORED CAN BE LOST AT ANY TIME AND WITHOUT PRIOR NOTICE. AVOID SUBMITTING
+            YOUR REAL PERSONAL INFORMATION**
+          </b>
         </p>
         <h3>Credits</h3>
         <a
