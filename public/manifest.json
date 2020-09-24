@@ -3,9 +3,9 @@
   "name": "ERD Maker",
   "icons": [
     {
-      "src": "erdM-browserIcon",
+      "src": "erdmakerIcon192",
       "type": "image/png",
-      "sizes": "400x400"
+      "sizes": "192x192"
     }
   ],
   "start_url": ".",
