@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import Logo from "../../img/logo.png";
 import { savediagram } from "../../global/diagramRequests";
 import ImportExportMenuListComposition from "./ImportExportMenu";
-import saveImg from "../../img/save.png";
+import saveImg from "../../img/saveIcon.png";
 import axios from "axios";
 
 class Tools extends React.Component {
