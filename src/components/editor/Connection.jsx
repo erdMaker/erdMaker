@@ -144,23 +144,6 @@ class Connection extends React.Component {
   }
 }
 
-/*<EntityList
-                entities={this.props.components.entities}
-                connections={this.props.components.relationships[this.props.relationshipIndex].connections}
-              />
-
-const EntityList = (props) => {
-  let entityList = [];
-  for (let i in props.entities) {
-    entityList.push(
-      <option key={i} value={props.entities[i].id}>
-        {props.entities[i].name}
-      </option>
-    );
-  }
-  return entityList;
-};*/
-
 const mapStateToProps = (state) => ({
   components: state.components,
   selector: state.selector,

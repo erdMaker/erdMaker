@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Footer = (props) => {
+  // External links are rendered as <a> and internal as <Link>
   let linksMarkup = props.links.map((link, index) => {
     let linkMarkup =
       link.type === "int" ? (

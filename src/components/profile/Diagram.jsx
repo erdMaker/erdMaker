@@ -16,6 +16,7 @@ class Diagram extends React.Component {
     this.props.setActiveDiagram(this.props.user.diagrams[this.props.index].id);
   };
 
+  // Calculates how much time has passed since each diagram got updated
   calculateLastUpdate = () => {
     var lastUpdate;
     var updatedAt = this.props.user.diagrams[this.props.index].updatedAt;

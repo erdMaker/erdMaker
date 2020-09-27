@@ -1,55 +1,33 @@
 .home-wrapper {
   width: 100%;
-  //align-items: center;
   display: flex;
 }
 
 .description {
-  //text-align: center;
   width: 30%;
   min-width: 280px;
   margin: auto;
   padding: 10px;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 4px;
-  //display: flex;
-  //flex-direction: column;
   color: rgb(19, 36, 112);
   font-weight: bold;
   font-size: 25px;
-  //position: relative;
-  //z-index: 1;
 }
 
-/*.description-text {
-  //position: relative;
-}*/
-
 .reset-password {
-  //resize: both;
-  //width: auto;
-  //height: auto;
   max-width: 90%;
-  //max-height: 90%;
-  //display: flex;
-  //justify-content: center;
-  //align-items: center;
-  //z-index: 1;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .launch-button {
-  //margin: auto;
   margin-top: 1.3em;
-  //position: relative;
-  //display: inline-block;
   border-radius: 4px;
   background-color: #3498db;
   border: none;
   color: #ffffff;
-  //text-align: center;
   font-size: 28px;
   padding: 20px;
   width: 260px;
@@ -83,27 +61,14 @@
 }
 
 .about {
-  //padding-bottom: 40px;
-  //resize: both;
-  //width: auto;
-  //height: auto;
   max-width: 90%;
-  //max-height: 90%;
-  //display: flex;
-  //flex-direction: column;
-  //text-align: center;
-  //justify-content: center;
-  //align-items: center;
-  //z-index: 1;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
 
   .about-text {
     text-align: justify;
-    //text-justify: auto;
     font-size: $containerTextFontSize;
-    //color: rgb(0, 0, 0);
   }
 }
 
@@ -114,8 +79,6 @@
 
   .description {
     margin: 10px auto;
-    //display: block;
-    //float: none;
     width: 80%;
   }
 }

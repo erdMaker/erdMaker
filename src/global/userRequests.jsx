@@ -2,7 +2,7 @@ import axios from "axios";
 
 const serverHost =
   process.env.NODE_ENV === "production" ? process.env.REACT_APP_DO_HOST : process.env.REACT_APP_LOCALHOST;
-const timeout = 10000;
+const timeout = 10000; // Requests timeout after this many milliseconds
 
 export const register = (newUser, cancelToken) => {
   return axios

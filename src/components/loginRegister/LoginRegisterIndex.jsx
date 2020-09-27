@@ -15,6 +15,7 @@ class LoginRegisterIndex extends React.Component {
     this.slidingTogglePanel.classList.add("right");
   }
 
+  // Moves the sliding panel from one side to the other
   changeState = () => {
     if (this.state.isLoginActive) {
       this.slidingTogglePanel.classList.remove("right");

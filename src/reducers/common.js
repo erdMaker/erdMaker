@@ -1,3 +1,4 @@
+// Exporting this variables for other reducers
 export const toolbarHeight = 60;
 export var screenWidth = window.innerWidth;
 export var screenHeight = window.innerHeight;

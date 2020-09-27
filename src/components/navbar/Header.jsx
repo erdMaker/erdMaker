@@ -11,6 +11,7 @@ class Header extends React.Component {
   }
 
   render() {
+    // External links are rendered as <a> and internal as <Link>
     let linksMarkup = this.props.links.map((link, index) => {
       let linkMarkup =
         link.type === "int" ? (
@@ -33,6 +34,7 @@ class Header extends React.Component {
       return <li key={index}>{linkMarkup}</li>;
     });
 
+    // CSS classes are set for the burger menu (whether its displayed or not)
     var headerNavClasses = "header-nav__list";
     var line1Class = "";
     var line2Class = "";

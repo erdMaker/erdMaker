@@ -68,7 +68,9 @@ const ImportExportMenuListComposition = (props) => {
       .catch(() => {});
   };
 
+  // Runs when user clicks to select file for import
   const importDiagram = (e) => {
+    // Return if nothing or multiple files are selected
     if (!e || !e.target || !e.target.files || !(e.target.files.length === 1)) {
       return;
     }
@@ -77,6 +79,7 @@ const ImportExportMenuListComposition = (props) => {
     const name = file.name;
     const lastDot = name.lastIndexOf(".");
 
+    // Get filename and extension of selected file
     //const fileName = name.substring(0, lastDot);
     const ext = name.substring(lastDot + 1);
 
@@ -86,7 +89,7 @@ const ImportExportMenuListComposition = (props) => {
     fr.onloadend = handleServerImport;
     fr.readAsText(file);
 
-    e.target.value = null;
+    e.target.value = null; // Reset the file browser
   };
 
   const exportDiagram = () => {
@@ -113,7 +116,7 @@ const ImportExportMenuListComposition = (props) => {
     }
   }
 
-  // return focus to the button when we transitioned from !open -> open
+  // Return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
     if (prevOpen.current === true && open === false) {

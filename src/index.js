@@ -8,6 +8,7 @@ import finalReducer from "./reducers";
 import { Provider } from "react-redux";
 
 //*
+// Disable React DevTools for production
 if (process.env.NODE_ENV === "production" && typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
   for (let [key, value] of Object.entries(window.__REACT_DEVTOOLS_GLOBAL_HOOK__)) {
     window.__REACT_DEVTOOLS_GLOBAL_HOOK__[key] = typeof value == "function" ? () => {} : null;
@@ -15,6 +16,7 @@ if (process.env.NODE_ENV === "production" && typeof window.__REACT_DEVTOOLS_GLOB
 } //*/
 
 //*
+// Persist Redux store in LocalStorage
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem("state");
@@ -24,17 +26,16 @@ const loadState = () => {
     return undefined;
   }
 };
-
 const saveState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem("state", serializedState);
   } catch (err) {}
 };
-
 const persistedStore = loadState();
 //*/
 
+//Disable Redux DevTools for production
 export const store =
   process.env.NODE_ENV === "production"
     ? createStore(finalReducer
@@ -47,6 +48,7 @@ export const store =
       );
 
 //*
+// Save Redux Store in LocalStorage when it changes
 store.subscribe(() => {
   saveState(store.getState());
 });

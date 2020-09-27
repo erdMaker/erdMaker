@@ -15,6 +15,7 @@ class Relationship extends React.Component {
     this.state = { initialPosition: { x: this.props.x, y: this.props.y } };
   }
 
+  // Does not let the relationship to be dragged out of stage bounds
   stageBound = (pos) => {
     var newX;
     var newY;

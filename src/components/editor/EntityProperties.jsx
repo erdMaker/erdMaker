@@ -29,6 +29,7 @@ class EntityProperties extends React.Component {
     });
 
   handleAddAttribute = (entityIndex) => {
+    // Randomly position the attribute around the entity
     const radius = this.props.stager.attributeSpawnRadius;
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);

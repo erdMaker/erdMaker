@@ -17,9 +17,7 @@ const Home = (props) => {
 
 const Description = (props) => (
   <div className="description">
-    <div 
-    //className="description-text"
-    >
+    <div>
       An Online Entity - Relationship Diagram designing tool.
       <br />
       <br />

@@ -30,6 +30,7 @@ class RelationshipProperties extends React.Component {
     });
 
   handleAddAttribute = (relationshipIndex) => {
+    // Randomly position the attribute around the relationship
     const radius = this.props.stager.attributeSpawnRadius;
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);
@@ -130,6 +131,7 @@ class RelationshipProperties extends React.Component {
   }
 }
 
+// Component for all connections
 const Connections = (props) => {
   let connectionList = [];
   let relationshipIndex = props.relationships.findIndex(props.findRelationshipIndex);

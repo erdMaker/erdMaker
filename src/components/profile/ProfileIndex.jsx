@@ -15,6 +15,7 @@ class ProfileIndex extends React.Component {
     this.slidingTogglePanel.classList.add("right");
   }
 
+  // Moves the sliding panel from one side to the other
   changeState = () => {
     if (this.state.isProfileActive) {
       this.slidingTogglePanel.classList.remove("right");
@@ -29,8 +30,10 @@ class ProfileIndex extends React.Component {
   };
 
   render() {
+    // When screen is small then "Edit Profile" appears in two rows
     const lineBreak = this.props.stager.screenWidth <= 1440 ? null : <br />;
     const current = this.state.isProfileActive ? <>Edit {lineBreak}Profile</> : "Back";
+    
     return (
       <div className="profile">
         {this.state.isProfileActive && <Profile />}

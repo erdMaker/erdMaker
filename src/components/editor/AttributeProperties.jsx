@@ -69,6 +69,7 @@ class AttributeProperties extends React.Component {
   };
 
   handleAddAttribute = (attributeIndex) => {
+    // Randomly position the attribute around the attribute
     const radius = this.props.stager.attributeSpawnRadius;
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);
@@ -97,6 +98,7 @@ class AttributeProperties extends React.Component {
 
     var attributeIndex = this.props.components.attributes.findIndex(this.findAttributeIndex);
 
+    // addAttributeButton is enabled only for composite attributes
     var addAttributeButton = this.props.components.attributes[attributeIndex].type.composite ? (
       <button
         className="properties-neutral-button"

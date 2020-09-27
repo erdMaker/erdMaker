@@ -5,22 +5,23 @@ import AttProps from "./AttributeProperties";
 import LabelProps from "./LabelProperties";
 import { connect } from "react-redux";
 import { deselect } from "../../actions/actions";
-import { vwToPixels } from "../../global/utils";
+import { PercentToPixels } from "../../global/utils";
 
 const Properties = (props) => {
   var screenWidth = props.stager.screenWidth;
   var screenHeight = props.stager.screenHeight;
-  var stage = props.getStage();
-  var stageScrollX = stage ? stage.scrollLeft : 0;
+  var stage = props.getStage(); // Reference to the stage
+  var stageScrollX = stage ? stage.scrollLeft : 0; // How far we have scrolled horizontally
   var mobile = screenWidth <= 768 ? true : false;
-  var scrollbarOffset = mobile ? 0 : 17;
-  var xPosition;
-  var loadedProperties;
+  var scrollbarOffset = mobile ? 0 : 17; // Account for the bottom horizontal scrollbar on desktop
+  var xPosition; // Position of currently selected component on the screen that helps determine
+  //on which side of the screen the sidepanel will be drawn
+  var loadedProperties; // Determines what kind of properties will be drawn on the sidepanel
   var rightSide = true;
   var sidepanelActive = "";
   var closeActive = "";
-  var sidepanelHeightCutoff = 0;
-  var sidepanelWidth =
+  var sidepanelHeightCutoff = 0; // In the case of Label it shortens the sidepanel's height to enable dragndrop of the label
+  var sidepanelWidth = // Wider sidepanel for relationships
     props.selector.current.type === "relationship"
       ? props.stager.sidepanelWidth.relationship
       : props.stager.sidepanelWidth.general;
@@ -28,6 +29,7 @@ const Properties = (props) => {
   if (props.selector.selectionExists) {
     sidepanelActive = " sidepanel-active-right";
     closeActive = " close-active";
+    // Configure sidepanel based on what kind of component is selected
     switch (props.selector.current.type) {
       case "entity":
         let entityIndex = props.components.entities.findIndex((entity) => entity.id === props.selector.current.id);
@@ -60,7 +62,7 @@ const Properties = (props) => {
         break;
     }
 
-    if (xPosition > stageScrollX + screenWidth - vwToPixels(screenWidth, sidepanelWidth)) {
+    if (xPosition > stageScrollX + screenWidth - PercentToPixels(screenWidth, sidepanelWidth)) {
       rightSide = false;
       sidepanelActive = " sidepanel-active-left";
     }

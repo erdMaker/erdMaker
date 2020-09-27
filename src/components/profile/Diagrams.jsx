@@ -6,6 +6,7 @@ const Diagrams = (props) => {
   var unsortedDiagramsList = [];
   var sortedDiagramsList = [];
 
+  // Place user diagram info in a list
   for (let i in props.user.diagrams) {
     unsortedDiagramsList.push({
       diagram: <Diagram key={i} index={i} />,
@@ -13,10 +14,12 @@ const Diagrams = (props) => {
     });
   }
 
+  // Sort that list based on date updated (recently updated to the top)
   unsortedDiagramsList.sort(function (a, b) {
     return new Date(b.date) - new Date(a.date);
   });
 
+  // We add the diagram components in another list for rendering
   for (let i in unsortedDiagramsList) {
     sortedDiagramsList.push(unsortedDiagramsList[i].diagram);
   }

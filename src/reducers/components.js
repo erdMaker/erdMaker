@@ -21,7 +21,8 @@ const initialState = {
   relationships: [],
   attributes: [],
   labels: [],
-  count: 0,
+  count: 0, // Total number of components created in a single diagram (includes deleted).
+            // Never decreases and new ids depend on it
 };
 
 const componentsReducer = (state = initialState, action) => {
@@ -41,7 +42,7 @@ const componentsReducer = (state = initialState, action) => {
             x: stage.scrollLeft + screenWidth / 2,
             y: stage.scrollTop + screenHeight / 2,
             type: "regular",
-            connectionCount: 0,
+            connectionCount: 0, // Number of connections
           },
         ],
         count: state.count + 1,
@@ -119,6 +120,7 @@ const componentsReducer = (state = initialState, action) => {
       }
       return newState;
     case "DELETE_RELATIONSHIP":
+      // Reduce connectionCount of involved entities
       function adjustEntities(connection) {
         for (let j in newState.entities) {
           if (newState.entities[j].id === connection.connectId) newState.entities[j].connectionCount--;
@@ -273,13 +275,13 @@ const componentsReducer = (state = initialState, action) => {
         attributes: state.attributes.filter((attribute) => attribute.id !== action.payload.id),
       };
     case "DELETE_CHILDREN":
-      getChildren(childrenList, state.attributes, action.payload.id);
+      getChildren(childrenList, state.attributes, action.payload.id); // Retrieve children of component with provided id
       return {
         ...state,
         attributes: state.attributes.filter((attribute) => !childrenList.includes(attribute.id)),
       };
-    case "UPDATE_POSITION_CHILDREN":
-      getChildren(childrenList, state.attributes, action.payload.id);
+    case "UPDATE_POSITION_CHILDREN": // Moves children along with parent component
+      getChildren(childrenList, state.attributes, action.payload.id); // Retrieve children of component with provided id
       return {
         ...state,
         attributes: state.attributes.map((attribute) =>
@@ -350,7 +352,7 @@ const componentsReducer = (state = initialState, action) => {
         ...state,
         labels: state.labels.filter((label) => label.id !== action.payload.id),
       };
-    case "REPOSITION_COMPONENTS":
+    case "REPOSITION_COMPONENTS": // Used to return all components within stage bound if dragged off
       var entOffsetX = entityWidth / 2;
       var entOffsetY = entityHeight / 2;
       for (let i in newState.entities) {

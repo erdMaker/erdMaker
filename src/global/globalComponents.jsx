@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useHistory } from "react-router-dom";
 
+// This component is a button that enables react-routing
 const LinkButton = (props) => {
   const router = useRouter();
   const label = props.useSpan ? <span>{props.label}</span> : props.label;
@@ -30,6 +31,7 @@ const useRouter = () => {
   );
 };
 
+// A dark overlay that covers the entire screen when certain components need to be emphasized
 const ShadowOverlay = () => <div className="shadow-overlay" />;
 
 export { LinkButton, ShadowOverlay };

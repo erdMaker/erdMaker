@@ -26,6 +26,7 @@ class Label extends React.Component {
     });
   };
 
+  // Does not let the label to be dragged out of stage bounds
   stageBound = (pos) => {
     var newX;
     var newY;
@@ -51,6 +52,9 @@ class Label extends React.Component {
   };
 
   render() {
+    // Invisible rectangle that is rendered on the mouse pointer when we resize the label
+    // It helps to maintain the click and drag event even when the mouse pointer exits the red area
+    // Uncomment fill and opacity below to see its effect
     var resizeRect = (
       <Rect
         x={-this.props.stager.resizeRectOffset / 2 + this.props.x + this.props.width / 2}

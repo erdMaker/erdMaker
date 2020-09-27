@@ -15,6 +15,7 @@ class Surface extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Define the anchor points for entities
       entityAnchors: [
         {
           x: -(this.props.stager.entityWidth / 2) - this.props.stager.anchorLength,
@@ -103,35 +104,42 @@ class Surface extends React.Component {
       />
     ));
 
+  // Responsible  for drawing every line connecting things in the diagram
   drawLines = () => {
+    // Used with array.findIndex() to find the index of the component with id = connectId
     function locateIndex(element) {
       return element.id === connectId;
     }
 
-    var lineList = [];
-    var lockedAnchorPoints = [];
-    var connectId;
-    var index;
-    var anchor;
-    var specificValuesPoints;
-    var specificValuesText;
-    var parent;
-    var keyIndex = 0;
+    var lineList = []; // The list with all the lines eventually being rendered
+    var lockedAnchorPoints = []; // Array with the anchor points that are occupied for the current entity
 
+    // I use connectId to find the index of the parent in its array and then finally retrieve its coordinates
+    var connectId; // parentId of current attribute
+    var index; // Index of component in its respective array with id = connectId
+    var parentCoords; // Location of the parent component
+
+    var anchor; // Object that holds the location of the anchor to connect too and the angle at which it ll be displayed
+    var specificValuesPoints; // Object that holds the location for specificValues text
+    var specificValuesText; // Object that holds the value for the text of specificValues
+    
+    var keyIndex = 0; // Only used to distinguish items in a list
+
+    // This loop creates the lines that connect attributes to their parents
     for (let i in this.props.components.attributes) {
       connectId = this.props.components.attributes[i].parentId;
       if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
-        parent = {
+        parentCoords = {
           x: this.props.components.entities[index].x,
           y: this.props.components.entities[index].y,
         };
       } else if ((index = this.props.components.relationships.findIndex(locateIndex)) !== -1) {
-        parent = {
+        parentCoords = {
           x: this.props.components.relationships[index].x,
           y: this.props.components.relationships[index].y,
         };
       } else if ((index = this.props.components.attributes.findIndex(locateIndex)) !== -1) {
-        parent = {
+        parentCoords = {
           x: this.props.components.attributes[index].x,
           y: this.props.components.attributes[index].y,
         };
@@ -144,19 +152,25 @@ class Surface extends React.Component {
           stroke="black"
           strokeWidth={2}
           closed="false"
-          points={[this.props.components.attributes[i].x, this.props.components.attributes[i].y, parent.x, parent.y]}
+          points={[this.props.components.attributes[i].x, this.props.components.attributes[i].y, parentCoords.x, parentCoords.y]}
         />
       );
       keyIndex = keyIndex + 1;
     }
 
+    // This loop creates the lines that connect relationships with entities
     for (let i = 0; i < this.props.components.relationships.length; i++) {
       for (let j = 0; j < this.props.components.relationships[i].connections.length; j++) {
         if (this.props.components.relationships[i].connections[j].connectId !== 0) {
           connectId = this.props.components.relationships[i].connections[j].connectId;
           index = this.props.components.entities.findIndex(locateIndex);
+
+          // If current connection 8 connections don't draw any line
           if (this.props.components.entities[index].connectionCount > 8) continue;
+
+          // Get the nearest available anchor to this relationship for this connected entity
           anchor = this.findNearestAnchor(lockedAnchorPoints, index, i);
+
           specificValuesPoints = this.calculateSpecificValuesPoints(anchor, this.props.components.relationships[i]);
           lineList.push(
             <Line
@@ -218,12 +232,15 @@ class Surface extends React.Component {
     return lineList;
   };
 
+  // Calculates locations for specific values
   calculateSpecificValuesPoints = (anchor, relationship) => {
+    // Place role text between relationship and entity
     var roleTextPoint = {
       x: (anchor.x + relationship.x) / 2,
       y: (anchor.y + relationship.y) / 2,
     };
 
+    // Relatively position anchor text based on the angle of the anchor
     var anchorTextPoint = { x: anchor.x, y: anchor.y };
     switch (anchor.angle) {
       case 0:
@@ -245,10 +262,12 @@ class Surface extends React.Component {
   };
 
   findNearestAnchor = (lockedAnchorPoints, entityIndex, relationshipIndex) => {
-    var distances = [];
+    var distances = []; // All distances from the relationship to the entity's anchors
     var anchorId;
     for (let i in this.state.entityAnchors) {
       anchorId = this.props.components.entities[entityIndex].id.toString() + i.toString();
+      
+      // If current anchor is occupied then ignore it, else include its distance for calculation
       if (!lockedAnchorPoints.includes(anchorId)) {
         distances.push({
           anchorIndex: i,
@@ -266,7 +285,7 @@ class Surface extends React.Component {
         });
       }
     }
-    var min = minJsonArray(distances, "distance");
+    var min = minJsonArray(distances, "distance"); // Get the anchor with the smallest distance
     lockedAnchorPoints.push(min.anchorId);
     return {
       x: this.props.components.entities[entityIndex].x + this.state.entityAnchors[min.anchorIndex].x,
@@ -276,10 +295,11 @@ class Surface extends React.Component {
   };
 
   stageClicked = (e) => {
+    // Deselect when user clicks the white space
     if (e.target === e.target.getStage()) this.props.deselect();
   };
 
-  getStage = () => this.stage;
+  getStage = () => this.stage; // Get reference to the stage
 
   render() {
     return (

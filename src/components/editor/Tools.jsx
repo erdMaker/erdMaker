@@ -84,6 +84,7 @@ class Tools extends React.Component {
     this.props.resetComponents();
   };
 
+  // Functions that handle the hold-click on "Clear Diagram" button
   start = () => {
     this.clickTimer = setTimeout(() => this.timerReached(), 3000);
     this.setState({
@@ -151,6 +152,7 @@ class Tools extends React.Component {
         </button>
       ) : null;
 
+    // CSS classes are set for the burger menu (whether its displayed or not)
     var toolsClasses = "tools__list";
     var line1Class = "";
     var line2Class = "";
