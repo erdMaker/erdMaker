@@ -7,10 +7,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 class Connection extends React.Component {
-  constructor() {
-    super();
-    this.state = { expand: false };
-  }
+  state = { expand: false };
 
   findRelationshipIndex = (relationship) => relationship.id === this.props.selector.current.id;
 

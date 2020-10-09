@@ -7,27 +7,26 @@ import { register } from "../../global/userRequests";
 import axios from "axios";
 
 class Register extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      username: "",
-      password: "",
-      confirmPassword: "",
-      emailError: 0,
-      usernameError: 0,
-      passwordError: 0,
-      confirmPasswordError: 0,
-      passwordHint: "Password must be 8-16 characters long and contain at least one number and one letter.",
-      usernameHint: "Username can only contain letters and numbers.",
-      response: {
-        data: ".",
-        color: "#dfdfdf",
-      },
-    };
-    this.recaptchaRef = React.createRef();
-    this.cancelToken = axios.CancelToken.source();
-  }
+  state = {
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+    emailError: 0,
+    usernameError: 0,
+    passwordError: 0,
+    confirmPasswordError: 0,
+    passwordHint: "Password must be 8-16 characters long and contain at least one number and one letter.",
+    usernameHint: "Username can only contain letters and numbers.",
+    response: {
+      data: ".",
+      color: "#dfdfdf",
+    },
+  };
+  
+  recaptchaRef = React.createRef();
+
+  cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {
     this.cancelToken.cancel("Request is being canceled");

@@ -4,12 +4,9 @@ import EditProfile from "./EditProfile";
 import { connect } from "react-redux";
 
 class ProfileIndex extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      isProfileActive: true,
-    };
-  }
+  state = {
+    isProfileActive: true,
+  };
 
   componentDidMount() {
     this.slidingTogglePanel.classList.add("right");

@@ -2,30 +2,28 @@ import React from "react";
 import { connect } from "react-redux";
 import { updatePositionAttribute, updatePositionChildren, repositionComponents, select } from "../../actions/actions";
 import { Group, Ellipse, Text } from "react-konva";
+import { stageWidth, stageHeight } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 class Attribute extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { initialPosition: { x: this.props.x, y: this.props.y } };
-  }
+  state = { initialPosition: { x: this.props.x, y: this.props.y } };
 
   // Does not let the attribute to be dragged out of stage bounds
   stageBound = (pos) => {
     var newX;
     var newY;
 
-    if (pos.x > this.props.stager.stageWidth / 2)
+    if (pos.x > stageWidth / 2)
       newX =
-        pos.x > this.props.stager.stageWidth - this.props.stager.attributeRadiusX
-          ? this.props.stager.stageWidth - this.props.stager.attributeRadiusX
+        pos.x > stageWidth - this.props.stager.attributeRadiusX
+          ? stageWidth - this.props.stager.attributeRadiusX
           : pos.x;
     else newX = pos.x < this.props.stager.attributeRadiusX ? this.props.stager.attributeRadiusX : pos.x;
 
-    if (pos.y > this.props.stager.stageHeight / 2)
+    if (pos.y > stageHeight / 2)
       newY =
-        pos.y > this.props.stager.stageHeight - this.props.stager.attributeRadiusY
-          ? this.props.stager.stageHeight - this.props.stager.attributeRadiusY
+        pos.y > stageHeight - this.props.stager.attributeRadiusY
+          ? stageHeight - this.props.stager.attributeRadiusY
           : pos.y;
     else newY = pos.y < this.props.stager.attributeRadiusY ? this.props.stager.attributeRadiusY : pos.y;
 

@@ -6,11 +6,9 @@ import { connect } from "react-redux";
 import axios from "axios";
 
 class Profile extends React.Component {
-  constructor() {
-    super();
-    this.state = { loadingProfile: true };
-    this.cancelToken = axios.CancelToken.source();
-  }
+  state = { loadingProfile: true };
+
+  cancelToken = axios.CancelToken.source();
 
   componentDidMount() {
     getProfile(this.cancelToken)

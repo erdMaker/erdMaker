@@ -1,6 +1,4 @@
 // Exporting this variables for other reducers
-export const stageWidth = 2176;
-export const stageHeight = 1224;
 export const entityWidth = 110;
 export const entityHeight = 45;
 export const entityWeakOffset = 10;
@@ -31,8 +29,6 @@ const selectionInitialState = {
 };
 
 const stageInitialState = {
-  stageHeight: stageHeight,
-  stageWidth: stageWidth,
   fontSize: 13,
   entityWidth: entityWidth,
   entityHeight: entityHeight,

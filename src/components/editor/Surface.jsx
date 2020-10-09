@@ -10,56 +10,54 @@ import Properties from "./Properties";
 import { Provider, ReactReduxContext, connect } from "react-redux";
 import { deselect } from "../../actions/actions";
 import { distance, minJsonArray } from "../../global/utils";
+import { stageWidth, stageHeight } from "../../global/constants";
 
 class Surface extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // Define the anchor points for entities
-      entityAnchors: [
-        {
-          x: -(this.props.stager.entityWidth / 2) - this.props.stager.anchorLength,
-          y: 0,
-          angle: -90,
-        },
-        {
-          x: -(this.props.stager.entityWidth / 4),
-          y: -(this.props.stager.entityHeight / 2) - this.props.stager.anchorLength,
-          angle: 0,
-        },
-        {
-          x: 0,
-          y: -(this.props.stager.entityHeight / 2) - this.props.stager.anchorLength,
-          angle: 0,
-        },
-        {
-          x: this.props.stager.entityWidth / 4,
-          y: -(this.props.stager.entityHeight / 2) - this.props.stager.anchorLength,
-          angle: 0,
-        },
-        {
-          x: this.props.stager.entityWidth / 2 + this.props.stager.anchorLength,
-          y: 0,
-          angle: 90,
-        },
-        {
-          x: this.props.stager.entityWidth / 4,
-          y: this.props.stager.entityHeight / 2 + this.props.stager.anchorLength,
-          angle: 180,
-        },
-        {
-          x: 0,
-          y: this.props.stager.entityHeight / 2 + this.props.stager.anchorLength,
-          angle: 180,
-        },
-        {
-          x: -(this.props.stager.entityWidth / 4),
-          y: this.props.stager.entityHeight / 2 + this.props.stager.anchorLength,
-          angle: 180,
-        },
-      ],
-    };
-  }
+  state = {
+    // Define the anchor points for entities
+    entityAnchors: [
+      {
+        x: -(this.props.stager.entityWidth / 2) - this.props.stager.anchorLength,
+        y: 0,
+        angle: -90,
+      },
+      {
+        x: -(this.props.stager.entityWidth / 4),
+        y: -(this.props.stager.entityHeight / 2) - this.props.stager.anchorLength,
+        angle: 0,
+      },
+      {
+        x: 0,
+        y: -(this.props.stager.entityHeight / 2) - this.props.stager.anchorLength,
+        angle: 0,
+      },
+      {
+        x: this.props.stager.entityWidth / 4,
+        y: -(this.props.stager.entityHeight / 2) - this.props.stager.anchorLength,
+        angle: 0,
+      },
+      {
+        x: this.props.stager.entityWidth / 2 + this.props.stager.anchorLength,
+        y: 0,
+        angle: 90,
+      },
+      {
+        x: this.props.stager.entityWidth / 4,
+        y: this.props.stager.entityHeight / 2 + this.props.stager.anchorLength,
+        angle: 180,
+      },
+      {
+        x: 0,
+        y: this.props.stager.entityHeight / 2 + this.props.stager.anchorLength,
+        angle: 180,
+      },
+      {
+        x: -(this.props.stager.entityWidth / 4),
+        y: this.props.stager.entityHeight / 2 + this.props.stager.anchorLength,
+        angle: 180,
+      },
+    ],
+  };
 
   drawEntities = () =>
     this.props.components.entities.map((entity) => (
@@ -308,15 +306,15 @@ class Surface extends React.Component {
           <div>
             <div ref={(ref) => (this.stage = ref)} className="stage">
               <Stage
-                width={this.props.stager.stageWidth}
-                height={this.props.stager.stageHeight}
+                width={stageWidth}
+                height={stageHeight}
                 onClick={(e) => this.stageClicked(e)}
               >
                 <Provider store={store}>
                   <Layer>
                     <Rect
-                      width={this.props.stager.stageWidth}
-                      height={this.props.stager.stageHeight}
+                      width={stageWidth}
+                      height={stageHeight}
                       fill="white"
                       stroke="black"
                       strokeWidth={2}

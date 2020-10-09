@@ -11,7 +11,7 @@ import {
   repositionComponents,
 } from "../../actions/actions";
 import { getRandomInt } from "../../global/utils";
-import { nameSize } from "../../global/constants";
+import { nameSize, stageWidth, stageHeight } from "../../global/constants";
 
 class AttributeProperties extends React.Component {
   findAttributeIndex = (attribute) => attribute.id === this.props.selector.current.id;
@@ -53,8 +53,8 @@ class AttributeProperties extends React.Component {
         y = this.props.components.attributes[parent.index].y + yOffset;
         break;
       default:
-        x = this.props.stager.stageWidth / 2;
-        y = this.props.stager.stageHeight / 2;
+        x = stageWidth / 2;
+        y = stageHeight / 2;
     }
     this.props.addAttribute({
       id: this.props.selector.current.parentId,

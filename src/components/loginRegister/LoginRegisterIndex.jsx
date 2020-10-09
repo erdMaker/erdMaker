@@ -4,12 +4,9 @@ import Register from "./Register";
 import { connect } from "react-redux";
 
 class LoginRegisterIndex extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      isLoginActive: true,
-    };
-  }
+  state = {
+    isLoginActive: true,
+  };
 
   componentDidMount() {
     this.slidingTogglePanel.classList.add("right");

@@ -6,19 +6,18 @@ import { forgotpassword } from "../../global/userRequests";
 import axios from "axios";
 
 class ForgotPassword extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      emailError: 0,
-      response: {
-        data: ".",
-        color: "#dfdfdf",
-      },
-    };
-    this.recaptchaRef = React.createRef();
-    this.cancelToken = axios.CancelToken.source();
-  }
+  state = {
+    email: "",
+    emailError: 0,
+    response: {
+      data: ".",
+      color: "#dfdfdf",
+    },
+  };
+  
+  recaptchaRef = React.createRef();
+
+  cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {
     this.cancelToken.cancel("Request is being canceled");

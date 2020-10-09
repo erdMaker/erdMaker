@@ -1,6 +1,8 @@
 import {
   stageWidth,
   stageHeight,
+} from "../global/constants";
+import {
   entityWidth,
   entityHeight,
   relationshipWidth,

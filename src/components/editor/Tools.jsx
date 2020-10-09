@@ -20,19 +20,17 @@ import axios from "axios";
 import { diagramLimit } from "../../global/constants.js";
 
 class Tools extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      saveEnabled:
-        this.props.user.confirmed &&
-        (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId),
-      saveStatus: { text: "Your progress is being saved.", color: "#00b53c" },
-      lastSave: " ",
-      clearButtonText: "Clear Diagram",
-      toolsListActive: false,
-    };
-    this.cancelToken = axios.CancelToken.source();
-  }
+  state = {
+    saveEnabled:
+      this.props.user.confirmed &&
+      (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId),
+    saveStatus: { text: "Your progress is being saved.", color: "#00b53c" },
+    lastSave: " ",
+    clearButtonText: "Clear Diagram",
+    toolsListActive: false,
+  };
+
+  cancelToken = axios.CancelToken.source();
 
   componentDidMount() {
     window.addEventListener("beforeunload", this.timerCleanup);

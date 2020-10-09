@@ -7,30 +7,28 @@ import {
   select,
 } from "../../actions/actions";
 import { Group, Line, Text } from "react-konva";
+import { stageWidth, stageHeight } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 class Relationship extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { initialPosition: { x: this.props.x, y: this.props.y } };
-  }
+  state = { initialPosition: { x: this.props.x, y: this.props.y } };
 
   // Does not let the relationship to be dragged out of stage bounds
   stageBound = (pos) => {
     var newX;
     var newY;
 
-    if (pos.x > this.props.stager.stageWidth / 2)
+    if (pos.x > stageWidth / 2)
       newX =
-        pos.x > this.props.stager.stageWidth - this.props.stager.relationshipWidth
-          ? this.props.stager.stageWidth - this.props.stager.relationshipWidth
+        pos.x > stageWidth - this.props.stager.relationshipWidth
+          ? stageWidth - this.props.stager.relationshipWidth
           : pos.x;
     else newX = pos.x < this.props.stager.relationshipWidth ? this.props.stager.relationshipWidth : pos.x;
 
-    if (pos.y > this.props.stager.stageHeight / 2)
+    if (pos.y > stageHeight / 2)
       newY =
-        pos.y > this.props.stager.stageHeight - this.props.stager.relationshipHeight
-          ? this.props.stager.stageHeight - this.props.stager.relationshipHeight
+        pos.y > stageHeight - this.props.stager.relationshipHeight
+          ? stageHeight - this.props.stager.relationshipHeight
           : pos.y;
     else newY = pos.y < this.props.stager.relationshipHeight ? this.props.stager.relationshipHeight : pos.y;
 

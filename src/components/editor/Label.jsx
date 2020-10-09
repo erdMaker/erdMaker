@@ -2,17 +2,15 @@ import React from "react";
 import { connect } from "react-redux";
 import { updatePositionLabel, resizeLabel, select } from "../../actions/actions";
 import { Group, Rect, Line, Text } from "react-konva";
+import { stageWidth, stageHeight } from "../../global/constants";
 
 class Label extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      resizeRect: false,
-      isDragging: false,
-      initialWidth: this.props.width,
-      initialHeight: this.props.height,
-    };
-  }
+  state = {
+    resizeRect: false,
+    isDragging: false,
+    initialWidth: this.props.width,
+    initialHeight: this.props.height,
+  };
 
   resize = (e) => {
     var widthChange = e.target.getStage().getPointerPosition().x - this.state.initialMousePosition.x;
@@ -31,17 +29,17 @@ class Label extends React.Component {
     var newX;
     var newY;
 
-    if (pos.x > this.props.stager.stageWidth / 2)
+    if (pos.x > stageWidth / 2)
       newX =
-        pos.x > this.props.stager.stageWidth - this.props.width / 2
-          ? this.props.stager.stageWidth - this.props.width / 2
+        pos.x > stageWidth - this.props.width / 2
+          ? stageWidth - this.props.width / 2
           : pos.x;
     else newX = pos.x < this.props.width / 2 ? this.props.width / 2 : pos.x;
 
-    if (pos.y > this.props.stager.stageHeight / 2)
+    if (pos.y > stageHeight / 2)
       newY =
-        pos.y > this.props.stager.stageHeight - this.props.height / 2
-          ? this.props.stager.stageHeight - this.props.height / 2
+        pos.y > stageHeight - this.props.height / 2
+          ? stageHeight - this.props.height / 2
           : pos.y;
     else newY = pos.y < this.props.height / 2 ? this.props.height / 2 : pos.y;
 

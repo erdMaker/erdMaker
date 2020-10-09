@@ -5,16 +5,14 @@ import axios from "axios";
 import { diagramLimit } from "../../global/constants.js";
 
 class ConfirmEmailPrompt extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      response: {
-        data: ".",
-        color: "#dfdfdf",
-      },
-    };
-    this.cancelToken = axios.CancelToken.source();
-  }
+  state = {
+    response: {
+      data: ".",
+      color: "#dfdfdf",
+    },
+  };
+  
+  cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {
     this.cancelToken.cancel("Request is being canceled");

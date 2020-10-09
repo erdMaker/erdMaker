@@ -9,21 +9,19 @@ import { storeUserData } from "../../actions/actions";
 import axios from "axios";
 
 class Login extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      showForgotPassword: false,
-      email: "",
-      password: "",
-      emailError: 0,
-      passwordError: 0,
-      response: {
-        data: ".",
-        color: "#dfdfdf",
-      },
-    };
-    this.cancelToken = axios.CancelToken.source();
-  }
+  state = {
+    showForgotPassword: false,
+    email: "",
+    password: "",
+    emailError: 0,
+    passwordError: 0,
+    response: {
+      data: ".",
+      color: "#dfdfdf",
+    },
+  };
+
+  cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {
     this.cancelToken.cancel("Request is being canceled");

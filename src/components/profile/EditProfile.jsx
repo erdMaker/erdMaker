@@ -4,26 +4,24 @@ import { connect } from "react-redux";
 import axios from "axios";
 
 class EditProfile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      firstName: this.props.user.firstName,
-      lastName: this.props.user.lastName,
-      email: this.props.user.email,
-      username: this.props.user.username,
-      emailError: 0,
-      usernameError: 0,
-      firstNameError: 0,
-      lastNameError: 0,
-      nameHint: "Name can only contain letters.",
-      usernameHint: "Username can only contain letters and numbers.",
-      response: {
-        data: ".",
-        color: "#dfdfdf",
-      },
-    };
-    this.cancelToken = axios.CancelToken.source();
-  }
+  state = {
+    firstName: this.props.user.firstName,
+    lastName: this.props.user.lastName,
+    email: this.props.user.email,
+    username: this.props.user.username,
+    emailError: 0,
+    usernameError: 0,
+    firstNameError: 0,
+    lastNameError: 0,
+    nameHint: "Name can only contain letters.",
+    usernameHint: "Username can only contain letters and numbers.",
+    response: {
+      data: ".",
+      color: "#dfdfdf",
+    },
+  };
+
+  cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {
     this.cancelToken.cancel("Request is being canceled");

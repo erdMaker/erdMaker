@@ -2,30 +2,28 @@ import React from "react";
 import { connect } from "react-redux";
 import { updatePositionEntity, updatePositionChildren, repositionComponents, select } from "../../actions/actions";
 import { Group, Rect, Line, Text } from "react-konva";
+import { stageWidth, stageHeight } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 class Entity extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { initialPosition: { x: this.props.x, y: this.props.y } };
-  }
+  state = { initialPosition: { x: this.props.x, y: this.props.y } };
 
   // Does not let the entity to be dragged out of stage bounds
   stageBound = (pos) => {
     var newX;
     var newY;
 
-    if (pos.x > this.props.stager.stageWidth / 2)
+    if (pos.x > stageWidth / 2)
       newX =
-        pos.x > this.props.stager.stageWidth - this.props.stager.entityWidth / 2
-          ? this.props.stager.stageWidth - this.props.stager.entityWidth / 2
+        pos.x > stageWidth - this.props.stager.entityWidth / 2
+          ? stageWidth - this.props.stager.entityWidth / 2
           : pos.x;
     else newX = pos.x < this.props.stager.entityWidth / 2 ? this.props.stager.entityWidth / 2 : pos.x;
 
-    if (pos.y > this.props.stager.stageHeight / 2)
+    if (pos.y > stageHeight / 2)
       newY =
-        pos.y > this.props.stager.stageHeight - this.props.stager.entityHeight / 2
-          ? this.props.stager.stageHeight - this.props.stager.entityHeight / 2
+        pos.y > stageHeight - this.props.stager.entityHeight / 2
+          ? stageHeight - this.props.stager.entityHeight / 2
           : pos.y;
     else newY = pos.y < this.props.stager.entityHeight / 2 ? this.props.stager.entityHeight / 2 : pos.y;
 

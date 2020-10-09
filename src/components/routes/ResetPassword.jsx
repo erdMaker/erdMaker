@@ -5,21 +5,19 @@ import { resetpassword } from "../../global/userRequests";
 import axios from "axios";
 
 class ResetPassword extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      password: "",
-      confirmPassword: "",
-      passwordError: 0,
-      confirmPasswordError: 0,
-      passwordHint: "Password must be 8-16 characters long and contain at least one number and one letter.",
-      response: {
-        data: ".",
-        color: "#dfdfdf",
-      },
-    };
-    this.cancelToken = axios.CancelToken.source();
-  }
+  state = {
+    password: "",
+    confirmPassword: "",
+    passwordError: 0,
+    confirmPasswordError: 0,
+    passwordHint: "Password must be 8-16 characters long and contain at least one number and one letter.",
+    response: {
+      data: ".",
+      color: "#dfdfdf",
+    },
+  };
+
+  cancelToken = axios.CancelToken.source();
 
   componentDidMount() {
     document.title = "ERD Maker - Password Reset";
