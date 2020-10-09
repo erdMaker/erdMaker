@@ -2,8 +2,8 @@
 export const toolbarHeight = 60;
 export var screenWidth = window.innerWidth;
 export var screenHeight = window.innerHeight;
-export var stageWidth = 2176;
-export var stageHeight = 1224;
+export const stageWidth = 2176;
+export const stageHeight = 1224;
 export const entityWidth = 110;
 export const entityHeight = 45;
 export const entityWeakOffset = 10;
@@ -65,7 +65,6 @@ const stageInitialState = {
 
 const generalInitialState = {
   serverTime: null,
-  diagramLimit: 10,
   activeDiagramId: null,
 };
 

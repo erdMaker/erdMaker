@@ -17,6 +17,7 @@ import { savediagram } from "../../global/diagramRequests";
 import ImportExportMenuListComposition from "./ImportExportMenu";
 import saveImg from "../../img/saveIcon.png";
 import axios from "axios";
+import { diagramLimit } from "../../global/constants.js";
 
 class Tools extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class Tools extends React.Component {
     this.state = {
       saveEnabled:
         this.props.user.confirmed &&
-        (this.props.user.diagramsOwned < this.props.general.diagramLimit || this.props.general.activeDiagramId),
+        (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId),
       saveStatus: { text: "Your progress is being saved.", color: "#00b53c" },
       lastSave: " ",
       clearButtonText: "Clear Diagram",
@@ -119,7 +120,7 @@ class Tools extends React.Component {
 
     var titleInput =
       this.props.user.confirmed &&
-      (this.props.user.diagramsOwned < this.props.general.diagramLimit || this.props.general.activeDiagramId) ? (
+      (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId) ? (
         <input
           className="big-editor-input"
           type="text"
@@ -136,7 +137,7 @@ class Tools extends React.Component {
       ) : null;
 
     var clearStageButton =
-      (!this.props.user.confirmed || this.props.user.diagramsOwned >= this.props.general.diagramLimit) &&
+      (!this.props.user.confirmed || this.props.user.diagramsOwned >= diagramLimit) &&
       !this.props.general.activeDiagramId ? (
         <button
           type="button"

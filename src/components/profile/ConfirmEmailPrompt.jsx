@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { resend } from "../../global/userRequests";
 import axios from "axios";
+import { diagramLimit } from "../../global/constants.js";
 
 class ConfirmEmailPrompt extends React.Component {
   constructor() {
@@ -55,7 +56,7 @@ class ConfirmEmailPrompt extends React.Component {
     return (
       <div className="confirm-email-prompt">
         By verifying your e-mail address, you can gain access to the cloud storage feature. You can save up to{" "}
-        {this.props.general.diagramLimit} diagrams and access them from any computer and location.
+        {diagramLimit} diagrams and access them from any computer and location.
         <div className="response" style={{ color: this.state.response.color }}>
           {this.state.response.data}
         </div>

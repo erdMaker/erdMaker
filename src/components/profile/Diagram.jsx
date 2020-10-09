@@ -10,6 +10,7 @@ import { duplicatediagram, deletediagram } from "../../global/diagramRequests";
 import editImg from "../../img/edit.png";
 import { getProfile } from "../../global/globalFuncs";
 import axios from "axios";
+import { diagramLimit } from "../../global/constants.js";
 
 class Diagram extends React.Component {
   handleClick = () => {
@@ -50,7 +51,7 @@ class Diagram extends React.Component {
           <SimpleMenu
             id={this.props.user.diagrams[this.props.index].id}
             diagramsOwned={this.props.user.diagramsOwned}
-            diagramLimit={this.props.general.diagramLimit}
+            diagramLimit={diagramLimit}
           />
         </td>
       </tr>

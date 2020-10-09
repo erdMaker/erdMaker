@@ -1,6 +1,7 @@
 import React from "react";
 import Diagram from "./Diagram";
 import { connect } from "react-redux";
+import { diagramLimit } from "../../global/constants.js";
 
 const Diagrams = (props) => {
   var unsortedDiagramsList = [];
@@ -27,7 +28,7 @@ const Diagrams = (props) => {
   var diagramCountText = (
     <span
       style={{
-        color: props.user.diagramsOwned >= props.general.diagramLimit ? "red" : "black",
+        color: props.user.diagramsOwned >= diagramLimit ? "red" : "black",
       }}
     >
       {props.user.diagramsOwned}
@@ -37,7 +38,7 @@ const Diagrams = (props) => {
   return (
     <>
       <h3>
-        Your Diagrams ({diagramCountText}/{props.general.diagramLimit}):
+        Your Diagrams ({diagramCountText}/{diagramLimit}):
       </h3>
       <table className="diagrams-table">
         <tbody>{sortedDiagramsList}</tbody>
