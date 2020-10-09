@@ -37,7 +37,16 @@ class Attribute extends React.Component {
 
   render() {
     var nameText = this.props.name;
+    var namePixelWidth = pixelWidth(nameText, {
+      font: "Arial",
+      size: this.props.stager.fontSize,
+    });
     if (this.props.type.composite) nameText = "( " + nameText + " )";
+
+    var nameYOffset;
+    if (namePixelWidth < this.props.stager.attributeRadiusX * 2) nameYOffset = -this.props.stager.fontSize / 2;
+    else if (namePixelWidth < this.props.stager.attributeRadiusX * 4) nameYOffset = -this.props.stager.fontSize;
+    else nameYOffset = -this.props.stager.fontSize * 3 / 2;
 
     var optionalText = this.props.type.optional ? (
       <Text
@@ -128,13 +137,16 @@ class Attribute extends React.Component {
           text={nameText}
           fontSize={this.props.stager.fontSize}
           textDecoration={this.props.type.unique ? "underline" : ""}
+          width={this.props.stager.attributeRadiusX * 2}
+          //offsetX={namePixelWidth < this.props.stager.attributeRadiusX * 2 ?
+          //  (namePixelWidth / 2) : 
+          //  this.props.stager.attributeRadiusX}
           x={
-            -pixelWidth(nameText, {
-              font: "Arial",
-              size: this.props.stager.fontSize,
-            }) / 2
+            namePixelWidth < this.props.stager.attributeRadiusX * 2 ?
+            (-namePixelWidth / 2) : 
+            -this.props.stager.attributeRadiusX
           }
-          y={-this.props.stager.fontSize / 2}
+          y={nameYOffset}
         />
         {optionalText}
       </Group>

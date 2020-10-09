@@ -37,7 +37,6 @@ class LoginRegisterIndex extends React.Component {
           current={current}
           onClick={this.changeState}
           containerRef={(ref) => (this.slidingTogglePanel = ref)}
-          screenWidth={this.props.stager.screenWidth}
         />
       </div>
     );
@@ -49,8 +48,8 @@ const SlidingTogglePanel = (props) => (
     <div
       className="sliding-toggle-panel-text"
       style={{
-        marginLeft: props.screenWidth / 50,
-        marginRight: props.screenWidth / 50,
+        marginLeft: window.innerWidth / 50,
+        marginRight: window.innerWidth / 50,
       }}
     >
       {props.current}

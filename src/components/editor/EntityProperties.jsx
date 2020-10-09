@@ -12,6 +12,7 @@ import {
   repositionComponents,
 } from "../../actions/actions";
 import { getRandomInt } from "../../global/utils";
+import { nameSize } from "../../global/constants";
 
 class EntityProperties extends React.Component {
   findEntityIndex = (entity) => entity.id === this.props.selector.current.id;
@@ -59,7 +60,7 @@ class EntityProperties extends React.Component {
             type="text"
             name="name"
             id="name"
-            maxLength={this.props.stager.nameSize}
+            maxLength={nameSize}
             value={this.props.components.entities[entityIndex].name}
             onChange={this.nameValueChange}
           />

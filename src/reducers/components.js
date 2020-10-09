@@ -1,8 +1,6 @@
 import {
   stageWidth,
   stageHeight,
-  screenWidth,
-  screenHeight,
   entityWidth,
   entityHeight,
   relationshipWidth,
@@ -39,8 +37,8 @@ const componentsReducer = (state = initialState, action) => {
           {
             id: state.count + 1,
             name: "<New>" + (state.count + 1),
-            x: stage.scrollLeft + screenWidth / 2,
-            y: stage.scrollTop + screenHeight / 2,
+            x: stage.scrollLeft + window.innerWidth / 2,
+            y: stage.scrollTop + window.innerHeight / 2,
             type: "regular",
             connectionCount: 0, // Number of connections
           },
@@ -82,8 +80,8 @@ const componentsReducer = (state = initialState, action) => {
           {
             id: state.count + 1,
             name: "<New>" + (state.count + 1),
-            x: stage.scrollLeft + screenWidth / 2,
-            y: stage.scrollTop + screenHeight / 2,
+            x: stage.scrollLeft + window.innerWidth / 2,
+            y: stage.scrollTop + window.innerHeight / 2,
             type: {
               identifying: false,
             },
@@ -302,8 +300,8 @@ const componentsReducer = (state = initialState, action) => {
           {
             id: state.count + 1,
             text: "<New>" + (state.count + 1),
-            x: stage.scrollLeft + screenWidth / 2,
-            y: stage.scrollTop + screenHeight / 2,
+            x: stage.scrollLeft + window.innerWidth / 2,
+            y: stage.scrollTop + window.innerHeight / 2,
             width: labelMinWidth,
             height: labelMinHeight,
           },

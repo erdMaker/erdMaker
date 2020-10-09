@@ -31,7 +31,7 @@ class ProfileIndex extends React.Component {
 
   render() {
     // When screen is small then "Edit Profile" appears in two rows
-    const lineBreak = this.props.stager.screenWidth <= 1440 ? null : <br />;
+    const lineBreak = window.innerWidth <= 1440 ? null : <br />;
     const current = this.state.isProfileActive ? <>Edit {lineBreak}Profile</> : "Back";
     
     return (
@@ -42,7 +42,6 @@ class ProfileIndex extends React.Component {
           current={current}
           containerRef={(ref) => (this.slidingTogglePanel = ref)}
           onClick={this.changeState}
-          screenWidth={this.props.stager.screenWidth}
         />
       </div>
     );
@@ -54,8 +53,8 @@ const SlidingTogglePanel = (props) => (
     <div
       className="sliding-toggle-panel-text"
       style={{
-        marginLeft: props.screenWidth / 50,
-        marginRight: props.screenWidth / 50,
+        marginLeft: window.innerWidth / 50,
+        marginRight: window.innerWidth / 50,
       }}
     >
       {props.current}

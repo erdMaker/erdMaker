@@ -144,7 +144,7 @@ class EditProfile extends React.Component {
   };
 
   render() {
-    var mobile = this.props.stager.screenWidth <= 768 ? true : false;
+    var mobile = window.innerWidth <= 768 ? true : false;
     return (
       <div className="container">
         <h2>Edit Profile</h2>

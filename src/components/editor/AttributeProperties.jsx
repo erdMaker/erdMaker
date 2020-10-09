@@ -11,6 +11,7 @@ import {
   repositionComponents,
 } from "../../actions/actions";
 import { getRandomInt } from "../../global/utils";
+import { nameSize } from "../../global/constants";
 
 class AttributeProperties extends React.Component {
   findAttributeIndex = (attribute) => attribute.id === this.props.selector.current.id;
@@ -119,7 +120,7 @@ class AttributeProperties extends React.Component {
             type="text"
             name="name"
             id="name"
-            maxLength={this.props.stager.nameSize}
+            maxLength={nameSize}
             value={this.props.components.attributes[attributeIndex].name}
             onChange={this.nameValueChange}
           />

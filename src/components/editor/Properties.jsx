@@ -6,13 +6,12 @@ import LabelProps from "./LabelProperties";
 import { connect } from "react-redux";
 import { deselect } from "../../actions/actions";
 import { PercentToPixels } from "../../global/utils";
+import { toolbarHeight } from "../../global/constants";
 
 const Properties = (props) => {
-  var screenWidth = props.stager.screenWidth;
-  var screenHeight = props.stager.screenHeight;
   var stage = props.getStage(); // Reference to the stage
   var stageScrollX = stage ? stage.scrollLeft : 0; // How far we have scrolled horizontally
-  var mobile = screenWidth <= 768 ? true : false;
+  var mobile = window.innerWidth <= 768 ? true : false;
   var scrollbarOffset = mobile ? 0 : 17; // Account for the bottom horizontal scrollbar on desktop
   var xPosition; // Position of currently selected component on the screen that helps determine
   //on which side of the screen the sidepanel will be drawn
@@ -57,12 +56,12 @@ const Properties = (props) => {
         loadedProperties = <LabelProps />;
         break;
       default:
-        xPosition = screenWidth / 2;
+        xPosition = window.innerWidth / 2;
         loadedProperties = <h3>How the heck did you get here?</h3>;
         break;
     }
 
-    if (xPosition > stageScrollX + screenWidth - PercentToPixels(screenWidth, sidepanelWidth)) {
+    if (xPosition > stageScrollX + window.innerWidth - PercentToPixels(window.innerWidth, sidepanelWidth)) {
       rightSide = false;
       sidepanelActive = " sidepanel-active-left";
     }
@@ -76,7 +75,7 @@ const Properties = (props) => {
       className={sidepanelClasses}
       style={{
         width: sidepanelWidth + "vw",
-        height: screenHeight - props.stager.toolbarHeight - sidepanelHeightCutoff - scrollbarOffset + "px",
+        height: window.innerHeight - toolbarHeight - sidepanelHeightCutoff - scrollbarOffset + "px",
       }}
     >
       <button className={closeClasses} style={rightSide ? { left: 0 } : { right: 0 }} onClick={() => props.deselect()}>

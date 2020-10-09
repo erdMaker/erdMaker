@@ -13,6 +13,7 @@ import {
 } from "../../actions/actions";
 import Connection from "./Connection";
 import { getRandomInt } from "../../global/utils";
+import { nameSize } from "../../global/constants";
 
 class RelationshipProperties extends React.Component {
   findRelationshipIndex = (relationship) => relationship.id === this.props.selector.current.id;
@@ -60,7 +61,7 @@ class RelationshipProperties extends React.Component {
             type="text"
             name="name"
             id="name"
-            maxLength={this.props.stager.nameSize}
+            maxLength={nameSize}
             value={this.props.components.relationships[relationshipIndex].name}
             onChange={this.nameValueChange}
           />

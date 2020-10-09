@@ -1,9 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Footer = (props) => {
+const Footer = () => {
+  const footerLinks =  [
+    { label: "Terms", link: "/terms", type: "int" },
+    { label: "Privacy", link: "/privacy", type: "int" },
+    { label: "Cookies", link: "/cookies", type: "int" },
+  ];
+  
   // External links are rendered as <a> and internal as <Link>
-  let linksMarkup = props.links.map((link, index) => {
+  let linksMarkup = footerLinks.map((link, index) => {
     let linkMarkup =
       link.type === "int" ? (
         <Link className="nav__link" to={link.link}>

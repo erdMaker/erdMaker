@@ -1,7 +1,4 @@
 // Exporting this variables for other reducers
-export const toolbarHeight = 60;
-export var screenWidth = window.innerWidth;
-export var screenHeight = window.innerHeight;
 export const stageWidth = 2176;
 export const stageHeight = 1224;
 export const entityWidth = 110;
@@ -12,7 +9,6 @@ export const relationshipHeight = 30;
 export const attributeRadiusX = 50;
 export const attributeRadiusY = 25;
 export const multivaluedAttributeOffset = 4;
-export const nameSize = 12;
 export const labelTextSize = 200;
 export const labelMinWidth = 150;
 export const labelMinHeight = 40;
@@ -35,9 +31,6 @@ const selectionInitialState = {
 };
 
 const stageInitialState = {
-  toolbarHeight: toolbarHeight,
-  screenWidth: screenWidth,
-  screenHeight: screenHeight,
   stageHeight: stageHeight,
   stageWidth: stageWidth,
   fontSize: 13,
@@ -48,7 +41,6 @@ const stageInitialState = {
   relationshipHeight: relationshipHeight,
   attributeRadiusX: attributeRadiusX,
   attributeRadiusY: attributeRadiusY,
-  nameSize: nameSize,
   labelTextSize: labelTextSize,
   labelMinWidth: labelMinWidth,
   labelMinHeight: labelMinHeight,
@@ -89,14 +81,6 @@ export const selectionReducer = (state = selectionInitialState, action) => {
 
 export const stageReducer = (state = stageInitialState, action) => {
   switch (action.type) {
-    case "UPDATE_SCREEN_SIZE":
-      screenHeight = window.innerHeight;
-      screenWidth = window.innerWidth;
-      return {
-        ...state,
-        screenHeight: screenHeight,
-        screenWidth: screenWidth,
-      };
     case "UPDATE_SIDEPANEL_WIDTH":
       if (window.innerWidth <= 527) sidepanelWidth = { general: 100, relationship: 100 };
       else if (window.innerWidth <= 1060) sidepanelWidth = { general: 40, relationship: 50 };
