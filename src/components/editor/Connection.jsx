@@ -27,7 +27,9 @@ class Connection extends React.Component {
       prop: e.target.id,
       value: e.target.value,
     });
+    // If user changes cardinality then restrict relevant exact inputs
     if (e.target.id === "min") {
+      // E.g. if user selects minimum = zero then exact min value must be 0
       if (e.target.value === "zero") {
         this.props.modifyConnection({
           id: this.props.connection.id,
