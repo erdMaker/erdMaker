@@ -20,13 +20,61 @@ class Connection extends React.Component {
       connectId: Number(e.target.value),
     });
 
-  handleModifyConnection = (e) =>
+  handleModifyConnection = (e) => {
     this.props.modifyConnection({
       id: this.props.connection.id,
       parentId: this.props.relationshipId,
       prop: e.target.id,
       value: e.target.value,
     });
+    if (e.target.id === "min") {
+      if (e.target.value === "zero") {
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "exactMin",
+          value: "0",
+        });
+      } else if (e.target.value === "one") {
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "exactMin",
+          value: "1",
+        });
+      } else {
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "exactMin",
+          value: "",
+        });
+      }
+    } else if (e.target.id === "max") {
+      if (e.target.value === "one") {
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "exactMax",
+          value: "1",
+        });
+      } else if (e.target.value === "many") {
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "exactMax",
+          value: "",
+        });
+      } else {
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "exactMax",
+          value: "",
+        });
+      }
+    }
+  };
 
   handleExpand = () => this.setState({ expand: !this.state.expand });
 
@@ -45,6 +93,7 @@ class Connection extends React.Component {
               maxLength="7"
               value={this.props.connection.exactMin}
               onChange={this.handleModifyConnection}
+              disabled={this.props.connection.min === "zero" || this.props.connection.min === "one" ? true : false}
             />
           </label>
         </div>
@@ -58,6 +107,7 @@ class Connection extends React.Component {
               maxLength="7"
               value={this.props.connection.exactMax}
               onChange={this.handleModifyConnection}
+              disabled={this.props.connection.max === "one" ? true : false}
             />
           </label>
         </div>
