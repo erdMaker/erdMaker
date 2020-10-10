@@ -13,7 +13,7 @@ import {
 } from "../../actions/actions";
 import Connection from "./Connection";
 import { getRandomInt } from "../../global/utils";
-import { nameSize } from "../../global/constants";
+import { nameSize, attributeSpawnRadius } from "../../global/constants";
 
 class RelationshipProperties extends React.Component {
   findRelationshipIndex = (relationship) => relationship.id === this.props.selector.current.id;
@@ -32,7 +32,7 @@ class RelationshipProperties extends React.Component {
 
   handleAddAttribute = (relationshipIndex) => {
     // Randomly position the attribute around the relationship
-    const radius = this.props.stager.attributeSpawnRadius;
+    const radius = attributeSpawnRadius;
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);
     var yOffset = radius * Math.sin(randomAngle);
@@ -76,11 +76,11 @@ class RelationshipProperties extends React.Component {
                   <input
                     type="checkbox"
                     name="type"
-                    value="identifying"
-                    checked={this.props.components.relationships[relationshipIndex].type.identifying}
+                    value="weak"
+                    checked={this.props.components.relationships[relationshipIndex].type.weak}
                     onChange={this.typeValueChange}
                   />
-                  Identifying
+                  Weak
                 </label>
               </td>
             </tr>

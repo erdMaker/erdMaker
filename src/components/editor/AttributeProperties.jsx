@@ -11,7 +11,7 @@ import {
   repositionComponents,
 } from "../../actions/actions";
 import { getRandomInt } from "../../global/utils";
-import { nameSize, stageWidth, stageHeight } from "../../global/constants";
+import { nameSize, stageWidth, stageHeight, attributeSpawnRadius } from "../../global/constants";
 
 class AttributeProperties extends React.Component {
   findAttributeIndex = (attribute) => attribute.id === this.props.selector.current.id;
@@ -33,7 +33,7 @@ class AttributeProperties extends React.Component {
   };
 
   handleAddAttributeToParent = (parent) => {
-    const radius = this.props.stager.attributeSpawnRadius;
+    const radius = attributeSpawnRadius;
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);
     var yOffset = radius * Math.sin(randomAngle);
@@ -71,7 +71,7 @@ class AttributeProperties extends React.Component {
 
   handleAddAttribute = (attributeIndex) => {
     // Randomly position the attribute around the attribute
-    const radius = this.props.stager.attributeSpawnRadius;
+    const radius = attributeSpawnRadius;
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);
     var yOffset = radius * Math.sin(randomAngle);

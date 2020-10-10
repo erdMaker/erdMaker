@@ -1,8 +1,6 @@
 import {
   stageWidth,
   stageHeight,
-} from "../global/constants";
-import {
   entityWidth,
   entityHeight,
   relationshipWidth,
@@ -13,7 +11,8 @@ import {
   labelMinHeight,
   labelMaxWidth,
   labelMaxHeight,
-} from "./common";
+} from "../global/constants";
+
 import { getChildren } from "../global/utils";
 
 const initialState = {
@@ -22,7 +21,7 @@ const initialState = {
   attributes: [],
   labels: [],
   count: 0, // Total number of components created in a single diagram (includes deleted).
-            // Never decreases and new ids depend on it
+  // Never decreases and new ids depend on it
 };
 
 const componentsReducer = (state = initialState, action) => {
@@ -85,7 +84,7 @@ const componentsReducer = (state = initialState, action) => {
             x: stage.scrollLeft + window.innerWidth / 2,
             y: stage.scrollTop + window.innerHeight / 2,
             type: {
-              identifying: false,
+              weak: false,
             },
             connections: [],
           },

@@ -7,7 +7,14 @@ import {
   select,
 } from "../../actions/actions";
 import { Group, Line, Text } from "react-konva";
-import { stageWidth, stageHeight } from "../../global/constants";
+import {
+  stageWidth,
+  stageHeight,
+  relationshipWidth,
+  relationshipHeight,
+  weakRelationshipOffset,
+  fontSize,
+} from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 class Relationship extends React.Component {
@@ -18,19 +25,12 @@ class Relationship extends React.Component {
     var newX;
     var newY;
 
-    if (pos.x > stageWidth / 2)
-      newX =
-        pos.x > stageWidth - this.props.stager.relationshipWidth
-          ? stageWidth - this.props.stager.relationshipWidth
-          : pos.x;
-    else newX = pos.x < this.props.stager.relationshipWidth ? this.props.stager.relationshipWidth : pos.x;
+    if (pos.x > stageWidth / 2) newX = pos.x > stageWidth - relationshipWidth ? stageWidth - relationshipWidth : pos.x;
+    else newX = pos.x < relationshipWidth ? relationshipWidth : pos.x;
 
     if (pos.y > stageHeight / 2)
-      newY =
-        pos.y > stageHeight - this.props.stager.relationshipHeight
-          ? stageHeight - this.props.stager.relationshipHeight
-          : pos.y;
-    else newY = pos.y < this.props.stager.relationshipHeight ? this.props.stager.relationshipHeight : pos.y;
+      newY = pos.y > stageHeight - relationshipHeight ? stageHeight - relationshipHeight : pos.y;
+    else newY = pos.y < relationshipHeight ? relationshipHeight : pos.y;
 
     return {
       x: newX,
@@ -39,7 +39,7 @@ class Relationship extends React.Component {
   };
 
   render() {
-    var identifyingRelationshipRhombus = this.props.type.identifying ? (
+    var weakRelationshipRhombus = this.props.type.weak ? (
       <Line
         fill="white"
         stroke={
@@ -51,12 +51,12 @@ class Relationship extends React.Component {
         closed="true"
         points={[
           0,
-          -this.props.stager.relationshipHeight + this.props.stager.identifyingRelationshipOffset, // TOP
-          this.props.stager.relationshipWidth - 2 * this.props.stager.identifyingRelationshipOffset,
+          -relationshipHeight + weakRelationshipOffset, // TOP
+          relationshipWidth - 2 * weakRelationshipOffset,
           0, // RIGHT
           0,
-          this.props.stager.relationshipHeight - this.props.stager.identifyingRelationshipOffset, // BOTTOM
-          -this.props.stager.relationshipWidth + 2 * this.props.stager.identifyingRelationshipOffset,
+          relationshipHeight - weakRelationshipOffset, // BOTTOM
+          -relationshipWidth + 2 * weakRelationshipOffset,
           0, // LEFT
         ]}
       />
@@ -110,26 +110,26 @@ class Relationship extends React.Component {
           closed="true"
           points={[
             0,
-            -this.props.stager.relationshipHeight, // TOP
-            this.props.stager.relationshipWidth,
+            -relationshipHeight, // TOP
+            relationshipWidth,
             0, // RIGHT
             0,
-            this.props.stager.relationshipHeight, // BOTTOM
-            -this.props.stager.relationshipWidth,
+            relationshipHeight, // BOTTOM
+            -relationshipWidth,
             0, // LEFT
           ]}
         />
-        {identifyingRelationshipRhombus}
+        {weakRelationshipRhombus}
         <Text
           text={this.props.name}
-          fontSize={this.props.stager.fontSize}
+          fontSize={fontSize}
           x={
             -pixelWidth(this.props.name, {
               font: "Arial",
-              size: this.props.stager.fontSize,
+              size: fontSize,
             }) / 2
           }
-          y={-this.props.stager.fontSize / 2}
+          y={-fontSize / 2}
         />
       </Group>
     );

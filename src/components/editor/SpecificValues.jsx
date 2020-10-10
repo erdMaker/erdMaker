@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Group, Text, Label, Tag } from "react-konva";
+import { fontSize } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 const SpecificValues = (props) => {
@@ -11,13 +12,13 @@ const SpecificValues = (props) => {
         x={
           -pixelWidth(props.text, {
             font: "Arial",
-            size: props.stager.fontSize,
+            size: fontSize,
           }) / 2
         }
-        y={-props.stager.fontSize / 2}
+        y={-fontSize / 2}
       >
         <Tag fill="white" />
-        <Text text={props.text} fontSize={props.stager.fontSize} />
+        <Text text={props.text} fontSize={fontSize} />
       </Label>
     </Group>
   );

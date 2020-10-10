@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { updatePositionAttribute, updatePositionChildren, repositionComponents, select } from "../../actions/actions";
 import { Group, Ellipse, Text } from "react-konva";
-import { stageWidth, stageHeight } from "../../global/constants";
+import { stageWidth, stageHeight, attributeRadiusX, attributeRadiusY, multivaluedAttributeOffset, fontSize } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 class Attribute extends React.Component {
@@ -13,19 +13,11 @@ class Attribute extends React.Component {
     var newX;
     var newY;
 
-    if (pos.x > stageWidth / 2)
-      newX =
-        pos.x > stageWidth - this.props.stager.attributeRadiusX
-          ? stageWidth - this.props.stager.attributeRadiusX
-          : pos.x;
-    else newX = pos.x < this.props.stager.attributeRadiusX ? this.props.stager.attributeRadiusX : pos.x;
+    if (pos.x > stageWidth / 2) newX = pos.x > stageWidth - attributeRadiusX ? stageWidth - attributeRadiusX : pos.x;
+    else newX = pos.x < attributeRadiusX ? attributeRadiusX : pos.x;
 
-    if (pos.y > stageHeight / 2)
-      newY =
-        pos.y > stageHeight - this.props.stager.attributeRadiusY
-          ? stageHeight - this.props.stager.attributeRadiusY
-          : pos.y;
-    else newY = pos.y < this.props.stager.attributeRadiusY ? this.props.stager.attributeRadiusY : pos.y;
+    if (pos.y > stageHeight / 2) newY = pos.y > stageHeight - attributeRadiusY ? stageHeight - attributeRadiusY : pos.y;
+    else newY = pos.y < attributeRadiusY ? attributeRadiusY : pos.y;
 
     return {
       x: newX,
@@ -37,33 +29,33 @@ class Attribute extends React.Component {
     var nameText = this.props.name;
     var namePixelWidth = pixelWidth(nameText, {
       font: "Arial",
-      size: this.props.stager.fontSize,
+      size: fontSize,
     });
     if (this.props.type.composite) nameText = "( " + nameText + " )";
 
     var nameYOffset;
-    if (namePixelWidth < this.props.stager.attributeRadiusX * 2) nameYOffset = -this.props.stager.fontSize / 2;
-    else if (namePixelWidth < this.props.stager.attributeRadiusX * 4) nameYOffset = -this.props.stager.fontSize;
-    else nameYOffset = -this.props.stager.fontSize * 3 / 2;
+    if (namePixelWidth < attributeRadiusX * 2) nameYOffset = -fontSize / 2;
+    else if (namePixelWidth < attributeRadiusX * 4) nameYOffset = -fontSize;
+    else nameYOffset = (-fontSize * 3) / 2;
 
     var optionalText = this.props.type.optional ? (
       <Text
         text="( O )"
-        fontSize={this.props.stager.fontSize}
+        fontSize={fontSize}
         x={
           -pixelWidth("( O )", {
             font: "Arial",
-            size: this.props.stager.fontSize,
+            size: fontSize,
           }) / 2
         }
-        y={this.props.stager.fontSize / 2}
+        y={fontSize / 2}
       />
     ) : null;
 
     var multivaluedEllipse = this.props.type.multivalued ? (
       <Ellipse
-        radiusX={this.props.stager.attributeRadiusX - this.props.stager.multivaluedAttributeOffset}
-        radiusY={this.props.stager.attributeRadiusY - this.props.stager.multivaluedAttributeOffset}
+        radiusX={attributeRadiusX - multivaluedAttributeOffset}
+        radiusY={attributeRadiusY - multivaluedAttributeOffset}
         fill="white"
         dash={this.props.type.derived ? [10, 3] : false}
         stroke={
@@ -119,8 +111,8 @@ class Attribute extends React.Component {
         dragBoundFunc={(pos) => this.stageBound(pos)}
       >
         <Ellipse
-          radiusX={this.props.stager.attributeRadiusX}
-          radiusY={this.props.stager.attributeRadiusY}
+          radiusX={attributeRadiusX}
+          radiusY={attributeRadiusY}
           fill="white"
           dash={this.props.type.derived ? [10, 3] : false}
           stroke={
@@ -133,17 +125,13 @@ class Attribute extends React.Component {
         {multivaluedEllipse}
         <Text
           text={nameText}
-          fontSize={this.props.stager.fontSize}
+          fontSize={fontSize}
           textDecoration={this.props.type.unique ? "underline" : ""}
-          width={this.props.stager.attributeRadiusX * 2}
-          //offsetX={namePixelWidth < this.props.stager.attributeRadiusX * 2 ?
-          //  (namePixelWidth / 2) : 
-          //  this.props.stager.attributeRadiusX}
-          x={
-            namePixelWidth < this.props.stager.attributeRadiusX * 2 ?
-            (-namePixelWidth / 2) : 
-            -this.props.stager.attributeRadiusX
-          }
+          width={attributeRadiusX * 2}
+          //offsetX={namePixelWidth < attributeRadiusX * 2 ?
+          //  (namePixelWidth / 2) :
+          //  attributeRadiusX}
+          x={namePixelWidth < attributeRadiusX * 2 ? -namePixelWidth / 2 : -attributeRadiusX}
           y={nameYOffset}
         />
         {optionalText}

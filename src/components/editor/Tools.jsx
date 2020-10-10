@@ -17,13 +17,12 @@ import { savediagram } from "../../global/diagramRequests";
 import ImportExportMenuListComposition from "./ImportExportMenu";
 import saveImg from "../../img/saveIcon.png";
 import axios from "axios";
-import { diagramLimit } from "../../global/constants.js";
+import { diagramLimit, savePeriod } from "../../global/constants.js";
 
 class Tools extends React.Component {
   state = {
     saveEnabled:
-      this.props.user.confirmed &&
-      (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId),
+      this.props.user.confirmed && (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId),
     saveStatus: { text: "Your progress is being saved.", color: "#00b53c" },
     lastSave: " ",
     clearButtonText: "Clear Diagram",
@@ -34,7 +33,7 @@ class Tools extends React.Component {
 
   componentDidMount() {
     window.addEventListener("beforeunload", this.timerCleanup);
-    if (this.state.saveEnabled) this.saveTimer = setInterval(() => this.saveDiagram(), this.props.stager.savePeriod);
+    if (this.state.saveEnabled) this.saveTimer = setInterval(() => this.saveDiagram(), savePeriod);
   }
 
   componentWillUnmount() {

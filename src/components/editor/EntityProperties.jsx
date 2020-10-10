@@ -12,7 +12,7 @@ import {
   repositionComponents,
 } from "../../actions/actions";
 import { getRandomInt } from "../../global/utils";
-import { nameSize } from "../../global/constants";
+import { nameSize, attributeSpawnRadius } from "../../global/constants";
 
 class EntityProperties extends React.Component {
   findEntityIndex = (entity) => entity.id === this.props.selector.current.id;
@@ -31,7 +31,7 @@ class EntityProperties extends React.Component {
 
   handleAddAttribute = (entityIndex) => {
     // Randomly position the attribute around the entity
-    const radius = this.props.stager.attributeSpawnRadius;
+    const radius = attributeSpawnRadius;
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);
     var yOffset = radius * Math.sin(randomAngle);

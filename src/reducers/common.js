@@ -1,24 +1,3 @@
-// Exporting this variables for other reducers
-export const entityWidth = 110;
-export const entityHeight = 45;
-export const entityWeakOffset = 10;
-export const relationshipWidth = 60;
-export const relationshipHeight = 30;
-export const attributeRadiusX = 50;
-export const attributeRadiusY = 25;
-export const multivaluedAttributeOffset = 4;
-export const labelTextSize = 200;
-export const labelMinWidth = 150;
-export const labelMinHeight = 40;
-export const labelMaxWidth = 400;
-export const labelMaxHeight = 400;
-export const attributeSpawnRadius = 150;
-export const identifyingRelationshipOffset = 5;
-export var sidepanelWidth;
-export const anchorLength = 30;
-export const savePeriod = 5000;
-export const resizeRectOffset = 1000;
-
 const selectionInitialState = {
   current: {
     type: null,
@@ -29,26 +8,7 @@ const selectionInitialState = {
 };
 
 const stageInitialState = {
-  fontSize: 13,
-  entityWidth: entityWidth,
-  entityHeight: entityHeight,
-  entityWeakOffset: entityWeakOffset,
-  relationshipWidth: relationshipWidth,
-  relationshipHeight: relationshipHeight,
-  attributeRadiusX: attributeRadiusX,
-  attributeRadiusY: attributeRadiusY,
-  labelTextSize: labelTextSize,
-  labelMinWidth: labelMinWidth,
-  labelMinHeight: labelMinHeight,
-  labelMaxWidth: labelMaxWidth,
-  labelMaxHeight: labelMaxHeight,
-  attributeSpawnRadius: attributeSpawnRadius,
-  multivaluedAttributeOffset: multivaluedAttributeOffset,
-  identifyingRelationshipOffset: identifyingRelationshipOffset,
-  sidepanelWidth: sidepanelWidth,
-  anchorLength: anchorLength,
-  savePeriod: savePeriod,
-  resizeRectOffset: resizeRectOffset,
+  sidepanelWidth: 0,
 };
 
 const generalInitialState = {
@@ -78,6 +38,7 @@ export const selectionReducer = (state = selectionInitialState, action) => {
 export const stageReducer = (state = stageInitialState, action) => {
   switch (action.type) {
     case "UPDATE_SIDEPANEL_WIDTH":
+      var sidepanelWidth;
       if (window.innerWidth <= 527) sidepanelWidth = { general: 100, relationship: 100 };
       else if (window.innerWidth <= 1060) sidepanelWidth = { general: 40, relationship: 50 };
       else sidepanelWidth = { general: 25, relationship: 30 };

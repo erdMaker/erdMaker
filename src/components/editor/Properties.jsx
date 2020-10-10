@@ -6,7 +6,7 @@ import LabelProps from "./LabelProperties";
 import { connect } from "react-redux";
 import { deselect } from "../../actions/actions";
 import { PercentToPixels } from "../../global/utils";
-import { toolbarHeight } from "../../global/constants";
+import { toolbarHeight, entityWidth, relationshipWidth, attributeRadiusX } from "../../global/constants";
 
 const Properties = (props) => {
   var stage = props.getStage(); // Reference to the stage
@@ -21,9 +21,7 @@ const Properties = (props) => {
   var closeActive = "";
   var sidepanelHeightCutoff = 0; // In the case of Label it shortens the sidepanel's height to enable dragndrop of the label
   var sidepanelWidth = // Wider sidepanel for relationships
-    props.selector.current.type === "relationship"
-      ? props.stager.sidepanelWidth.relationship
-      : props.stager.sidepanelWidth.general;
+    props.selector.current.type === "relationship" ? props.stager.sidepanelWidth.relationship : props.stager.sidepanelWidth.general;
 
   if (props.selector.selectionExists) {
     sidepanelActive = " sidepanel-active-right";
@@ -32,21 +30,21 @@ const Properties = (props) => {
     switch (props.selector.current.type) {
       case "entity":
         let entityIndex = props.components.entities.findIndex((entity) => entity.id === props.selector.current.id);
-        xPosition = props.components.entities[entityIndex].x + props.stager.entityWidth / 2;
+        xPosition = props.components.entities[entityIndex].x + entityWidth / 2;
         loadedProperties = <EntProps />;
         break;
       case "relationship":
         let relationshipIndex = props.components.relationships.findIndex(
           (relationship) => relationship.id === props.selector.current.id
         );
-        xPosition = props.components.relationships[relationshipIndex].x + props.stager.relationshipWidth;
+        xPosition = props.components.relationships[relationshipIndex].x + relationshipWidth;
         loadedProperties = <RelProps />;
         break;
       case "attribute":
         let attributeIndex = props.components.attributes.findIndex(
           (attribute) => attribute.id === props.selector.current.id
         );
-        xPosition = props.components.attributes[attributeIndex].x + props.stager.attributeRadiusX;
+        xPosition = props.components.attributes[attributeIndex].x + attributeRadiusX;
         loadedProperties = <AttProps />;
         break;
       case "label":

@@ -10,50 +10,50 @@ import Properties from "./Properties";
 import { Provider, ReactReduxContext, connect } from "react-redux";
 import { deselect } from "../../actions/actions";
 import { distance, minJsonArray } from "../../global/utils";
-import { stageWidth, stageHeight } from "../../global/constants";
+import { stageWidth, stageHeight, entityWidth, entityHeight, anchorLength } from "../../global/constants";
 
 class Surface extends React.Component {
   state = {
     // Define the anchor points for entities
     entityAnchors: [
       {
-        x: -(this.props.stager.entityWidth / 2) - this.props.stager.anchorLength,
+        x: -(entityWidth / 2) - anchorLength,
         y: 0,
         angle: -90,
       },
       {
-        x: -(this.props.stager.entityWidth / 4),
-        y: -(this.props.stager.entityHeight / 2) - this.props.stager.anchorLength,
+        x: -(entityWidth / 4),
+        y: -(entityHeight / 2) - anchorLength,
         angle: 0,
       },
       {
         x: 0,
-        y: -(this.props.stager.entityHeight / 2) - this.props.stager.anchorLength,
+        y: -(entityHeight / 2) - anchorLength,
         angle: 0,
       },
       {
-        x: this.props.stager.entityWidth / 4,
-        y: -(this.props.stager.entityHeight / 2) - this.props.stager.anchorLength,
+        x: entityWidth / 4,
+        y: -(entityHeight / 2) - anchorLength,
         angle: 0,
       },
       {
-        x: this.props.stager.entityWidth / 2 + this.props.stager.anchorLength,
+        x: entityWidth / 2 + anchorLength,
         y: 0,
         angle: 90,
       },
       {
-        x: this.props.stager.entityWidth / 4,
-        y: this.props.stager.entityHeight / 2 + this.props.stager.anchorLength,
+        x: entityWidth / 4,
+        y: entityHeight / 2 + anchorLength,
         angle: 180,
       },
       {
         x: 0,
-        y: this.props.stager.entityHeight / 2 + this.props.stager.anchorLength,
+        y: entityHeight / 2 + anchorLength,
         angle: 180,
       },
       {
-        x: -(this.props.stager.entityWidth / 4),
-        y: this.props.stager.entityHeight / 2 + this.props.stager.anchorLength,
+        x: -(entityWidth / 4),
+        y: entityHeight / 2 + anchorLength,
         angle: 180,
       },
     ],
@@ -120,7 +120,7 @@ class Surface extends React.Component {
     var anchor; // Object that holds the location of the anchor to connect too and the angle at which it ll be displayed
     var specificValuesPoints; // Object that holds the location for specificValues text
     var specificValuesText; // Object that holds the value for the text of specificValues
-    
+
     var keyIndex = 0; // Only used to distinguish items in a list
 
     // This loop creates the lines that connect attributes to their parents
@@ -150,7 +150,12 @@ class Surface extends React.Component {
           stroke="black"
           strokeWidth={2}
           closed="false"
-          points={[this.props.components.attributes[i].x, this.props.components.attributes[i].y, parentCoords.x, parentCoords.y]}
+          points={[
+            this.props.components.attributes[i].x,
+            this.props.components.attributes[i].y,
+            parentCoords.x,
+            parentCoords.y,
+          ]}
         />
       );
       keyIndex = keyIndex + 1;
@@ -264,7 +269,7 @@ class Surface extends React.Component {
     var anchorId;
     for (let i in this.state.entityAnchors) {
       anchorId = this.props.components.entities[entityIndex].id.toString() + i.toString();
-      
+
       // If current anchor is occupied then ignore it, else include its distance for calculation
       if (!lockedAnchorPoints.includes(anchorId)) {
         distances.push({
@@ -305,11 +310,7 @@ class Surface extends React.Component {
         {({ store }) => (
           <div>
             <div ref={(ref) => (this.stage = ref)} className="stage">
-              <Stage
-                width={stageWidth}
-                height={stageHeight}
-                onClick={(e) => this.stageClicked(e)}
-              >
+              <Stage width={stageWidth} height={stageHeight} onClick={(e) => this.stageClicked(e)}>
                 <Provider store={store}>
                   <Layer>
                     <Rect

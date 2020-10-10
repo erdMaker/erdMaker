@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { setTextLabel, deleteLabel, deselect } from "../../actions/actions";
+import { labelTextSize } from "../../global/constants";
 
 const LabelProperties = (props) => {
   let labelIndex = props.components.labels.findIndex((label) => label.id === props.selector.current.id);
@@ -12,7 +13,7 @@ const LabelProperties = (props) => {
         name="text"
         id="text"
         value={props.components.labels[labelIndex].text}
-        maxLength={props.stager.labelTextSize}
+        maxLength={labelTextSize}
         onChange={(e) =>
           props.setTextLabel({
             id: props.selector.current.id,

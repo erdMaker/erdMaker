@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { updatePositionLabel, resizeLabel, select } from "../../actions/actions";
 import { Group, Rect, Line, Text } from "react-konva";
-import { stageWidth, stageHeight } from "../../global/constants";
+import { stageWidth, stageHeight, resizeRectSize, fontSize } from "../../global/constants";
 
 class Label extends React.Component {
   state = {
@@ -30,17 +30,11 @@ class Label extends React.Component {
     var newY;
 
     if (pos.x > stageWidth / 2)
-      newX =
-        pos.x > stageWidth - this.props.width / 2
-          ? stageWidth - this.props.width / 2
-          : pos.x;
+      newX = pos.x > stageWidth - this.props.width / 2 ? stageWidth - this.props.width / 2 : pos.x;
     else newX = pos.x < this.props.width / 2 ? this.props.width / 2 : pos.x;
 
     if (pos.y > stageHeight / 2)
-      newY =
-        pos.y > stageHeight - this.props.height / 2
-          ? stageHeight - this.props.height / 2
-          : pos.y;
+      newY = pos.y > stageHeight - this.props.height / 2 ? stageHeight - this.props.height / 2 : pos.y;
     else newY = pos.y < this.props.height / 2 ? this.props.height / 2 : pos.y;
 
     return {
@@ -55,10 +49,10 @@ class Label extends React.Component {
     // Uncomment fill and opacity below to see its effect
     var resizeRect = (
       <Rect
-        x={-this.props.stager.resizeRectOffset / 2 + this.props.x + this.props.width / 2}
-        y={-this.props.stager.resizeRectOffset / 2 + this.props.y + this.props.height / 2}
-        width={this.props.stager.resizeRectOffset}
-        height={this.props.stager.resizeRectOffset}
+        x={-resizeRectSize / 2 + this.props.x + this.props.width / 2}
+        y={-resizeRectSize / 2 + this.props.y + this.props.height / 2}
+        width={resizeRectSize}
+        height={resizeRectSize}
         visible={this.state.resizeRect}
         //fill="yellow"
         //opacity={0.5}
@@ -140,7 +134,7 @@ class Label extends React.Component {
           />
           <Text
             text={this.props.text}
-            fontSize={this.props.stager.fontSize + 3}
+            fontSize={fontSize + 3}
             fontStyle="bold"
             width={this.props.width}
             height={this.props.height}
