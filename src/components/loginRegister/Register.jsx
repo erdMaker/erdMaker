@@ -23,9 +23,7 @@ class Register extends React.Component {
       color: "#dfdfdf",
     },
   };
-  
   recaptchaRef = React.createRef();
-
   cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {

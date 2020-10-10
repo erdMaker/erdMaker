@@ -2,6 +2,8 @@ import React from "react";
 
 const About = () => {
   document.title = "ERD Maker - About";
+  const text =
+    "ERD Maker was developed as a thesis project in the Department of Electrical and Computer Engineering, University of Patras.";
   return (
     <div className="about">
       <div className="container">
@@ -37,8 +39,5 @@ const About = () => {
     </div>
   );
 };
-
-const text =
-  "ERD Maker was developed as a thesis project in the Department of Electrical and Computer Engineering, University of Patras.";
 
 export default About;

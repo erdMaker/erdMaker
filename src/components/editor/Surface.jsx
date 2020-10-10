@@ -340,7 +340,6 @@ class Surface extends React.Component {
 
 const mapStateToProps = (state) => ({
   components: state.components,
-  stager: state.stager,
 });
 
 const mapDispatchToProps = {

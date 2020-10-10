@@ -1,7 +1,6 @@
 import React from "react";
 import Profile from "./Profile";
 import EditProfile from "./EditProfile";
-import { connect } from "react-redux";
 
 class ProfileIndex extends React.Component {
   state = {
@@ -59,6 +58,4 @@ const SlidingTogglePanel = (props) => (
   </div>
 );
 
-const mapStateToProps = (state) => ({ stager: state.stager });
-
-export default connect(mapStateToProps, null)(ProfileIndex);
+export default ProfileIndex;

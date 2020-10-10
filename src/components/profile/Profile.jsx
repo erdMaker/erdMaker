@@ -7,7 +7,6 @@ import axios from "axios";
 
 class Profile extends React.Component {
   state = { loadingProfile: true };
-
   cancelToken = axios.CancelToken.source();
 
   componentDidMount() {

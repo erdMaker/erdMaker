@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import { Group, Text, Label, Tag } from "react-konva";
 import { fontSize } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
@@ -24,8 +23,4 @@ const SpecificValues = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  stager: state.stager,
-});
-
-export default connect(mapStateToProps, null)(SpecificValues);
+export default SpecificValues;

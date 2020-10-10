@@ -28,7 +28,6 @@ class Tools extends React.Component {
     clearButtonText: "Clear Diagram",
     toolsListActive: false,
   };
-
   cancelToken = axios.CancelToken.source();
 
   componentDidMount() {
@@ -251,7 +250,6 @@ const mapStateToProps = (state) => ({
   meta: state.meta,
   components: state.components,
   general: state.general,
-  stager: state.stager,
 });
 
 const mapDispatchToProps = {

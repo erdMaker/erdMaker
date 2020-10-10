@@ -16,7 +16,6 @@ class ResetPassword extends React.Component {
       color: "#dfdfdf",
     },
   };
-
   cancelToken = axios.CancelToken.source();
 
   componentDidMount() {

@@ -23,7 +23,6 @@ export const RESET_ACTIVE_DIAGRAM = "RESET_ACTIVE_DIAGRAM";
 export const SET_SERVER_TIME = "SET_SERVER_TIME";
 export const SET_META = "SET_META";
 export const RESET_META = "RESET_META";
-export const UPDATE_SCREEN_SIZE = "UPDATE_SCREEN_SIZE";
 export const SET_TYPE_ENTITY = "SET_TYPE_ENTITY";
 export const SET_TYPE_RELATIONSHIP = "SET_TYPE_RELATIONSHIP";
 export const SET_TYPE_ATTRIBUTE = "SET_TYPE_ATTRIBUTE";
@@ -157,10 +156,6 @@ export const setServerTime = (payload) => ({
 export const setMeta = (payload) => ({
   type: "SET_META",
   payload: payload,
-});
-
-export const updateScreenSize = () => ({
-  type: "UPDATE_SCREEN_SIZE",
 });
 
 export const setTypeEntity = (payload) => ({

@@ -20,7 +20,6 @@ class EditProfile extends React.Component {
       color: "#dfdfdf",
     },
   };
-
   cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {
@@ -286,7 +285,6 @@ class EditProfile extends React.Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  stager: state.stager,
 });
 
 export default connect(mapStateToProps, null)(EditProfile);

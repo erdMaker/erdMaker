@@ -142,7 +142,6 @@ class Attribute extends React.Component {
 
 const mapStateToProps = (state) => ({
   selector: state.selector,
-  stager: state.stager,
 });
 
 const mapDispatchToProps = {

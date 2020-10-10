@@ -11,7 +11,6 @@ class ConfirmEmailPrompt extends React.Component {
       color: "#dfdfdf",
     },
   };
-  
   cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {

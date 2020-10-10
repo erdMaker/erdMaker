@@ -147,7 +147,6 @@ class EntityProperties extends React.Component {
 const mapStateToProps = (state) => ({
   components: state.components,
   selector: state.selector,
-  stager: state.stager,
 });
 
 const mapDispatchToProps = {

@@ -1,7 +1,6 @@
 import React from "react";
 import Login from "./Login";
 import Register from "./Register";
-import { connect } from "react-redux";
 
 class LoginRegisterIndex extends React.Component {
   state = {
@@ -54,8 +53,4 @@ const SlidingTogglePanel = (props) => (
   </div>
 );
 
-const mapStateToProps = (state) => ({
-  stager: state.stager,
-});
-
-export default connect(mapStateToProps, null)(LoginRegisterIndex);
+export default LoginRegisterIndex;
