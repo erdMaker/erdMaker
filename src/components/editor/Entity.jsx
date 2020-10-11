@@ -26,6 +26,17 @@ class Entity extends React.Component {
   };
 
   render() {
+    const nameText = this.props.name;
+    var namePixelWidth = pixelWidth(nameText, {
+      font: "Arial",
+      size: fontSize,
+    });
+
+    var nameYOffset;
+    if (namePixelWidth < entityWidth) nameYOffset = -fontSize / 2;
+    else if (namePixelWidth < entityWidth * 2) nameYOffset = -fontSize;
+    else nameYOffset = (-fontSize * 3) / 2;
+
     var weakRect =
       this.props.type === "weak" ? (
         <Rect
@@ -120,15 +131,11 @@ class Entity extends React.Component {
         {weakRect}
         {associativeDiamond}
         <Text
-          text={this.props.name}
+          text={nameText}
           fontSize={fontSize}
-          x={
-            -pixelWidth(this.props.name, {
-              font: "Arial",
-              size: fontSize,
-            }) / 2
-          }
-          y={-fontSize / 2}
+          width={entityWidth}
+          x={namePixelWidth < entityWidth ? -namePixelWidth / 2 : -entityWidth / 2}
+          y={nameYOffset}
         />
       </Group>
     );

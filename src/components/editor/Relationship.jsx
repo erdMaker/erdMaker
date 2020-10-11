@@ -39,6 +39,17 @@ class Relationship extends React.Component {
   };
 
   render() {
+    const nameText = this.props.name;
+    var namePixelWidth = pixelWidth(nameText, {
+      font: "Arial",
+      size: fontSize,
+    });
+
+    var nameYOffset;
+    if (namePixelWidth < relationshipWidth * 2) nameYOffset = -fontSize / 2;
+    else if (namePixelWidth < relationshipWidth * 4) nameYOffset = -fontSize;
+    else nameYOffset = (-fontSize * 3) / 2;
+
     var weakRelationshipRhombus = this.props.type.weak ? (
       <Line
         fill="#83d5ea"
@@ -121,15 +132,11 @@ class Relationship extends React.Component {
         />
         {weakRelationshipRhombus}
         <Text
-          text={this.props.name}
+          text={nameText}
           fontSize={fontSize}
-          x={
-            -pixelWidth(this.props.name, {
-              font: "Arial",
-              size: fontSize,
-            }) / 2
-          }
-          y={-fontSize / 2}
+          width={relationshipWidth * 2}
+          x={namePixelWidth < relationshipWidth * 2 ? -namePixelWidth / 2 : -relationshipWidth}
+          y={nameYOffset}
         />
       </Group>
     );
