@@ -27,10 +27,10 @@ class Connection extends React.Component {
       prop: e.target.id,
       value: e.target.value,
     });
-    // If user changes cardinality then restrict relevant exact inputs
+    // If user changes participation and cardinality then adjust relevant attributes
     if (e.target.id === "min") {
-      // E.g. if user selects minimum = zero then exact min value must be 0
       if (e.target.value === "zero") {
+        // If user selects minimum = zero then exact min value becomes 0
         this.props.modifyConnection({
           id: this.props.connection.id,
           parentId: this.props.relationshipId,
@@ -38,6 +38,7 @@ class Connection extends React.Component {
           value: "0",
         });
       } else if (e.target.value === "one") {
+        // If user selects minimum = one then exact min value becomes 1
         this.props.modifyConnection({
           id: this.props.connection.id,
           parentId: this.props.relationshipId,
@@ -45,6 +46,7 @@ class Connection extends React.Component {
           value: "1",
         });
       } else {
+        // If user selects minimum = undefined then exact min value becomes empty
         this.props.modifyConnection({
           id: this.props.connection.id,
           parentId: this.props.relationshipId,
@@ -54,6 +56,7 @@ class Connection extends React.Component {
       }
     } else if (e.target.id === "max") {
       if (e.target.value === "one") {
+        // If user selects maximum = one then exact max value becomes 1
         this.props.modifyConnection({
           id: this.props.connection.id,
           parentId: this.props.relationshipId,
@@ -61,6 +64,7 @@ class Connection extends React.Component {
           value: "1",
         });
       } else if (e.target.value === "many") {
+        // If user selects minimum = many then exact max value becomes empty
         this.props.modifyConnection({
           id: this.props.connection.id,
           parentId: this.props.relationshipId,
@@ -68,10 +72,55 @@ class Connection extends React.Component {
           value: "",
         });
       } else {
+        // If user selects minimum = undefined then exact max value becomes empty
         this.props.modifyConnection({
           id: this.props.connection.id,
           parentId: this.props.relationshipId,
           prop: "exactMax",
+          value: "",
+        });
+      }
+    } else if (e.target.id === "exactMin") {
+      if (e.target.value === "0") {
+        // If user selects exactMinimum = 0 then minimum value becomes zero
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "min",
+          value: "zero",
+        });
+      } else if (e.target.value === "1") {
+        // If user selects exactMinimum = 1 then minimum value becomes one
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "min",
+          value: "one",
+        });
+      } else {
+        // If user selects exactMinimum  other than 0 or 1 then minimum becomes empty
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "min",
+          value: "",
+        });
+      }
+    } else if (e.target.id === "exactMax") {
+      if (e.target.value === "1") {
+        // If user selects exactMaximum = 1 then maximum value becomes one
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "max",
+          value: "one",
+        });
+      } else {
+        // If user selects exactMaximum other than 1 then maximum value becomes empty
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "max",
           value: "",
         });
       }
@@ -95,7 +144,7 @@ class Connection extends React.Component {
               maxLength="7"
               value={this.props.connection.exactMin}
               onChange={this.handleModifyConnection}
-              disabled={this.props.connection.min === "zero" || this.props.connection.min === "one" ? true : false}
+              //disabled={this.props.connection.min === "zero" || this.props.connection.min === "one" ? true : false}
             />
           </label>
         </div>
@@ -109,7 +158,7 @@ class Connection extends React.Component {
               maxLength="7"
               value={this.props.connection.exactMax}
               onChange={this.handleModifyConnection}
-              disabled={this.props.connection.max === "one" ? true : false}
+              //disabled={this.props.connection.max === "one" ? true : false}
             />
           </label>
         </div>
