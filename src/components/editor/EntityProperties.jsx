@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import {
   setNameEntity,
   addAttribute,
+  addExtension,
   deleteChildren,
   deleteEntity,
   deleteConnection,
@@ -12,7 +13,7 @@ import {
   repositionComponents,
 } from "../../actions/actions";
 import { getRandomInt } from "../../global/utils";
-import { nameSize, attributeSpawnRadius } from "../../global/constants";
+import { nameSize, spawnRadius } from "../../global/constants";
 
 class EntityProperties extends React.Component {
   findEntityIndex = (entity) => entity.id === this.props.selector.current.id;
@@ -31,7 +32,7 @@ class EntityProperties extends React.Component {
 
   handleAddAttribute = (entityIndex) => {
     // Randomly position the attribute around the entity
-    const radius = attributeSpawnRadius;
+    const radius = spawnRadius;
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);
     var yOffset = radius * Math.sin(randomAngle);
@@ -43,6 +44,25 @@ class EntityProperties extends React.Component {
     this.props.repositionComponents();
     this.props.select({
       type: "attribute",
+      id: this.props.components.count + 1,
+      parentId: this.props.selector.current.id,
+    });
+  };
+
+  handleAddExtension = (entityIndex) => {
+    // Randomly position the extension around the entity
+    const radius = spawnRadius;
+    var randomAngle = getRandomInt(0, 360);
+    var xOffset = radius * Math.cos(randomAngle);
+    var yOffset = radius * Math.sin(randomAngle);
+    this.props.addExtension({
+      id: this.props.selector.current.id,
+      x: this.props.components.entities[entityIndex].x + xOffset,
+      y: this.props.components.entities[entityIndex].y + yOffset,
+    });
+    this.props.repositionComponents();
+    this.props.select({
+      type: "extension",
       id: this.props.components.count + 1,
       parentId: this.props.selector.current.id,
     });
@@ -123,6 +143,13 @@ class EntityProperties extends React.Component {
             New Attribute
           </button>
           <button
+            className="properties-neutral-button"
+            type="button"
+            onClick={() => this.handleAddExtension(entityIndex)}
+          >
+            New Extension
+          </button>
+          <button
             className="properties-delete-button"
             type="button"
             onClick={() => {
@@ -152,6 +179,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setNameEntity,
   addAttribute,
+  addExtension,
   deleteChildren,
   deleteEntity,
   deleteConnection,

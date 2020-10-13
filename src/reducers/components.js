@@ -7,6 +7,7 @@ import {
   relationshipHeight,
   attributeRadiusX,
   attributeRadiusY,
+  extensionRadius,
   labelMinWidth,
   labelMinHeight,
   labelMaxWidth,
@@ -19,6 +20,7 @@ const initialState = {
   entities: [],
   relationships: [],
   attributes: [],
+  extensions: [],
   labels: [],
   count: 0, // Total number of components created in a single diagram (includes deleted).
   // Never decreases and new ids depend on it
@@ -72,6 +74,50 @@ const componentsReducer = (state = initialState, action) => {
         ...state,
         entities: state.entities.filter((entity) => entity.id !== action.payload.id),
         attributes: state.attributes.filter((attribute) => attribute.parentId !== action.payload.id),
+        extensions: state.extensions.filter((extension) => extension.parentId !== action.payload.id),
+      };
+    case "ADD_EXTENSION":
+      return {
+        ...state,
+        extensions: [
+          ...state.extensions,
+          {
+            id: state.count + 1,
+            parentId: action.payload.id,
+            text: "",
+            x: action.payload.x,
+            y: action.payload.y,
+            type: "undefined",
+            participation: "partial",
+            cardinality: "disjoint",
+            connections: [],
+            //connectionCount: 0, // Number of connections
+          },
+        ],
+        count: state.count + 1,
+      };
+    case "UPDATE_POSITION_EXTENSION":
+      return {
+        ...state,
+        extensions: state.extensions.map((extension) =>
+          extension.id === action.payload.id ? { ...extension, x: action.payload.x, y: action.payload.y } : extension
+        ),
+      };
+    case "MODIFY_EXTENSION":
+      for (let i in newState.extensions) {
+        if (newState.extensions[i].id === action.payload.id) {
+          newState.extensions[i] = {
+            ...newState.extensions[i],
+            [action.payload.prop]: action.payload.value,
+          };
+          break;
+        }
+      }
+      return newState;
+    case "DELETE_EXTENSION":
+      return {
+        ...state,
+        extensions: state.extensions.filter((extension) => extension.id !== action.payload.id),
       };
     case "ADD_RELATIONSHIP":
       return {
@@ -156,7 +202,7 @@ const componentsReducer = (state = initialState, action) => {
         ),
         count: state.count + 1,
       };
-    case "CHANGE_CONNECTION":
+    case "CHANGE_CONNECTION": // Change connected entity
       var prevConnectId = 0;
       for (let i in newState.relationships) {
         if (newState.relationships[i].id === action.payload.parentId)
@@ -352,31 +398,47 @@ const componentsReducer = (state = initialState, action) => {
         labels: state.labels.filter((label) => label.id !== action.payload.id),
       };
     case "REPOSITION_COMPONENTS": // Used to return all components within stage bound if dragged off
-      var entOffsetX = entityWidth / 2;
-      var entOffsetY = entityHeight / 2;
       for (let i in newState.entities) {
-        if (newState.entities[i].x > stageWidth - entOffsetX) newState.entities[i].x = stageWidth - entOffsetX;
-        if (newState.entities[i].y > stageHeight - entOffsetY) newState.entities[i].y = stageHeight - entOffsetY;
+        if (newState.entities[i].x > stageWidth - entityWidth / 2)
+          newState.entities[i].x = stageWidth - entityWidth / 2;
+        else if (newState.entities[i].x < entityWidth / 2) newState.entities[i].x = entityWidth / 2;
+        if (newState.entities[i].y > stageHeight - entityHeight / 2)
+          newState.entities[i].y = stageHeight - entityHeight / 2;
+        else if (newState.entities[i].y < entityHeight / 2) newState.entities[i].y = entityHeight / 2;
       }
       for (let i in newState.relationships) {
         if (newState.relationships[i].x > stageWidth - relationshipWidth)
           newState.relationships[i].x = stageWidth - relationshipWidth;
+        else if (newState.relationships[i].x < relationshipWidth) newState.relationships[i].x = relationshipWidth;
         if (newState.relationships[i].y > stageHeight - relationshipHeight)
           newState.relationships[i].y = stageHeight - relationshipHeight;
+        else if (newState.relationships[i].y < relationshipHeight) newState.relationships[i].y = relationshipHeight;
       }
       for (let i in newState.attributes) {
         if (newState.attributes[i].x > stageWidth - attributeRadiusX)
           newState.attributes[i].x = stageWidth - attributeRadiusX;
-        else if (newState.attributes[i].x <= 0 + attributeRadiusX) newState.attributes[i].x = attributeRadiusX;
+        else if (newState.attributes[i].x <= attributeRadiusX) newState.attributes[i].x = attributeRadiusX;
         if (newState.attributes[i].y > stageHeight - attributeRadiusY)
           newState.attributes[i].y = stageHeight - attributeRadiusY;
-        else if (newState.attributes[i].y <= 0 + attributeRadiusY) newState.attributes[i].y = attributeRadiusY;
+        else if (newState.attributes[i].y <= attributeRadiusY) newState.attributes[i].y = attributeRadiusY;
+      }
+      for (let i in newState.extensions) {
+        if (newState.extensions[i].x > stageWidth - extensionRadius)
+          newState.extensions[i].x = stageWidth - extensionRadius;
+        else if (newState.extensions[i].x <= extensionRadius) newState.extensions[i].x = extensionRadius;
+        if (newState.extensions[i].y > stageHeight - extensionRadius)
+          newState.extensions[i].y = stageHeight - extensionRadius;
+        else if (newState.extensions[i].y <= extensionRadius) newState.extensions[i].y = extensionRadius;
       }
       for (let i in newState.labels) {
-        if (newState.labels[i].x > stageWidth - newState.labels[i].width)
-          newState.labels[i].x = stageWidth - newState.labels[i].width;
-        if (newState.labels[i].y > stageHeight - newState.labels[i].height)
-          newState.labels[i].y = stageHeight - newState.labels[i].height;
+        if (newState.labels[i].x > stageWidth - newState.labels[i].width / 2)
+          newState.labels[i].x = stageWidth - newState.labels[i].width / 2;
+        else if (newState.labels[i].x < newState.labels[i].width / 2)
+          newState.labels[i].x = newState.labels[i].width / 2;
+        if (newState.labels[i].y > stageHeight - newState.labels[i].height / 2)
+          newState.labels[i].y = stageHeight - newState.labels[i].height / 2;
+        else if (newState.labels[i].y < newState.labels[i].height / 2)
+          newState.labels[i].y = newState.labels[i].height / 2;
       }
       return newState;
     case "SET_COMPONENTS":

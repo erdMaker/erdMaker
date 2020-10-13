@@ -92,6 +92,19 @@
 
 .sidepanel-content {
   height: 100%;
+
+  select {
+    margin-right: 10px;
+    font-size: $inputFontSize;
+    background-color: $inputBackgroundColor;
+    border: 0;
+    border-radius: 4px;
+    transition: all 250ms ease-in-out;
+    &:focus {
+      outline: none;
+      box-shadow: 0px 0px 12px 0.8px #0e81ce96;
+    }
+  }
 }
 
 .save-group {
@@ -219,18 +232,6 @@
 
 .connection {
   padding-bottom: 15px;
-  select {
-    margin-right: 10px;
-    font-size: $inputFontSize;
-    background-color: $inputBackgroundColor;
-    border: 0;
-    border-radius: 4px;
-    transition: all 250ms ease-in-out;
-    &:focus {
-      outline: none;
-      box-shadow: 0px 0px 12px 0.8px #0e81ce96;
-    }
-  }
 }
 
 .connection-input-group {

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updatePositionLabel, resizeLabel, select } from "../../actions/actions";
+import { updatePositionLabel, resizeLabel, select, repositionComponents } from "../../actions/actions";
 import { Group, Rect, Line, Text } from "react-konva";
 import { stageWidth, stageHeight, resizeRectSize, fontSize } from "../../global/constants";
 
@@ -102,6 +102,7 @@ class Label extends React.Component {
               y: e.target.y(),
             });
           }}
+          onDragEnd={() => this.props.repositionComponents()}
           onTap={() => {
             this.props.select({
               type: "label",
@@ -187,6 +188,7 @@ const mapDispatchToProps = {
   select,
   resizeLabel,
   updatePositionLabel,
+  repositionComponents,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Label);

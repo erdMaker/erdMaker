@@ -38,6 +38,10 @@ export const DELETE_CHILDREN = "DELETE_CHILDREN";
 export const UPDATE_POSITION_CHILDREN = "UPDATE_POSITION_CHILDREN";
 export const MODIFY_CONNECTION = "MODIFY_CONNECTION";
 export const UPDATE_SIDEPANEL_WIDTH = "UPDATE_SIDEPANEL_WIDTH";
+export const ADD_EXTENSION = "ADD_EXTENSION";
+export const MODIFY_EXTENSION = "MODIFY_EXTENSION";
+export const UPDATE_POSITION_EXTENSION = "UPDATE_POSITION_EXTENSION";
+export const DELETE_EXTENSION = "DELETE_EXTENSION";
 
 export const addEntity = () => ({
   type: "ADD_ENTITY",
@@ -227,4 +231,24 @@ export const modifyConnection = (payload) => ({
 
 export const updateSidepanelWidth = () => ({
   type: "UPDATE_SIDEPANEL_WIDTH",
+});
+
+export const addExtension = (payload) => ({
+  type: "ADD_EXTENSION",
+  payload: payload,
+});
+
+export const modifyExtension = (payload) => ({
+  type: "MODIFY_EXTENSION",
+  payload: payload,
+});
+
+export const updatePositionExtension = (payload) => ({
+  type: "UPDATE_POSITION_EXTENSION",
+  payload: payload,
+});
+
+export const deleteExtension = (payload) => ({
+  type: "DELETE_EXTENSION",
+  payload: payload,
 });

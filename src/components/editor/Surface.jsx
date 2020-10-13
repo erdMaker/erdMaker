@@ -2,6 +2,7 @@ import React from "react";
 import Entity from "./Entity";
 import Relationship from "./Relationship";
 import Attribute from "./Attribute";
+import Extension from "./Extension";
 import Label from "./Label";
 import SpecificValues from "./SpecificValues";
 import Anchor from "./Anchor";
@@ -62,6 +63,19 @@ class Surface extends React.Component {
   drawEntities = () =>
     this.props.components.entities.map((entity) => (
       <Entity key={entity.id} id={entity.id} name={entity.name} type={entity.type} x={entity.x} y={entity.y} />
+    ));
+
+  drawExtensions = () =>
+    this.props.components.extensions.map((extension) => (
+      <Extension
+        key={extension.id}
+        id={extension.id}
+        type={extension.type}
+        participation={extension.participation}
+        cardinality={extension.cardinality}
+        x={extension.x}
+        y={extension.y}
+      />
     ));
 
   drawRelationships = () =>
@@ -153,6 +167,34 @@ class Surface extends React.Component {
           points={[
             this.props.components.attributes[i].x,
             this.props.components.attributes[i].y,
+            parentCoords.x,
+            parentCoords.y,
+          ]}
+        />
+      );
+      keyIndex = keyIndex + 1;
+    }
+
+    // This loop creates the lines that connect extensions to their parents
+    for (let i in this.props.components.extensions) {
+      connectId = this.props.components.extensions[i].parentId;
+      if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
+        parentCoords = {
+          x: this.props.components.entities[index].x,
+          y: this.props.components.entities[index].y,
+        };
+      } else {
+        continue;
+      }
+      lineList.push(
+        <Line
+          key={keyIndex}
+          stroke={this.props.components.extensions[i].participation === "partial" ? "black" : "cyan"}
+          strokeWidth={2}
+          closed="false"
+          points={[
+            this.props.components.extensions[i].x,
+            this.props.components.extensions[i].y,
             parentCoords.x,
             parentCoords.y,
           ]}
@@ -322,8 +364,9 @@ class Surface extends React.Component {
                       listening={false}
                     />
                     {this.drawLines()}
-                    {this.drawEntities()}
                     {this.drawRelationships()}
+                    {this.drawExtensions()}
+                    {this.drawEntities()}
                     {this.drawAttributes()}
                     {this.drawLabels()}
                   </Layer>

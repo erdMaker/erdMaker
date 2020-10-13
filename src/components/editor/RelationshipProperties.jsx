@@ -13,7 +13,7 @@ import {
 } from "../../actions/actions";
 import Connection from "./Connection";
 import { getRandomInt } from "../../global/utils";
-import { nameSize, attributeSpawnRadius } from "../../global/constants";
+import { nameSize, spawnRadius } from "../../global/constants";
 
 class RelationshipProperties extends React.Component {
   findRelationshipIndex = (relationship) => relationship.id === this.props.selector.current.id;
@@ -32,7 +32,7 @@ class RelationshipProperties extends React.Component {
 
   handleAddAttribute = (relationshipIndex) => {
     // Randomly position the attribute around the relationship
-    const radius = attributeSpawnRadius;
+    const radius = spawnRadius;
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);
     var yOffset = radius * Math.sin(randomAngle);

@@ -1,12 +1,19 @@
 import React from "react";
-import EntProps from "./EntityProperties";
-import RelProps from "./RelationshipProperties";
-import AttProps from "./AttributeProperties";
-import LabelProps from "./LabelProperties";
+import EntityProperties from "./EntityProperties";
+import ExtensionProperties from "./ExtensionProperties";
+import RelationshipProperties from "./RelationshipProperties";
+import AttributeProperties from "./AttributeProperties";
+import LabelProperties from "./LabelProperties";
 import { connect } from "react-redux";
 import { deselect } from "../../actions/actions";
 import { PercentToPixels } from "../../global/utils";
-import { toolbarHeight, entityWidth, relationshipWidth, attributeRadiusX } from "../../global/constants";
+import {
+  toolbarHeight,
+  entityWidth,
+  extensionRadius,
+  relationshipWidth,
+  attributeRadiusX,
+} from "../../global/constants";
 
 const Properties = (props) => {
   var stage = props.getStage(); // Reference to the stage
@@ -21,7 +28,9 @@ const Properties = (props) => {
   var closeActive = "";
   var sidepanelHeightCutoff = 0; // In the case of Label it shortens the sidepanel's height to enable dragndrop of the label
   var sidepanelWidth = // Wider sidepanel for relationships
-    props.selector.current.type === "relationship" ? props.stager.sidepanelWidth.relationship : props.stager.sidepanelWidth.general;
+    props.selector.current.type === "relationship"
+      ? props.stager.sidepanelWidth.relationship
+      : props.stager.sidepanelWidth.general;
 
   if (props.selector.selectionExists) {
     sidepanelActive = " sidepanel-active-right";
@@ -31,27 +40,34 @@ const Properties = (props) => {
       case "entity":
         let entityIndex = props.components.entities.findIndex((entity) => entity.id === props.selector.current.id);
         xPosition = props.components.entities[entityIndex].x + entityWidth / 2;
-        loadedProperties = <EntProps />;
+        loadedProperties = <EntityProperties />;
+        break;
+      case "extension":
+        let extensionIndex = props.components.extensions.findIndex(
+          (extension) => extension.id === props.selector.current.id
+        );
+        xPosition = props.components.extensions[extensionIndex].x + extensionRadius;
+        loadedProperties = <ExtensionProperties />;
         break;
       case "relationship":
         let relationshipIndex = props.components.relationships.findIndex(
           (relationship) => relationship.id === props.selector.current.id
         );
         xPosition = props.components.relationships[relationshipIndex].x + relationshipWidth;
-        loadedProperties = <RelProps />;
+        loadedProperties = <RelationshipProperties />;
         break;
       case "attribute":
         let attributeIndex = props.components.attributes.findIndex(
           (attribute) => attribute.id === props.selector.current.id
         );
         xPosition = props.components.attributes[attributeIndex].x + attributeRadiusX;
-        loadedProperties = <AttProps />;
+        loadedProperties = <AttributeProperties />;
         break;
       case "label":
         sidepanelHeightCutoff = mobile ? 300 : 0;
         let labelIndex = props.components.labels.findIndex((label) => label.id === props.selector.current.id);
         xPosition = props.components.labels[labelIndex].x + props.components.labels[labelIndex].width / 2;
-        loadedProperties = <LabelProps />;
+        loadedProperties = <LabelProperties />;
         break;
       default:
         xPosition = window.innerWidth / 2;
