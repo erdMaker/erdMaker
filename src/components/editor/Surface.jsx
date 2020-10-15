@@ -207,15 +207,15 @@ class Surface extends React.Component {
         );
         keyIndex = keyIndex + 1;
         if (this.props.components.extensions[i].type === "specialize") {
-          var extensionSplinePos = {
+          let extensionSplinePos = {
             x: (this.props.components.extensions[i].x + childCoords.x) / 2,
             y: (this.props.components.extensions[i].y + childCoords.y) / 2,
           };
-          var angle = Math.atan(
+          let angle = Math.atan(
             (this.props.components.extensions[i].y - childCoords.y) /
               (this.props.components.extensions[i].x - childCoords.x)
           ) * 180 / Math.PI;
-          var auxAngle;
+          let auxAngle;
           if (childCoords.x > this.props.components.extensions[i].x) auxAngle = 90;
           else auxAngle = 270;
           angle = angle - auxAngle;
@@ -265,6 +265,25 @@ class Surface extends React.Component {
               parentCoords.y,
             ]}
           />
+        );
+        keyIndex = keyIndex + 1;
+      }
+
+      if (this.props.components.extensions[i].type === "union") {
+        let extensionSplinePos = {
+          x: (this.props.components.extensions[i].x + parentCoords.x) / 2,
+          y: (this.props.components.extensions[i].y + parentCoords.y) / 2,
+        };
+        let angle = Math.atan(
+          (this.props.components.extensions[i].y - parentCoords.y) /
+            (this.props.components.extensions[i].x - parentCoords.x)
+        ) * 180 / Math.PI;
+        let auxAngle;
+        if (parentCoords.x > this.props.components.extensions[i].x) auxAngle = 90;
+        else auxAngle = 270;
+        angle = angle - auxAngle;
+        lineList.push(
+          <ExtensionSpline key={keyIndex} x={extensionSplinePos.x} y={extensionSplinePos.y} angle={angle} />
         );
         keyIndex = keyIndex + 1;
       }
