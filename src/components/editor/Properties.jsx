@@ -28,9 +28,9 @@ const Properties = (props) => {
   var closeActive = "";
   var sidepanelHeightCutoff = 0; // In the case of Label it shortens the sidepanel's height to enable dragndrop of the label
   var sidepanelWidth = // Wider sidepanel for relationships
-    props.selector.current.type === "relationship"
-      ? props.stager.sidepanelWidth.relationship
-      : props.stager.sidepanelWidth.general;
+    props.selector.current.type === "relationship" || props.selector.current.type === "extension"
+      ? props.stager.sidepanelWidth.wide
+      : props.stager.sidepanelWidth.standard;
 
   if (props.selector.selectionExists) {
     sidepanelActive = " sidepanel-active-right";

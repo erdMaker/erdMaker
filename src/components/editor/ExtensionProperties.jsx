@@ -1,8 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import { modifyExtension, deleteExtension, deselect, addXConnection, changeXConnection } from "../../actions/actions";
-//import IconButton from "@material-ui/core/IconButton";
-//import DeleteIcon from "@material-ui/icons/Delete";
+import {
+  modifyExtension,
+  deleteExtension,
+  deselect,
+  addXConnection,
+  changeXConnection,
+  deleteXConnection,
+} from "../../actions/actions";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 class ExtensionProperties extends React.Component {
   findExtensionIndex = (extension) => extension.id === this.props.selector.current.id;
@@ -158,6 +165,7 @@ const mapDispatchToProps = {
   deselect,
   addXConnection,
   changeXConnection,
+  deleteXConnection,
 };
 
 // Component for all extension connections
@@ -175,16 +183,28 @@ const XConnections = connect(
 
   for (let i in props.extension.xconnections) {
     xconnectionList.push(
-      <select
-        key={i}
-        value={props.extension.xconnections[i].connectId}
-        onChange={(e) => handleChangeXConnection(props.extension.xconnections[i].id, e)}
-      >
-        <option value={0} disabled>
-          Select Entity
-        </option>
-        <XEntityList extension={props.extension} />
-      </select>
+      <span style={{margin: "auto", marginBottom: "10px"}}>
+        <select
+          key={i}
+          value={props.extension.xconnections[i].connectId}
+          onChange={(e) => handleChangeXConnection(props.extension.xconnections[i].id, e)}
+        >
+          <option value={0} disabled>
+            Select Entity
+          </option>
+          <XEntityList extension={props.extension} />
+        </select>
+        <IconButton
+          onClick={() => {
+            props.deleteXConnection({
+              extensionId: props.extension.id,
+              xconnectionId: props.extension.xconnections[i].id,
+            });
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </span>
     );
   }
   return <div style={{ display: "flex", flexDirection: "column" }}>{xconnectionList}</div>;
@@ -200,9 +220,7 @@ const XEntityList = connect(
     found = false;
     if (props.components.entities[i].id === props.extension.parentId) continue;
     for (let j in props.extension.xconnections) {
-      if (
-        props.components.entities[i].id === props.extension.xconnections[j].connectId
-      ) {
+      if (props.components.entities[i].id === props.extension.xconnections[j].connectId) {
         found = true;
         break;
       }

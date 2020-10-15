@@ -39,9 +39,9 @@ export const stageReducer = (state = stageInitialState, action) => {
   switch (action.type) {
     case "UPDATE_SIDEPANEL_WIDTH":
       var sidepanelWidth;
-      if (window.innerWidth <= 527) sidepanelWidth = { general: 100, relationship: 100 };
-      else if (window.innerWidth <= 1060) sidepanelWidth = { general: 40, relationship: 50 };
-      else sidepanelWidth = { general: 25, relationship: 30 };
+      if (window.innerWidth <= 527) sidepanelWidth = { standard: 100, wide: 100 };
+      else if (window.innerWidth <= 1060) sidepanelWidth = { standard: 40, wide: 50 };
+      else sidepanelWidth = { standard: 25, wide: 30 };
       return {
         ...state,
         sidepanelWidth: sidepanelWidth,

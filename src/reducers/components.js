@@ -154,6 +154,18 @@ const componentsReducer = (state = initialState, action) => {
             : extension
         ),
       };
+    case "DELETE_XCONNECTION":
+      return {
+        ...state,
+        extensions: state.extensions.map((extension) =>
+          extension.id === action.payload.extensionId
+            ? {
+                ...extension,
+                xconnections: extension.xconnections.filter((xconnection) => xconnection.id !== action.payload.xconnectionId),
+              }
+            : extension
+        ),
+      };
     case "ADD_RELATIONSHIP":
       return {
         ...state,
