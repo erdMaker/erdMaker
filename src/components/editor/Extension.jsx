@@ -53,14 +53,14 @@ class Extension extends React.Component {
           this.props.select({
             type: "extension",
             id: this.props.id,
-            parentId: null,
+            parentId: this.props.parentId,
           });
         }}
         onClick={() => {
           this.props.select({
             type: "extension",
             id: this.props.id,
-            parentId: null,
+            parentId: this.props.parentId,
           });
         }}
       >

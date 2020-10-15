@@ -70,6 +70,7 @@ class Surface extends React.Component {
       <Extension
         key={extension.id}
         id={extension.id}
+        parentId={extension.parentId}
         type={extension.type}
         participation={extension.participation}
         cardinality={extension.cardinality}
@@ -130,6 +131,7 @@ class Surface extends React.Component {
     var connectId; // parentId of current attribute
     var index; // Index of component in its respective array with id = connectId
     var parentCoords; // Location of the parent component
+    var childCoords; // Location of a child component
 
     var anchor; // Object that holds the location of the anchor to connect too and the angle at which it ll be displayed
     var specificValuesPoints; // Object that holds the location for specificValues text
@@ -175,8 +177,37 @@ class Surface extends React.Component {
       keyIndex = keyIndex + 1;
     }
 
-    // This loop creates the lines that connect extensions to their parents
+    // This loop creates the lines that connect extensions to their parents and children
     for (let i in this.props.components.extensions) {
+      // Extension-Children lines
+      for (let j in this.props.components.extensions[i].xconnections) {
+        connectId = this.props.components.extensions[i].xconnections[j].connectId;
+        if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
+          childCoords = {
+            x: this.props.components.entities[index].x,
+            y: this.props.components.entities[index].y,
+          };
+        } else {
+          continue;
+        }
+        lineList.push(
+          <Line
+            key={keyIndex}
+            stroke={"black"}
+            strokeWidth={2}
+            closed="false"
+            points={[
+              this.props.components.extensions[i].x,
+              this.props.components.extensions[i].y,
+              childCoords.x,
+              childCoords.y,
+            ]}
+          />
+        );
+        keyIndex = keyIndex + 1;
+      }
+
+      // Extension-Parent lines
       connectId = this.props.components.extensions[i].parentId;
       if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
         parentCoords = {
@@ -189,8 +220,8 @@ class Surface extends React.Component {
       lineList.push(
         <Line
           key={keyIndex}
-          stroke={this.props.components.extensions[i].participation === "partial" ? "black" : "cyan"}
-          strokeWidth={2}
+          stroke="black"
+          strokeWidth={this.props.components.extensions[i].participation === "partial" ? 2 : 6}
           closed="false"
           points={[
             this.props.components.extensions[i].x,
@@ -201,6 +232,23 @@ class Surface extends React.Component {
         />
       );
       keyIndex = keyIndex + 1;
+      if (this.props.components.extensions[i].participation === "total") {
+        lineList.push(
+          <Line
+            key={keyIndex}
+            stroke="white"
+            strokeWidth={2}
+            closed="false"
+            points={[
+              this.props.components.extensions[i].x,
+              this.props.components.extensions[i].y,
+              parentCoords.x,
+              parentCoords.y,
+            ]}
+          />
+        );
+        keyIndex = keyIndex + 1;
+      }
     }
 
     // This loop creates the lines that connect relationships with entities

@@ -90,7 +90,7 @@ const componentsReducer = (state = initialState, action) => {
             type: "undefined",
             participation: "partial",
             cardinality: "disjoint",
-            connections: [],
+            xconnections: [],
             //connectionCount: 0, // Number of connections
           },
         ],
@@ -118,6 +118,41 @@ const componentsReducer = (state = initialState, action) => {
       return {
         ...state,
         extensions: state.extensions.filter((extension) => extension.id !== action.payload.id),
+      };
+    case "ADD_XCONNECTION":
+      return {
+        ...state,
+        extensions: state.extensions.map((extension) =>
+          extension.id === action.payload.id
+            ? {
+                ...extension,
+                xconnections: [
+                  ...extension.xconnections,
+                  {
+                    id: state.count + 1,
+                    connectId: 0,
+                  },
+                ],
+              }
+            : extension
+        ),
+        count: state.count + 1,
+      };
+    case "CHANGE_XCONNECTION":
+      return {
+        ...state,
+        extensions: state.extensions.map((extension) =>
+          extension.id === action.payload.id
+            ? {
+                ...extension,
+                xconnections: extension.xconnections.map((xconnection) =>
+                  xconnection.id === action.payload.xconnectionIndex
+                    ? { ...xconnection, connectId: action.payload.connectId }
+                    : xconnection
+                ),
+              }
+            : extension
+        ),
       };
     case "ADD_RELATIONSHIP":
       return {

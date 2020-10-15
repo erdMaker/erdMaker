@@ -42,6 +42,8 @@ export const ADD_EXTENSION = "ADD_EXTENSION";
 export const MODIFY_EXTENSION = "MODIFY_EXTENSION";
 export const UPDATE_POSITION_EXTENSION = "UPDATE_POSITION_EXTENSION";
 export const DELETE_EXTENSION = "DELETE_EXTENSION";
+export const ADD_XCONNECTION = "ADD_XCONNECTION";
+export const CHANGE_XCONNECTION = "CHANGE_XCONNECTION";
 
 export const addEntity = () => ({
   type: "ADD_ENTITY",
@@ -250,5 +252,15 @@ export const updatePositionExtension = (payload) => ({
 
 export const deleteExtension = (payload) => ({
   type: "DELETE_EXTENSION",
+  payload: payload,
+});
+
+export const addXConnection = (payload) => ({
+  type: "ADD_XCONNECTION",
+  payload: payload,
+});
+
+export const changeXConnection = (payload) => ({
+  type: "CHANGE_XCONNECTION",
   payload: payload,
 });
