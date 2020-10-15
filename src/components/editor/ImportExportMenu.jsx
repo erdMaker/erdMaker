@@ -17,6 +17,7 @@ import {
   deselect,
 } from "../../actions/actions";
 import { importdiagram } from "../../global/diagramRequests";
+import { makeCompatible } from "../../global/globalFuncs";
 import axios from "axios";
 var fileDownload = require("js-file-download");
 
@@ -60,8 +61,9 @@ const ImportExportMenuListComposition = (props) => {
         if (res && res.status === 200) {
           props.resetMeta();
           props.resetComponents();
-          props.setMeta(res.data.meta);
-          props.setComponents(res.data.components);
+          let data = makeCompatible(res.data);
+          props.setMeta(data.meta);
+          props.setComponents(data.components);
           props.repositionComponents();
         }
       })

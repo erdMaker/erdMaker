@@ -40,8 +40,9 @@ export const getDiagram = (diagramId, cancelToken) => {
   return getdiagram(diagramId, cancelToken)
     .then((res) => {
       if (res && res.status === 200) {
-        store.dispatch(setComponents(res.data.components));
-        store.dispatch(setMeta(res.data.meta));
+        let data = makeCompatible(res.data);
+        store.dispatch(setComponents(data.components));
+        store.dispatch(setMeta(data.meta));
         store.dispatch(repositionComponents());
       } else {
         store.dispatch(resetActiveDiagram());
@@ -53,6 +54,20 @@ export const getDiagram = (diagramId, cancelToken) => {
       window.location.replace("/");
     });
 };
+
+export function makeCompatible(data) {
+  if (!data.components.hasOwnProperty('extensions')) {
+    return {
+      ...data,
+      components: {
+        ...data.components,
+        extensions: []
+      }
+    }
+  } else {
+    return data;
+  }
+}
 
 export const logOut = () => {
   logout()
