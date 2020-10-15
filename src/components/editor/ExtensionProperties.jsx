@@ -62,19 +62,22 @@ class ExtensionProperties extends React.Component {
     return (
       <div className="sidepanel-content">
         <h3>Extension</h3>
-        Type:
-        <select
-          id="type"
-          value={this.props.components.extensions[extensionIndex].type}
-          onChange={this.handleModifyExtension}
-        >
-          <option value="undefined" disabled>
-            Select Type
-          </option>
-          <option value="specialize">Specialize</option>
-          <option value="union">Union</option>
-        </select>
+        <div className="extension-group">
+          Type:
+          <select
+            id="type"
+            value={this.props.components.extensions[extensionIndex].type}
+            onChange={this.handleModifyExtension}
+          >
+            <option value="undefined" disabled>
+              Select Type
+            </option>
+            <option value="specialize">Specialize</option>
+            <option value="union">Union</option>
+          </select>
+        </div>
         {content}
+        <XConnections extension={this.props.components.extensions[extensionIndex]} />
         <div className="buttons-list">
           {addEntityButton}
           <button
@@ -95,62 +98,40 @@ class ExtensionProperties extends React.Component {
 
 const Specialize = (props) => {
   return (
-    <table className="type-inputs">
-      <tbody>
-        <tr>
-          <td>Participation:</td>
-          <td>
-            <select id="participation" value={props.extension.participation} onChange={props.handleModifyExtension}>
-              <option value="partial">Partial</option>
-              <option value="total">Total</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>Cardinality:</td>
-          <td>
-            <select id="cardinality" value={props.extension.cardinality} onChange={props.handleModifyExtension}>
-              <option value="disjoint">Disjoint</option>
-              <option value="overlap">Overlap</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td colSpan="2">{props.parent.name} specializes at:</td>
-        </tr>
-        <tr>
-          <td colSpan="2">
-            <XConnections extension={props.extension} />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <div className="extension-group">
+        Participation:
+        <select id="participation" value={props.extension.participation} onChange={props.handleModifyExtension}>
+          <option value="partial">Partial</option>
+          <option value="total">Total</option>
+        </select>
+      </div>
+      <div className="extension-group">
+        Cardinality:
+        <select id="cardinality" value={props.extension.cardinality} onChange={props.handleModifyExtension}>
+          <option value="disjoint">Disjoint</option>
+          <option value="overlap">Overlap</option>
+        </select>
+      </div>
+      <hr />
+      <div className="extension-group">{props.parent.name} specializes at:</div>
+    </>
   );
 };
 
 const Union = (props) => {
   return (
-    <table className="type-inputs">
-      <tbody>
-        <tr>
-          <td>Participation:</td>
-          <td>
-            <select id="participation" value={props.extension.participation} onChange={props.handleModifyExtension}>
-              <option value="partial">Partial</option>
-              <option value="total">Total</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td colSpan="2"> {props.parent.name} is a Union of:</td>
-        </tr>
-        <tr>
-          <td colSpan="2">
-            <XConnections extension={props.extension} />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <div className="extension-group">
+        Participation:
+        <select id="participation" value={props.extension.participation} onChange={props.handleModifyExtension}>
+          <option value="partial">Partial</option>
+          <option value="total">Total</option>
+        </select>
+      </div>
+      <hr />
+      <div className="extension-group">{props.parent.name} is a Union of:</div>
+    </>
   );
 };
 
@@ -183,7 +164,7 @@ const XConnections = connect(
 
   for (let i in props.extension.xconnections) {
     xconnectionList.push(
-      <span style={{margin: "auto", marginBottom: "10px"}}>
+      <span style={{ margin: "auto", marginBottom: "10px" }}>
         <select
           key={i}
           value={props.extension.xconnections[i].connectId}
