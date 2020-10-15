@@ -161,7 +161,9 @@ const componentsReducer = (state = initialState, action) => {
           extension.id === action.payload.extensionId
             ? {
                 ...extension,
-                xconnections: extension.xconnections.filter((xconnection) => xconnection.id !== action.payload.xconnectionId),
+                xconnections: extension.xconnections.filter(
+                  (xconnection) => xconnection.id !== action.payload.xconnectionId
+                ),
               }
             : extension
         ),
