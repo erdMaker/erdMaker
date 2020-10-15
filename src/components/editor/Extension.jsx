@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { updatePositionExtension, select, repositionComponents } from "../../actions/actions";
-import { Group, Circle, Text } from "react-konva";
+import { Group, Circle, Line, Text } from "react-konva";
 import { stageWidth, stageHeight, extensionRadius, fontSize } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
@@ -79,6 +79,21 @@ class Extension extends React.Component {
     );
   }
 }
+
+// The small curvy line connecting extensions and their children
+export const ExtensionSpline = (props) => {
+  return (
+    <Line
+      x={props.x}
+      y={props.y}
+      rotation={props.angle}
+      stroke={"black"}
+      strokeWidth={2}
+      tension={0.5}
+      points={[-15, -5, 0, 0, 15, -5]}
+    />
+  );
+};
 
 const mapStateToProps = (state) => ({
   selector: state.selector,

@@ -6,6 +6,7 @@ import Extension from "./Extension";
 import Label from "./Label";
 import SpecificValues from "./SpecificValues";
 import Anchor from "./Anchor";
+import { ExtensionSpline } from "./Extension";
 import { Stage, Layer, Line, Rect } from "react-konva";
 import Properties from "./Properties";
 import { Provider, ReactReduxContext, connect } from "react-redux";
@@ -205,6 +206,24 @@ class Surface extends React.Component {
           />
         );
         keyIndex = keyIndex + 1;
+        if (this.props.components.extensions[i].type === "specialize") {
+          var extensionSplinePos = {
+            x: (this.props.components.extensions[i].x + childCoords.x) / 2,
+            y: (this.props.components.extensions[i].y + childCoords.y) / 2,
+          };
+          var angle = Math.atan(
+            (this.props.components.extensions[i].y - childCoords.y) /
+              (this.props.components.extensions[i].x - childCoords.x)
+          ) * 180 / Math.PI;
+          var auxAngle;
+          if (childCoords.x > this.props.components.extensions[i].x) auxAngle = 90;
+          else auxAngle = 270;
+          angle = angle - auxAngle;
+          lineList.push(
+            <ExtensionSpline key={keyIndex} x={extensionSplinePos.x} y={extensionSplinePos.y} angle={angle} />
+          );
+          keyIndex = keyIndex + 1;
+        }
       }
 
       // Extension-Parent lines
@@ -296,8 +315,8 @@ class Surface extends React.Component {
           lineList.push(
             <SpecificValues
               key={keyIndex}
-              x={specificValuesPoints.roleTextPoint.x}
-              y={specificValuesPoints.roleTextPoint.y}
+              x={specificValuesPoints.roleTextPos.x}
+              y={specificValuesPoints.roleTextPos.y}
               text={this.props.components.relationships[i].connections[j].role}
             />
           );
@@ -328,7 +347,7 @@ class Surface extends React.Component {
   // Calculates locations for specific values
   calculateSpecificValuesPoints = (anchor, relationship) => {
     // Place role text between relationship and entity
-    var roleTextPoint = {
+    var roleTextPos = {
       x: (anchor.x + relationship.x) / 2,
       y: (anchor.y + relationship.y) / 2,
     };
@@ -351,7 +370,7 @@ class Surface extends React.Component {
       default:
         break;
     }
-    return { roleTextPoint: roleTextPoint, anchorTextPoint: anchorTextPoint };
+    return { roleTextPos: roleTextPos, anchorTextPoint: anchorTextPoint };
   };
 
   findNearestAnchor = (lockedAnchorPoints, entityIndex, relationshipIndex) => {

@@ -164,9 +164,8 @@ const XConnections = connect(
 
   for (let i in props.extension.xconnections) {
     xconnectionList.push(
-      <span style={{ margin: "auto", marginBottom: "10px" }}>
+      <span key={i} style={{ margin: "auto", marginBottom: "10px" }}>
         <select
-          key={i}
           value={props.extension.xconnections[i].connectId}
           onChange={(e) => handleChangeXConnection(props.extension.xconnections[i].id, e)}
         >
