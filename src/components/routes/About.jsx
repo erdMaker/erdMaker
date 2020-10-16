@@ -7,7 +7,7 @@ const About = () => {
   return (
     <div className="about">
       <div className="container">
-        <h2>About this App</h2>
+        <h2>About erdMaker</h2>
         <p className="about-text">{text}</p>
         <p className="about-text">
           <b>
