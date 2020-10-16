@@ -8,7 +8,7 @@ const Header = () => {
     { label: "About", link: "/about", type: "int" },
     {
       label: "Github",
-      link: "https://www.github.com/raynesz",
+      link: "https://github.com/Raynesz/erdMaker",
       type: "ext",
     },
     {
