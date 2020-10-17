@@ -53,7 +53,7 @@ class Entity extends React.Component {
           y={-entityHeight / 2 + entityWeakOffset / 2}
           width={entityWidth - entityWeakOffset}
           height={entityHeight - entityWeakOffset}
-          fill="#ffcf80"
+          fill="#ffdd91"
           stroke={
             this.props.id === this.props.selector.current.id && this.props.selector.current.type === "entity"
               ? "red"
@@ -66,7 +66,7 @@ class Entity extends React.Component {
     var associativeDiamond =
       this.props.type === "associative" ? (
         <Line
-          fill="#ffcf80"
+          fill="#ffdd91"
           stroke={
             this.props.id === this.props.selector.current.id && this.props.selector.current.type === "entity"
               ? "red"
@@ -129,7 +129,7 @@ class Entity extends React.Component {
           y={-entityHeight / 2}
           width={entityWidth}
           height={entityHeight}
-          fill="#ffcf80"
+          fill="#ffdd91"
           stroke={
             this.props.id === this.props.selector.current.id && this.props.selector.current.type === "entity"
               ? "red"

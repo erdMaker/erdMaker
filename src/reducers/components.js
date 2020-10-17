@@ -39,7 +39,7 @@ const componentsReducer = (state = initialState, action) => {
           ...state.entities,
           {
             id: state.count + 1,
-            name: "<New>" + (state.count + 1),
+            name: "<New>",
             x: stage.scrollLeft + window.innerWidth / 2,
             y: stage.scrollTop + window.innerHeight / 2,
             type: "regular",
@@ -175,7 +175,7 @@ const componentsReducer = (state = initialState, action) => {
           ...state.relationships,
           {
             id: state.count + 1,
-            name: "<New>" + (state.count + 1),
+            name: "<New>",
             x: stage.scrollLeft + window.innerWidth / 2,
             y: stage.scrollTop + window.innerHeight / 2,
             type: {
@@ -324,7 +324,7 @@ const componentsReducer = (state = initialState, action) => {
           {
             id: state.count + 1,
             parentId: action.payload.id,
-            name: "<New>" + (state.count + 1),
+            name: "<New>",
             x: action.payload.x,
             y: action.payload.y,
             type: {
@@ -395,7 +395,7 @@ const componentsReducer = (state = initialState, action) => {
           ...state.labels,
           {
             id: state.count + 1,
-            text: "<New>" + (state.count + 1),
+            text: "<New>",
             x: stage.scrollLeft + window.innerWidth / 2,
             y: stage.scrollTop + window.innerHeight / 2,
             width: labelMinWidth,

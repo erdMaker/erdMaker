@@ -54,7 +54,7 @@ class Relationship extends React.Component {
 
     var weakRelationshipRhombus = this.props.type.weak ? (
       <Line
-        fill="#83d5ea"
+        fill="#94dfea"
         stroke={
           this.props.id === this.props.selector.current.id && this.props.selector.current.type === "relationship"
             ? "red"
@@ -113,7 +113,7 @@ class Relationship extends React.Component {
         dragBoundFunc={(pos) => this.stageBound(pos)}
       >
         <Line
-          fill="#83d5ea"
+          fill="#94dfea"
           stroke={
             this.props.id === this.props.selector.current.id && this.props.selector.current.type === "relationship"
               ? "red"

@@ -54,7 +54,7 @@ class Attribute extends React.Component {
       <Ellipse
         radiusX={attributeRadiusX - multivaluedAttributeOffset}
         radiusY={attributeRadiusY - multivaluedAttributeOffset}
-        fill="#fe827b"
+        fill="#ff9b8e"
         dash={this.props.type.derived ? [10, 3] : false}
         stroke={
           this.props.id === this.props.selector.current.id && this.props.selector.current.type === "attribute"
@@ -111,7 +111,7 @@ class Attribute extends React.Component {
         <Ellipse
           radiusX={attributeRadiusX}
           radiusY={attributeRadiusY}
-          fill="#fe827b"
+          fill="#ff9b8e"
           dash={this.props.type.derived ? [10, 3] : false}
           stroke={
             this.props.id === this.props.selector.current.id && this.props.selector.current.type === "attribute"
