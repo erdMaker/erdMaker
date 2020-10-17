@@ -4,12 +4,11 @@ import { fontSize } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 const SpecificValues = (props) => {
-  var show = props.text === "(,)" ? false : true;
   return (
-    <Group x={props.x} y={props.y} visible={show}>
+    <Group x={props.x} y={props.y}>
       <Label
-        x={
-          -pixelWidth(props.text, {
+        offsetX={
+          pixelWidth(props.text, {
             font: "Arial",
             size: fontSize,
           }) / 2

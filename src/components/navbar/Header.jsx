@@ -12,28 +12,17 @@ const Header = () => {
       type: "ext",
     },
     {
-      label: "Contact",
-      link: "/contact",
-      type: "int",
-    },
-    {
       label: "Academic Department",
       link: "http://www.ece.upatras.gr/index.php/el/",
       type: "ext",
     },
   ];
-  
+
   // External links are rendered as <a> and internal as <Link>
   let linksMarkup = headerLinks.map((link, index) => {
     let linkMarkup =
       link.type === "int" ? (
-        <Link
-          className="nav__link"
-          to={link.link}
-          onClick={() =>
-            setHeaderNavListActive(!headerNavListActive)
-          }
-        >
+        <Link className="nav__link" to={link.link} onClick={() => setHeaderNavListActive(!headerNavListActive)}>
           {link.label}
         </Link>
       ) : (
@@ -63,10 +52,7 @@ const Header = () => {
         <img src={Logo} className="logo" alt=":(" />
       </Link>
       <ul className={headerNavClasses}>{linksMarkup}</ul>
-      <div
-        className="burger"
-        onClick={() => setHeaderNavListActive(!headerNavListActive)}
-      >
+      <div className="burger" onClick={() => setHeaderNavListActive(!headerNavListActive)}>
         <div className={line1Class} />
         <div className={line2Class} />
         <div className={line3Class} />

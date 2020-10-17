@@ -8,7 +8,16 @@ const About = () => {
     <div className="about">
       <div className="container">
         <h2>About erdMaker</h2>
+        <p>Version: {process.env.REACT_APP_VERSION}</p>
         <p className="about-text">{text}</p>
+        <p className="about-text">
+          If you face any issue, would like to submit a bug report or provide feedback you can do so in the Issues
+          section of the{" "}
+          <a href="https://github.com/Raynesz/erdMaker" target="_blank" rel="noopener noreferrer">
+            Github page
+          </a>
+          .
+        </p>
         <p className="about-text">
           <b>
             **DISCLAIMER: THIS APP IS STILL UNDER DEVELOPMENT AND IS NOT PRODUCTION READY. THIS WEBSITE IS USED FOR

@@ -211,10 +211,13 @@ class Surface extends React.Component {
             x: (this.props.components.extensions[i].x + childCoords.x) / 2,
             y: (this.props.components.extensions[i].y + childCoords.y) / 2,
           };
-          let angle = Math.atan(
-            (this.props.components.extensions[i].y - childCoords.y) /
-              (this.props.components.extensions[i].x - childCoords.x)
-          ) * 180 / Math.PI;
+          let angle =
+            (Math.atan(
+              (this.props.components.extensions[i].y - childCoords.y) /
+                (this.props.components.extensions[i].x - childCoords.x)
+            ) *
+              180) /
+            Math.PI;
           let auxAngle;
           if (childCoords.x > this.props.components.extensions[i].x) auxAngle = 90;
           else auxAngle = 270;
@@ -274,10 +277,13 @@ class Surface extends React.Component {
           x: (this.props.components.extensions[i].x + parentCoords.x) / 2,
           y: (this.props.components.extensions[i].y + parentCoords.y) / 2,
         };
-        let angle = Math.atan(
-          (this.props.components.extensions[i].y - parentCoords.y) /
-            (this.props.components.extensions[i].x - parentCoords.x)
-        ) * 180 / Math.PI;
+        let angle =
+          (Math.atan(
+            (this.props.components.extensions[i].y - parentCoords.y) /
+              (this.props.components.extensions[i].x - parentCoords.x)
+          ) *
+            180) /
+          Math.PI;
         let auxAngle;
         if (parentCoords.x > this.props.components.extensions[i].x) auxAngle = 90;
         else auxAngle = 270;
@@ -317,8 +323,8 @@ class Surface extends React.Component {
               ]}
             />
           );
-
           keyIndex = keyIndex + 1;
+
           lineList.push(
             <Anchor
               key={keyIndex}
@@ -329,34 +335,45 @@ class Surface extends React.Component {
               maximum={this.props.components.relationships[i].connections[j].max}
             />
           );
-
           keyIndex = keyIndex + 1;
-          lineList.push(
-            <SpecificValues
-              key={keyIndex}
-              x={specificValuesPoints.roleTextPos.x}
-              y={specificValuesPoints.roleTextPos.y}
-              text={this.props.components.relationships[i].connections[j].role}
-            />
-          );
 
-          keyIndex = keyIndex + 1;
-          specificValuesText =
-            "(" +
-            this.props.components.relationships[i].connections[j].exactMin +
-            "," +
-            this.props.components.relationships[i].connections[j].exactMax +
-            ")";
+          if (this.props.components.relationships[i].connections[j].role) {
+            lineList.push(
+              <SpecificValues
+                key={keyIndex}
+                x={specificValuesPoints.roleTextPos.x}
+                y={specificValuesPoints.roleTextPos.y}
+                text={this.props.components.relationships[i].connections[j].role}
+              />
+            );
+            keyIndex = keyIndex + 1;
+          }
 
-          lineList.push(
-            <SpecificValues
-              key={keyIndex}
-              x={specificValuesPoints.anchorTextPoint.x}
-              y={specificValuesPoints.anchorTextPoint.y}
-              text={specificValuesText}
-            />
-          );
-          keyIndex = keyIndex + 1;
+          if (
+            this.props.components.relationships[i].connections[j].exactMin ||
+            this.props.components.relationships[i].connections[j].exactMax
+          ) {
+            specificValuesText =
+              "(" +
+              (this.props.components.relationships[i].connections[j].exactMin === ""
+                ? "-"
+                : this.props.components.relationships[i].connections[j].exactMin) +
+              "," +
+              (this.props.components.relationships[i].connections[j].exactMax === ""
+                ? "-"
+                : this.props.components.relationships[i].connections[j].exactMax) +
+              ")";
+
+            lineList.push(
+              <SpecificValues
+                key={keyIndex}
+                x={specificValuesPoints.anchorTextPoint.x}
+                y={specificValuesPoints.anchorTextPoint.y}
+                text={specificValuesText}
+              />
+            );
+            keyIndex = keyIndex + 1;
+          }
         }
       }
     }

@@ -63,22 +63,6 @@ class Connection extends React.Component {
           prop: "exactMax",
           value: "1",
         });
-      } else if (e.target.value === "many") {
-        // If user selects minimum = many then exact max value becomes empty
-        this.props.modifyConnection({
-          id: this.props.connection.id,
-          parentId: this.props.relationshipId,
-          prop: "exactMax",
-          value: "",
-        });
-      } else {
-        // If user selects minimum = undefined then exact max value becomes empty
-        this.props.modifyConnection({
-          id: this.props.connection.id,
-          parentId: this.props.relationshipId,
-          prop: "exactMax",
-          value: "",
-        });
       }
     } else if (e.target.id === "exactMin") {
       if (e.target.value === "0") {

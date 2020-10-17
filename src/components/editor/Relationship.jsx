@@ -12,6 +12,7 @@ import {
   stageHeight,
   relationshipWidth,
   relationshipHeight,
+  relationshipTextWidth,
   weakRelationshipOffset,
   fontSize,
 } from "../../global/constants";
@@ -46,9 +47,10 @@ class Relationship extends React.Component {
     });
 
     var nameYOffset;
-    if (namePixelWidth < relationshipWidth * 2) nameYOffset = -fontSize / 2;
-    else if (namePixelWidth < relationshipWidth * 4) nameYOffset = -fontSize;
-    else nameYOffset = (-fontSize * 3) / 2;
+    if (namePixelWidth < relationshipTextWidth) nameYOffset = fontSize / 2;
+    else if (namePixelWidth < relationshipTextWidth * 2) nameYOffset = fontSize;
+    else if (namePixelWidth < relationshipTextWidth * 3) nameYOffset = (fontSize * 3) / 2;
+    else nameYOffset = fontSize * 2;
 
     var weakRelationshipRhombus = this.props.type.weak ? (
       <Line
@@ -63,11 +65,11 @@ class Relationship extends React.Component {
         points={[
           0,
           -relationshipHeight + weakRelationshipOffset, // TOP
-          relationshipWidth - 2 * weakRelationshipOffset,
+          relationshipWidth - 1.5 * weakRelationshipOffset,
           0, // RIGHT
           0,
           relationshipHeight - weakRelationshipOffset, // BOTTOM
-          -relationshipWidth + 2 * weakRelationshipOffset,
+          -relationshipWidth + 1.5 * weakRelationshipOffset,
           0, // LEFT
         ]}
       />
@@ -134,9 +136,10 @@ class Relationship extends React.Component {
         <Text
           text={nameText}
           fontSize={fontSize}
-          width={relationshipWidth * 2}
-          x={namePixelWidth < relationshipWidth * 2 ? -namePixelWidth / 2 : -relationshipWidth}
-          y={nameYOffset}
+          align="center"
+          width={relationshipTextWidth}
+          offsetX={relationshipTextWidth / 2}
+          offsetY={nameYOffset}
         />
       </Group>
     );

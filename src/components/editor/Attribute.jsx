@@ -2,7 +2,15 @@ import React from "react";
 import { connect } from "react-redux";
 import { updatePositionAttribute, updatePositionChildren, repositionComponents, select } from "../../actions/actions";
 import { Group, Ellipse, Text } from "react-konva";
-import { stageWidth, stageHeight, attributeRadiusX, attributeRadiusY, multivaluedAttributeOffset, fontSize } from "../../global/constants";
+import {
+  stageWidth,
+  stageHeight,
+  attributeRadiusX,
+  attributeRadiusY,
+  attributeTextWidth,
+  multivaluedAttributeOffset,
+  fontSize,
+} from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 class Attribute extends React.Component {
@@ -31,26 +39,16 @@ class Attribute extends React.Component {
       font: "Arial",
       size: fontSize,
     });
-    if (this.props.type.composite) nameText = "( " + nameText + " )";
+
+    if (this.props.type.optional) nameText = nameText + " (O)";
+
+    if (this.props.type.composite) nameText = "(" + nameText + ")";
 
     var nameYOffset;
-    if (namePixelWidth < attributeRadiusX * 2) nameYOffset = -fontSize / 2;
-    else if (namePixelWidth < attributeRadiusX * 4) nameYOffset = -fontSize;
-    else nameYOffset = (-fontSize * 3) / 2;
-
-    var optionalText = this.props.type.optional ? (
-      <Text
-        text="( O )"
-        fontSize={fontSize}
-        x={
-          -pixelWidth("( O )", {
-            font: "Arial",
-            size: fontSize,
-          }) / 2
-        }
-        y={fontSize / 2}
-      />
-    ) : null;
+    if (namePixelWidth < attributeTextWidth) nameYOffset = fontSize / 2;
+    else if (namePixelWidth < attributeTextWidth * 2) nameYOffset = fontSize;
+    else if (namePixelWidth < attributeTextWidth * 3) nameYOffset = (fontSize * 3) / 2;
+    else nameYOffset = fontSize * 2;
 
     var multivaluedEllipse = this.props.type.multivalued ? (
       <Ellipse
@@ -127,14 +125,11 @@ class Attribute extends React.Component {
           text={nameText}
           fontSize={fontSize}
           textDecoration={this.props.type.unique ? "underline" : ""}
-          width={attributeRadiusX * 2}
-          //offsetX={namePixelWidth < attributeRadiusX * 2 ?
-          //  (namePixelWidth / 2) :
-          //  attributeRadiusX}
-          x={namePixelWidth < attributeRadiusX * 2 ? -namePixelWidth / 2 : -attributeRadiusX}
-          y={nameYOffset}
+          align="center"
+          width={attributeTextWidth}
+          offsetX={attributeTextWidth / 2}
+          offsetY={nameYOffset}
         />
-        {optionalText}
       </Group>
     );
   }

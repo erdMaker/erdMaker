@@ -2,7 +2,15 @@ import React from "react";
 import { connect } from "react-redux";
 import { updatePositionEntity, updatePositionChildren, repositionComponents, select } from "../../actions/actions";
 import { Group, Rect, Line, Text } from "react-konva";
-import { stageWidth, stageHeight, entityWidth, entityHeight, entityWeakOffset, fontSize } from "../../global/constants";
+import {
+  stageWidth,
+  stageHeight,
+  entityWidth,
+  entityHeight,
+  entityTextWidth,
+  entityWeakOffset,
+  fontSize,
+} from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 class Entity extends React.Component {
@@ -33,9 +41,10 @@ class Entity extends React.Component {
     });
 
     var nameYOffset;
-    if (namePixelWidth < entityWidth) nameYOffset = -fontSize / 2;
-    else if (namePixelWidth < entityWidth * 2) nameYOffset = -fontSize;
-    else nameYOffset = (-fontSize * 3) / 2;
+    if (namePixelWidth < entityTextWidth) nameYOffset = fontSize / 2;
+    else if (namePixelWidth < entityTextWidth * 2) nameYOffset = fontSize;
+    else if (namePixelWidth < entityTextWidth * 3) nameYOffset = (fontSize * 3) / 2;
+    else nameYOffset = fontSize * 2;
 
     var weakRect =
       this.props.type === "weak" ? (
@@ -133,9 +142,10 @@ class Entity extends React.Component {
         <Text
           text={nameText}
           fontSize={fontSize}
-          width={entityWidth}
-          x={namePixelWidth < entityWidth ? -namePixelWidth / 2 : -entityWidth / 2}
-          y={nameYOffset}
+          align="center"
+          width={entityTextWidth}
+          offsetX={entityTextWidth / 2}
+          offsetY={nameYOffset}
         />
       </Group>
     );
