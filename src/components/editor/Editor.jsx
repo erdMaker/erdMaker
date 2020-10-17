@@ -1,9 +1,16 @@
 import React from "react";
 import Surface from "./Surface";
 import Tools from "./Tools";
-import { getDiagram } from "../../global/globalFuncs";
+import { getDiagram, makeCompatible } from "../../global/globalFuncs";
 import { connect } from "react-redux";
-import { deselect, updateSidepanelWidth, resetComponents, resetMeta } from "../../actions/actions";
+import {
+  deselect,
+  updateSidepanelWidth,
+  resetComponents,
+  resetMeta,
+  setMeta,
+  setComponents,
+} from "../../actions/actions";
 import axios from "axios";
 
 class Editor extends React.Component {
@@ -11,6 +18,10 @@ class Editor extends React.Component {
     super(props);
     this.props.updateSidepanelWidth();
     this.cancelToken = axios.CancelToken.source();
+    var storedDiagram = { meta: this.props.meta, components: this.props.components };
+    var compatibleDiagram = makeCompatible(storedDiagram);
+    this.props.setMeta(compatibleDiagram.meta);
+    this.props.setComponents(compatibleDiagram.components);
   }
 
   componentDidMount = () => {
@@ -51,6 +62,8 @@ class Editor extends React.Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   general: state.general,
+  meta: state.meta,
+  components: state.components,
 });
 
 const mapDispatchToProps = {
@@ -58,6 +71,8 @@ const mapDispatchToProps = {
   updateSidepanelWidth,
   resetComponents,
   resetMeta,
+  setMeta,
+  setComponents,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor);
