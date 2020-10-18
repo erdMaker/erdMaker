@@ -47,7 +47,8 @@ class ExtensionProperties extends React.Component {
     else content = null;
 
     const addEntityButton =
-      this.props.components.extensions[extensionIndex].type !== "undefined" ? (
+      this.props.components.extensions[extensionIndex].type !== "undefined" &&
+      this.props.components.extensions[extensionIndex].xconnections.length < 30 ? (
         <button
           className="properties-neutral-button"
           type="button"
@@ -77,7 +78,9 @@ class ExtensionProperties extends React.Component {
           </select>
         </div>
         {content}
-        <XConnections extension={this.props.components.extensions[extensionIndex]} />
+        <div className="connections-list">
+          <XConnections extension={this.props.components.extensions[extensionIndex]} />
+        </div>
         <div className="buttons-list">
           {addEntityButton}
           <button

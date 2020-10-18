@@ -51,6 +51,19 @@ class RelationshipProperties extends React.Component {
 
   render() {
     var relationshipIndex = this.props.components.relationships.findIndex(this.findRelationshipIndex);
+    var addConnectionButton =
+      this.props.components.relationships[relationshipIndex].connections.length < 5 ? (
+        <button
+          className="properties-neutral-button"
+          type="button"
+          onClick={() => {
+            this.props.addConnection({ id: this.props.selector.current.id });
+          }}
+        >
+          Add Connection
+        </button>
+      ) : null;
+
     return (
       <div className="sidepanel-content">
         <h3>Relationship</h3>
@@ -95,15 +108,7 @@ class RelationshipProperties extends React.Component {
             findRelationshipIndex={this.findRelationshipIndex}
           />
         </div>
-        <button
-          className="properties-neutral-button"
-          type="button"
-          onClick={() => {
-            this.props.addConnection({ id: this.props.selector.current.id });
-          }}
-        >
-          Add Connection
-        </button>
+        {addConnectionButton}
         <hr />
         <div className="buttons-list">
           <button

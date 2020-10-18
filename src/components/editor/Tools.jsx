@@ -66,7 +66,7 @@ class Tools extends React.Component {
         } else {
           this.setState({
             saveStatus: {
-              text: "Not able to save. Leaving or refeshing the page will log you out.",
+              text: "Not able to save. Leaving or refreshing the page might log you out.",
               color: "#b30d23",
             },
           });
