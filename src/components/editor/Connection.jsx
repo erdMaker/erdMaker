@@ -99,13 +99,21 @@ class Connection extends React.Component {
           prop: "max",
           value: "one",
         });
-      } else {
-        // If user selects exactMaximum other than 1 then maximum value becomes empty
+      } else if (e.target.value === "") {
+        // If user selects exactMaximum empty then maximum value becomes undefined
         this.props.modifyConnection({
           id: this.props.connection.id,
           parentId: this.props.relationshipId,
           prop: "max",
-          value: "",
+          value: "undefined",
+        });
+      } else {
+        // If user selects exactMaximum other than 1 or empty then maximum value becomes many
+        this.props.modifyConnection({
+          id: this.props.connection.id,
+          parentId: this.props.relationshipId,
+          prop: "max",
+          value: "many",
         });
       }
     }
