@@ -61,15 +61,16 @@ class Relationship extends React.Component {
             : "black"
         }
         strokeWidth={2}
-        closed="true"
+        lineJoin="bevel"
+        closed
         points={[
           0,
           -relationshipHeight + weakRelationshipOffset, // TOP
-          relationshipWidth - 1.5 * weakRelationshipOffset,
+          relationshipWidth - 1.3 * weakRelationshipOffset,
           0, // RIGHT
           0,
           relationshipHeight - weakRelationshipOffset, // BOTTOM
-          -relationshipWidth + 1.5 * weakRelationshipOffset,
+          -relationshipWidth + 1.3 * weakRelationshipOffset,
           0, // LEFT
         ]}
       />
@@ -120,7 +121,8 @@ class Relationship extends React.Component {
               : "black"
           }
           strokeWidth={2}
-          closed="true"
+          lineJoin="bevel"
+          closed
           points={[
             0,
             -relationshipHeight, // TOP

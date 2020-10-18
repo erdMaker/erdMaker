@@ -148,7 +148,7 @@ class Label extends React.Component {
           stroke="red"
           strokeWidth={1}
           visible={this.props.selector.current.id === this.props.id ? true : false}
-          closed="true"
+          closed
           points={[
             this.props.x + this.props.width / 2,
             this.props.y + this.props.height / 2, // CORNER

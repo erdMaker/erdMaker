@@ -73,7 +73,8 @@ class Entity extends React.Component {
               : "black"
           }
           strokeWidth={2}
-          closed="true"
+          lineJoin="bevel"
+          closed
           points={[
             0,
             -entityHeight / 2, // TOP

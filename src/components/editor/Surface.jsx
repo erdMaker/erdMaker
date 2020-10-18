@@ -166,7 +166,6 @@ class Surface extends React.Component {
           key={keyIndex}
           stroke="black"
           strokeWidth={2}
-          closed="false"
           points={[
             this.props.components.attributes[i].x,
             this.props.components.attributes[i].y,
@@ -196,7 +195,6 @@ class Surface extends React.Component {
             key={keyIndex}
             stroke={"black"}
             strokeWidth={2}
-            closed="false"
             points={[
               this.props.components.extensions[i].x,
               this.props.components.extensions[i].y,
@@ -244,7 +242,6 @@ class Surface extends React.Component {
           key={keyIndex}
           stroke="black"
           strokeWidth={this.props.components.extensions[i].participation === "partial" ? 2 : 6}
-          closed="false"
           points={[
             this.props.components.extensions[i].x,
             this.props.components.extensions[i].y,
@@ -260,7 +257,6 @@ class Surface extends React.Component {
             key={keyIndex}
             stroke="white"
             strokeWidth={2}
-            closed="false"
             points={[
               this.props.components.extensions[i].x,
               this.props.components.extensions[i].y,
@@ -314,7 +310,6 @@ class Surface extends React.Component {
               key={keyIndex}
               stroke="black"
               strokeWidth={2}
-              closed="false"
               points={[
                 this.props.components.relationships[i].x,
                 this.props.components.relationships[i].y,
@@ -467,8 +462,8 @@ class Surface extends React.Component {
                       listening={false}
                     />
                     {this.drawLines()}
-                    {this.drawRelationships()}
                     {this.drawExtensions()}
+                    {this.drawRelationships()}
                     {this.drawEntities()}
                     {this.drawAttributes()}
                     {this.drawLabels()}
