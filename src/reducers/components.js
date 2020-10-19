@@ -398,7 +398,7 @@ const componentsReducer = (state = initialState, action) => {
             text: "<New>",
             x: stage.scrollLeft + window.innerWidth / 2,
             y: stage.scrollTop + window.innerHeight / 2,
-            width: labelMinWidth,
+            width: 150,
             height: labelMinHeight,
           },
         ],
