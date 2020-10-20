@@ -7,7 +7,7 @@ import {
   select,
   deselect,
 } from "../../actions/actions";
-import { Group, Ellipse, Text } from "react-konva";
+import { Group, Ellipse, Text, Line } from "react-konva";
 import {
   stageWidth,
   stageHeight,
@@ -21,6 +21,8 @@ var pixelWidth = require("string-pixel-width");
 
 class Attribute extends React.Component {
   state = { initialPosition: { x: this.props.x, y: this.props.y } };
+
+  findParentIndex = (parent) => parent.id === this.props.parentId;
 
   // Does not let the attribute to be dragged out of stage bounds
   stageBound = (pos) => {
@@ -70,6 +72,36 @@ class Attribute extends React.Component {
         strokeWidth={2}
       />
     ) : null;
+
+    // Implementation of dashed text underline
+    var textRows = Math.ceil(namePixelWidth / attributeTextWidth);
+    var parentIndex;
+    if (
+      this.props.components.entities.length &&
+      (parentIndex = this.props.components.entities.findIndex(this.findParentIndex)) !== -1
+    ) {
+      if (this.props.type.unique && this.props.components.entities[parentIndex].type === "weak") {
+        var dashedUnderlineList = [];
+        if (textRows < 4) {
+          for (let i = 0; i < textRows; i++) {
+            let lineOffset =
+              textRows % 2
+                ? fontSize / 2 + 0.8 + i * fontSize - Math.floor(textRows / 2) * fontSize
+                : fontSize / 2 + 0.8 + i * fontSize - (Math.floor(textRows / 2) * fontSize) / 2;
+            dashedUnderlineList.push(
+              <Line
+                key={i}
+                stroke="#ff9b8e"
+                //stroke="cyan"
+                strokeWidth={2}
+                dash={[3, 5]}
+                points={[-attributeTextWidth / 2 + 5, lineOffset, attributeTextWidth / 2 - 5, lineOffset]}
+              />
+            );
+          }
+        }
+      }
+    }
 
     return (
       <Group
@@ -138,6 +170,7 @@ class Attribute extends React.Component {
           offsetX={attributeTextWidth / 2}
           offsetY={nameYOffset}
         />
+        {dashedUnderlineList}
       </Group>
     );
   }
@@ -145,6 +178,7 @@ class Attribute extends React.Component {
 
 const mapStateToProps = (state) => ({
   selector: state.selector,
+  components: state.components,
 });
 
 const mapDispatchToProps = {

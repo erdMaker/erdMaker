@@ -96,9 +96,12 @@ class AttributeProperties extends React.Component {
 
   render() {
     var parent = { index: null, type: "" };
+    var uniqueLabel = "Unique";
 
-    if ((parent.index = this.props.components.entities.findIndex(this.findParentIndex)) !== -1) parent.type = "entity";
-    else if ((parent.index = this.props.components.relationships.findIndex(this.findParentIndex)) !== -1)
+    if ((parent.index = this.props.components.entities.findIndex(this.findParentIndex)) !== -1) {
+      parent.type = "entity";
+      if (this.props.components.entities[parent.index].type === "weak") uniqueLabel = "Partially Unique";
+    } else if ((parent.index = this.props.components.relationships.findIndex(this.findParentIndex)) !== -1)
       parent.type = "relationship";
     else if ((parent.index = this.props.components.attributes.findIndex(this.findParentIndex)) !== -1)
       parent.type = "attribute";
@@ -149,7 +152,7 @@ class AttributeProperties extends React.Component {
                     checked={this.props.components.attributes[attributeIndex].type.unique}
                     onChange={this.typeValueChange}
                   />
-                  Unique
+                  {uniqueLabel}
                 </label>
               </td>
             </tr>
