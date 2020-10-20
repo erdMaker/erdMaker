@@ -16,6 +16,12 @@ import { getRandomInt } from "../../global/utils";
 import { nameSize, spawnRadius } from "../../global/constants";
 
 class EntityProperties extends React.Component {
+  componentDidMount() {
+    this.nameInput.focus();
+  }
+
+  handleFocus = (e) => e.target.select();
+
   findEntityIndex = (entity) => entity.id === this.props.selector.current.id;
 
   nameValueChange = (e) =>
@@ -80,6 +86,10 @@ class EntityProperties extends React.Component {
             type="text"
             name="name"
             id="name"
+            ref={(input) => {
+              this.nameInput = input;
+            }}
+            onFocus={this.handleFocus}
             maxLength={nameSize}
             value={this.props.components.entities[entityIndex].name}
             onChange={this.nameValueChange}

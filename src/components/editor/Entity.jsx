@@ -1,6 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updatePositionEntity, updatePositionChildren, repositionComponents, select } from "../../actions/actions";
+import {
+  updatePositionEntity,
+  updatePositionChildren,
+  repositionComponents,
+  select,
+  deselect,
+} from "../../actions/actions";
 import { Group, Rect, Line, Text } from "react-konva";
 import {
   stageWidth,
@@ -110,6 +116,7 @@ class Entity extends React.Component {
         }}
         onDragEnd={() => this.props.repositionComponents()}
         onTap={() => {
+          this.props.deselect();
           this.props.select({
             type: "entity",
             id: this.props.id,
@@ -117,6 +124,7 @@ class Entity extends React.Component {
           });
         }}
         onClick={() => {
+          this.props.deselect();
           this.props.select({
             type: "entity",
             id: this.props.id,
@@ -162,6 +170,7 @@ const mapDispatchToProps = {
   updatePositionChildren,
   repositionComponents,
   select,
+  deselect,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Entity);

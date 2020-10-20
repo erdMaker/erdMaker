@@ -19,6 +19,17 @@ import {
 import { importdiagram } from "../../global/diagramRequests";
 import { makeCompatible } from "../../global/globalFuncs";
 import axios from "axios";
+import {
+  stageWidth,
+  stageHeight,
+  entityWidth,
+  entityHeight,
+  relationshipWidth,
+  relationshipHeight,
+  attributeRadiusX,
+  attributeRadiusY,
+  extensionRadius,
+} from "../../global/constants";
 var fileDownload = require("js-file-download");
 
 const useStyles = makeStyles((theme) => ({
@@ -104,10 +115,95 @@ const ImportExportMenuListComposition = (props) => {
       .catch(() => {});
   };
 
+  // Calculate the rectangle area occupied by the rendered elements on the stage
+  const getStageUsedArea = () => {
+    var edges = [
+      stageWidth, // leftMost x
+      stageHeight, // topMost y
+      0, // rightMost x
+      0, // bottomMost y
+    ];
+    for (let i in props.components.entities) {
+      if (props.components.entities[i].x - entityWidth / 2 < edges[0])
+        edges[0] = props.components.entities[i].x - entityWidth / 2;
+      if (props.components.entities[i].y - entityHeight / 2 < edges[1])
+        edges[1] = props.components.entities[i].y - entityHeight / 2;
+      if (props.components.entities[i].x + entityWidth / 2 > edges[2])
+        edges[2] = props.components.entities[i].x + entityWidth / 2;
+      if (props.components.entities[i].y + entityHeight / 2 > edges[3])
+        edges[3] = props.components.entities[i].y + entityHeight / 2;
+    }
+    for (let i in props.components.relationships) {
+      if (props.components.relationships[i].x - relationshipWidth < edges[0])
+        edges[0] = props.components.relationships[i].x - relationshipWidth;
+      if (props.components.relationships[i].y - relationshipHeight < edges[1])
+        edges[1] = props.components.relationships[i].y - relationshipHeight;
+      if (props.components.relationships[i].x + relationshipWidth > edges[2])
+        edges[2] = props.components.relationships[i].x + relationshipWidth;
+      if (props.components.relationships[i].y + relationshipHeight > edges[3])
+        edges[3] = props.components.relationships[i].y + relationshipHeight;
+    }
+    for (let i in props.components.attributes) {
+      if (props.components.attributes[i].x - attributeRadiusX < edges[0])
+        edges[0] = props.components.attributes[i].x - attributeRadiusX;
+      if (props.components.attributes[i].y - attributeRadiusY < edges[1])
+        edges[1] = props.components.attributes[i].y - attributeRadiusY;
+      if (props.components.attributes[i].x + attributeRadiusX > edges[2])
+        edges[2] = props.components.attributes[i].x + attributeRadiusX;
+      if (props.components.attributes[i].y + attributeRadiusY > edges[3])
+        edges[3] = props.components.attributes[i].y + attributeRadiusY;
+    }
+    for (let i in props.components.extensions) {
+      if (props.components.extensions[i].x - extensionRadius < edges[0])
+        edges[0] = props.components.extensions[i].x - extensionRadius;
+      if (props.components.extensions[i].y - extensionRadius < edges[1])
+        edges[1] = props.components.extensions[i].y - extensionRadius;
+      if (props.components.extensions[i].x + extensionRadius > edges[2])
+        edges[2] = props.components.extensions[i].x + extensionRadius;
+      if (props.components.extensions[i].y + extensionRadius > edges[3])
+        edges[3] = props.components.extensions[i].y + extensionRadius;
+    }
+    for (let i in props.components.labels) {
+      if (props.components.labels[i].x - props.components.labels[i].width / 2 < edges[0])
+        edges[0] = props.components.labels[i].x - props.components.labels[i].width / 2;
+      if (props.components.labels[i].y - props.components.labels[i].height / 2 < edges[1])
+        edges[1] = props.components.labels[i].y - props.components.labels[i].height / 2;
+      if (props.components.labels[i].x + props.components.labels[i].width / 2 > edges[2])
+        edges[2] = props.components.labels[i].x + props.components.labels[i].width / 2;
+      if (props.components.labels[i].y + props.components.labels[i].height / 2 > edges[3])
+        edges[3] = props.components.labels[i].y + props.components.labels[i].height / 2;
+    }
+    return edges;
+  };
+
   const exportImage = () => {
+    var edges = getStageUsedArea();
+
     var canvas = document.getElementsByTagName("CANVAS")[0];
+
+    //Make a Canvas to copy the data you would like to download to
+    var hidden_canvas = document.createElement("canvas");
+    hidden_canvas.style.display = "none";
+    document.body.appendChild(hidden_canvas);
+    hidden_canvas.width = (edges[2] - edges[0]) * 1.25 + 200; // Multiplying by 1.25 because it seems there is internal
+    hidden_canvas.height = (edges[3] - edges[1]) * 1.25 + 200; // scaling taking place. Found out by trial and error
+
+    //Draw the data you want to download to the hidden canvas
+    var hidden_ctx = hidden_canvas.getContext("2d");
+    hidden_ctx.drawImage(
+      canvas,
+      edges[0] * 1.25 - 100, //Start Clipping
+      edges[1] * 1.25 - 100, //Start Clipping
+      hidden_canvas.width, //Clipping Width
+      hidden_canvas.height, //Clipping Height
+      0, //Place X
+      0, //Place Y
+      hidden_canvas.width, //Place Width
+      hidden_canvas.height //Place Height
+    );
+
     var downloadImg = document.getElementById("downloadImg");
-    var img = canvas.toDataURL("image/jpg").replace("image/jpg", "image/octet-stream");
+    var img = hidden_canvas.toDataURL("image/jpg").replace("image/jpg", "image/octet-stream");
     downloadImg.setAttribute("href", img);
   };
 
@@ -209,6 +305,10 @@ const ImportExportMenuListComposition = (props) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  components: state.components,
+});
+
 const mapDispatchToProps = {
   resetMeta,
   resetComponents,
@@ -218,4 +318,4 @@ const mapDispatchToProps = {
   deselect,
 };
 
-export default connect(null, mapDispatchToProps)(ImportExportMenuListComposition);
+export default connect(mapStateToProps, mapDispatchToProps)(ImportExportMenuListComposition);

@@ -5,6 +5,7 @@ import {
   updatePositionChildren,
   repositionComponents,
   select,
+  deselect,
 } from "../../actions/actions";
 import { Group, Line, Text } from "react-konva";
 import {
@@ -66,11 +67,11 @@ class Relationship extends React.Component {
         points={[
           0,
           -relationshipHeight + weakRelationshipOffset, // TOP
-          relationshipWidth - 1.3 * weakRelationshipOffset,
+          relationshipWidth - 1.5 * weakRelationshipOffset,
           0, // RIGHT
           0,
           relationshipHeight - weakRelationshipOffset, // BOTTOM
-          -relationshipWidth + 1.3 * weakRelationshipOffset,
+          -relationshipWidth + 1.5 * weakRelationshipOffset,
           0, // LEFT
         ]}
       />
@@ -98,6 +99,7 @@ class Relationship extends React.Component {
         }}
         onDragEnd={() => this.props.repositionComponents()}
         onTap={() => {
+          this.props.deselect();
           this.props.select({
             type: "relationship",
             id: this.props.id,
@@ -105,6 +107,7 @@ class Relationship extends React.Component {
           });
         }}
         onClick={() => {
+          this.props.deselect();
           this.props.select({
             type: "relationship",
             id: this.props.id,
@@ -157,6 +160,7 @@ const mapDispatchToProps = {
   updatePositionChildren,
   repositionComponents,
   select,
+  deselect,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Relationship);

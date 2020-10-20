@@ -14,6 +14,12 @@ import { getRandomInt } from "../../global/utils";
 import { nameSize, stageWidth, stageHeight, spawnRadius } from "../../global/constants";
 
 class AttributeProperties extends React.Component {
+  componentDidMount() {
+    this.nameInput.focus();
+  }
+
+  handleFocus = (e) => e.target.select();
+
   findAttributeIndex = (attribute) => attribute.id === this.props.selector.current.id;
 
   findParentIndex = (parent) => parent.id === this.props.selector.current.parentId;
@@ -120,6 +126,10 @@ class AttributeProperties extends React.Component {
             type="text"
             name="name"
             id="name"
+            ref={(input) => {
+              this.nameInput = input;
+            }}
+            onFocus={this.handleFocus}
             maxLength={nameSize}
             value={this.props.components.attributes[attributeIndex].name}
             onChange={this.nameValueChange}

@@ -305,6 +305,7 @@ class Surface extends React.Component {
           anchor = this.findNearestAnchor(lockedAnchorPoints, index, i);
 
           specificValuesPoints = this.calculateSpecificValuesPoints(anchor, this.props.components.relationships[i]);
+
           lineList.push(
             <Line
               key={keyIndex}
@@ -453,14 +454,7 @@ class Surface extends React.Component {
               <Stage width={stageWidth} height={stageHeight} onClick={(e) => this.stageClicked(e)}>
                 <Provider store={store}>
                   <Layer>
-                    <Rect
-                      width={stageWidth}
-                      height={stageHeight}
-                      fill="white"
-                      stroke="black"
-                      strokeWidth={2}
-                      listening={false}
-                    />
+                    <Rect width={stageWidth} height={stageHeight} fill="white" listening={false} />
                     {this.drawLines()}
                     {this.drawExtensions()}
                     {this.drawRelationships()}

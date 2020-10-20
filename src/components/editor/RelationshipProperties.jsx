@@ -16,6 +16,12 @@ import { getRandomInt } from "../../global/utils";
 import { nameSize, spawnRadius } from "../../global/constants";
 
 class RelationshipProperties extends React.Component {
+  componentDidMount() {
+    this.nameInput.focus();
+  }
+
+  handleFocus = (e) => e.target.select();
+
   findRelationshipIndex = (relationship) => relationship.id === this.props.selector.current.id;
 
   nameValueChange = (e) =>
@@ -74,6 +80,10 @@ class RelationshipProperties extends React.Component {
             type="text"
             name="name"
             id="name"
+            ref={(input) => {
+              this.nameInput = input;
+            }}
+            onFocus={this.handleFocus}
             maxLength={nameSize}
             value={this.props.components.relationships[relationshipIndex].name}
             onChange={this.nameValueChange}
