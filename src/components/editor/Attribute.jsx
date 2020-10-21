@@ -92,7 +92,6 @@ class Attribute extends React.Component {
               <Line
                 key={i}
                 stroke="#ff9b8e"
-                //stroke="cyan"
                 strokeWidth={2}
                 dash={[3, 5]}
                 points={[-attributeTextWidth / 2 + 5, lineOffset, attributeTextWidth / 2 - 5, lineOffset]}

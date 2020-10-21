@@ -73,6 +73,7 @@ class AttributeProperties extends React.Component {
       id: this.props.components.count + 1,
       parentId: this.props.selector.current.parentId,
     });
+    this.nameInput.focus();
   };
 
   handleAddAttribute = (attributeIndex) => {
@@ -92,6 +93,7 @@ class AttributeProperties extends React.Component {
       id: this.props.components.count + 1,
       parentId: this.props.selector.current.id,
     });
+    this.nameInput.focus();
   };
 
   render() {

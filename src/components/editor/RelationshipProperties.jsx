@@ -103,7 +103,7 @@ class RelationshipProperties extends React.Component {
                     checked={this.props.components.relationships[relationshipIndex].type.weak}
                     onChange={this.typeValueChange}
                   />
-                  Weak
+                  Identifying
                 </label>
               </td>
             </tr>
