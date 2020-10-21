@@ -151,6 +151,18 @@
   }
 }
 
+.save-warning {
+  background-color: rgb(0, 51, 102);
+  color: #fff;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 3;
+  top: $toolsHeight;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .undecorate-link {
   color: black;
   text-decoration: none;

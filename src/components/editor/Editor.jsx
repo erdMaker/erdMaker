@@ -16,6 +16,7 @@ import axios from "axios";
 class Editor extends React.Component {
   constructor(props) {
     super(props);
+    this.state={showSaveWarning: true}
     this.props.updateSidepanelWidth();
     this.cancelToken = axios.CancelToken.source();
     var storedDiagram = { meta: this.props.meta, components: this.props.components };
@@ -49,10 +50,18 @@ class Editor extends React.Component {
     }
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.showSaveWarning === nextState.showSaveWarning) {
+      return false;
+    }
+    return true;
+  }
+
   render() {
     return (
-      <div className="editor">
+      <div className="editor" onClick={()=>this.setState({showSaveWarning: false})}>
         <Tools />
+        {this.props.user.isLogged && <div className="save-warning" style={{visibility: this.state.showSaveWarning ? "visible" : "hidden"}}>Please make sure you click Save, before exiting the editor.</div>}
         <Surface />
       </div>
     );
