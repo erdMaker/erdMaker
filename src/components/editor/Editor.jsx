@@ -65,7 +65,7 @@ class Editor extends React.Component {
         <Tools />
         {this.props.user.isLogged && (
           <div className="save-warning" style={{ visibility: this.state.showSaveWarning ? "visible" : "hidden" }}>
-            Please make sure you click Save, before exiting the editor.
+            Please make sure you click the 'Save' button, before exiting the editor.
           </div>
         )}
         <Surface />
