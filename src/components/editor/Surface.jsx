@@ -356,7 +356,7 @@ class Surface extends React.Component {
                 : this.props.components.relationships[i].connections[j].exactMin) +
               "," +
               (this.props.components.relationships[i].connections[j].exactMax === ""
-                ? "-"
+                ? "N"
                 : this.props.components.relationships[i].connections[j].exactMax) +
               ")";
 
