@@ -32,6 +32,10 @@ class Tools extends React.Component {
 
   componentDidMount() {
     window.addEventListener("beforeunload", this.timerCleanup);
+    this.startSaveTimer = setTimeout(() => this.startSave(), 15000);
+  }
+
+  startSave() {
     if (this.state.saveEnabled) this.saveTimer = setInterval(() => this.saveDiagram(), savePeriod);
   }
 
@@ -42,6 +46,7 @@ class Tools extends React.Component {
   }
 
   timerCleanup() {
+    clearTimeout(this.startSaveTimer);
     clearInterval(this.saveTimer);
     clearTimeout(this.clickTimer);
   }

@@ -8,6 +8,7 @@ import {
   updateSidepanelWidth,
   resetComponents,
   resetMeta,
+  resetActiveDiagram,
   setMeta,
   setComponents,
 } from "../../actions/actions";
@@ -16,7 +17,7 @@ import axios from "axios";
 class Editor extends React.Component {
   constructor(props) {
     super(props);
-    this.state={showSaveWarning: true}
+    this.state = { showSaveWarning: true };
     this.props.updateSidepanelWidth();
     this.cancelToken = axios.CancelToken.source();
     var storedDiagram = { meta: this.props.meta, components: this.props.components };
@@ -47,6 +48,7 @@ class Editor extends React.Component {
     if (this.props.general.activeDiagramId) {
       this.props.resetComponents();
       this.props.resetMeta();
+      this.props.resetActiveDiagram();
     }
   };
 
@@ -59,9 +61,13 @@ class Editor extends React.Component {
 
   render() {
     return (
-      <div className="editor" onClick={()=>this.setState({showSaveWarning: false})}>
+      <div className="editor" onClick={() => this.setState({ showSaveWarning: false })}>
         <Tools />
-        {this.props.user.isLogged && <div className="save-warning" style={{visibility: this.state.showSaveWarning ? "visible" : "hidden"}}>Please make sure you click Save, before exiting the editor.</div>}
+        {this.props.user.isLogged && (
+          <div className="save-warning" style={{ visibility: this.state.showSaveWarning ? "visible" : "hidden" }}>
+            Please make sure you click Save, before exiting the editor.
+          </div>
+        )}
         <Surface />
       </div>
     );
@@ -80,6 +86,7 @@ const mapDispatchToProps = {
   updateSidepanelWidth,
   resetComponents,
   resetMeta,
+  resetActiveDiagram,
   setMeta,
   setComponents,
 };
