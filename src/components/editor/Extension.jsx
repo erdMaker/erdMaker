@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { updatePositionExtension, select, repositionComponents } from "../../actions/actions";
 import { Group, Circle, Line, Text } from "react-konva";
-import { stageWidth, stageHeight, extensionRadius, fontSize } from "../../global/constants";
+import { stageWidth, stageHeight, extensionRadius, fontSize, dragBoundOffset } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
 class Extension extends React.Component {
@@ -11,11 +11,17 @@ class Extension extends React.Component {
     var newX;
     var newY;
 
-    if (pos.x > stageWidth / 2) newX = pos.x > stageWidth - extensionRadius ? stageWidth - extensionRadius : pos.x;
-    else newX = pos.x < extensionRadius ? extensionRadius : pos.x;
+    if (pos.x > stageWidth / 2)
+      newX =
+        pos.x > stageWidth - extensionRadius - dragBoundOffset ? stageWidth - extensionRadius - dragBoundOffset : pos.x;
+    else newX = pos.x < extensionRadius + dragBoundOffset ? extensionRadius + dragBoundOffset : pos.x;
 
-    if (pos.y > stageHeight / 2) newY = pos.y > stageHeight - extensionRadius ? stageHeight - extensionRadius : pos.y;
-    else newY = pos.y < extensionRadius ? extensionRadius : pos.y;
+    if (pos.y > stageHeight / 2)
+      newY =
+        pos.y > stageHeight - extensionRadius - dragBoundOffset
+          ? stageHeight - extensionRadius - dragBoundOffset
+          : pos.y;
+    else newY = pos.y < extensionRadius + dragBoundOffset ? extensionRadius + dragBoundOffset : pos.y;
 
     return {
       x: newX,

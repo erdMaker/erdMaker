@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { updatePositionLabel, resizeLabel, select, repositionComponents } from "../../actions/actions";
 import { Group, Rect, Line, Text } from "react-konva";
-import { stageWidth, stageHeight, resizeRectSize, fontSize } from "../../global/constants";
+import { stageWidth, stageHeight, resizeRectSize, fontSize, dragBoundOffset } from "../../global/constants";
 
 class Label extends React.Component {
   state = {
@@ -30,12 +30,18 @@ class Label extends React.Component {
     var newY;
 
     if (pos.x > stageWidth / 2)
-      newX = pos.x > stageWidth - this.props.width / 2 ? stageWidth - this.props.width / 2 : pos.x;
-    else newX = pos.x < this.props.width / 2 ? this.props.width / 2 : pos.x;
+      newX =
+        pos.x > stageWidth - this.props.width / 2 - dragBoundOffset
+          ? stageWidth - this.props.width / 2 - dragBoundOffset
+          : pos.x;
+    else newX = pos.x < this.props.width / 2 + dragBoundOffset ? this.props.width / 2 + dragBoundOffset : pos.x;
 
     if (pos.y > stageHeight / 2)
-      newY = pos.y > stageHeight - this.props.height / 2 ? stageHeight - this.props.height / 2 : pos.y;
-    else newY = pos.y < this.props.height / 2 ? this.props.height / 2 : pos.y;
+      newY =
+        pos.y > stageHeight - this.props.height / 2 - dragBoundOffset
+          ? stageHeight - this.props.height / 2 - dragBoundOffset
+          : pos.y;
+    else newY = pos.y < this.props.height / 2 + dragBoundOffset ? this.props.height / 2 + dragBoundOffset : pos.y;
 
     return {
       x: newX,

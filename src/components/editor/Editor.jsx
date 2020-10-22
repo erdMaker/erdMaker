@@ -8,7 +8,7 @@ import {
   updateSidepanelWidth,
   resetComponents,
   resetMeta,
-  resetActiveDiagram,
+  //resetActiveDiagram,
   setMeta,
   setComponents,
 } from "../../actions/actions";
@@ -48,7 +48,7 @@ class Editor extends React.Component {
     if (this.props.general.activeDiagramId) {
       this.props.resetComponents();
       this.props.resetMeta();
-      this.props.resetActiveDiagram();
+      //this.props.resetActiveDiagram();
     }
   };
 
@@ -86,7 +86,7 @@ const mapDispatchToProps = {
   updateSidepanelWidth,
   resetComponents,
   resetMeta,
-  resetActiveDiagram,
+  //resetActiveDiagram,
   setMeta,
   setComponents,
 };

@@ -17,6 +17,7 @@ import {
   multivaluedAttributeOffset,
   fontSize,
   textHeight,
+  dragBoundOffset,
 } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
@@ -30,11 +31,19 @@ class Attribute extends React.Component {
     var newX;
     var newY;
 
-    if (pos.x > stageWidth / 2) newX = pos.x > stageWidth - attributeRadiusX ? stageWidth - attributeRadiusX : pos.x;
-    else newX = pos.x < attributeRadiusX ? attributeRadiusX : pos.x;
+    if (pos.x > stageWidth / 2)
+      newX =
+        pos.x > stageWidth - attributeRadiusX - dragBoundOffset
+          ? stageWidth - attributeRadiusX - dragBoundOffset
+          : pos.x;
+    else newX = pos.x < attributeRadiusX + dragBoundOffset ? attributeRadiusX + dragBoundOffset : pos.x;
 
-    if (pos.y > stageHeight / 2) newY = pos.y > stageHeight - attributeRadiusY ? stageHeight - attributeRadiusY : pos.y;
-    else newY = pos.y < attributeRadiusY ? attributeRadiusY : pos.y;
+    if (pos.y > stageHeight / 2)
+      newY =
+        pos.y > stageHeight - attributeRadiusY - dragBoundOffset
+          ? stageHeight - attributeRadiusY - dragBoundOffset
+          : pos.y;
+    else newY = pos.y < attributeRadiusY + dragBoundOffset ? attributeRadiusY + dragBoundOffset : pos.y;
 
     return {
       x: newX,

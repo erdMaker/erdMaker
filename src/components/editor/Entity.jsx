@@ -17,6 +17,7 @@ import {
   entityWeakOffset,
   fontSize,
   textHeight,
+  dragBoundOffset,
 } from "../../global/constants";
 
 class Entity extends React.Component {
@@ -27,11 +28,17 @@ class Entity extends React.Component {
     var newX;
     var newY;
 
-    if (pos.x > stageWidth / 2) newX = pos.x > stageWidth - entityWidth / 2 ? stageWidth - entityWidth / 2 : pos.x;
-    else newX = pos.x < entityWidth / 2 ? entityWidth / 2 : pos.x;
+    if (pos.x > stageWidth / 2)
+      newX =
+        pos.x > stageWidth - entityWidth / 2 - dragBoundOffset ? stageWidth - entityWidth / 2 - dragBoundOffset : pos.x;
+    else newX = pos.x < entityWidth / 2 + dragBoundOffset ? entityWidth / 2 + dragBoundOffset : pos.x;
 
-    if (pos.y > stageHeight / 2) newY = pos.y > stageHeight - entityHeight / 2 ? stageHeight - entityHeight / 2 : pos.y;
-    else newY = pos.y < entityHeight / 2 ? entityHeight / 2 : pos.y;
+    if (pos.y > stageHeight / 2)
+      newY =
+        pos.y > stageHeight - entityHeight / 2 - dragBoundOffset
+          ? stageHeight - entityHeight / 2 - dragBoundOffset
+          : pos.y;
+    else newY = pos.y < entityHeight / 2 + dragBoundOffset ? entityHeight / 2 + dragBoundOffset : pos.y;
 
     return {
       x: newX,

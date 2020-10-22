@@ -12,6 +12,7 @@ import {
   labelMinHeight,
   labelMaxWidth,
   labelMaxHeight,
+  dragBoundOffset,
 } from "../global/constants";
 
 import { getChildren } from "../global/utils";
@@ -448,46 +449,54 @@ const componentsReducer = (state = initialState, action) => {
       };
     case "REPOSITION_COMPONENTS": // Used to return all components within stage bound if dragged off
       for (let i in newState.entities) {
-        if (newState.entities[i].x > stageWidth - entityWidth / 2)
-          newState.entities[i].x = stageWidth - entityWidth / 2;
-        else if (newState.entities[i].x < entityWidth / 2) newState.entities[i].x = entityWidth / 2;
-        if (newState.entities[i].y > stageHeight - entityHeight / 2)
-          newState.entities[i].y = stageHeight - entityHeight / 2;
-        else if (newState.entities[i].y < entityHeight / 2) newState.entities[i].y = entityHeight / 2;
+        if (newState.entities[i].x > stageWidth - entityWidth / 2 - dragBoundOffset)
+          newState.entities[i].x = stageWidth - entityWidth / 2 - dragBoundOffset;
+        else if (newState.entities[i].x < entityWidth / 2 + dragBoundOffset)
+          newState.entities[i].x = entityWidth / 2 + dragBoundOffset;
+        if (newState.entities[i].y > stageHeight - entityHeight / 2 - dragBoundOffset)
+          newState.entities[i].y = stageHeight - entityHeight / 2 - dragBoundOffset;
+        else if (newState.entities[i].y < entityHeight / 2 + dragBoundOffset)
+          newState.entities[i].y = entityHeight / 2 + dragBoundOffset;
       }
       for (let i in newState.relationships) {
-        if (newState.relationships[i].x > stageWidth - relationshipWidth)
-          newState.relationships[i].x = stageWidth - relationshipWidth;
-        else if (newState.relationships[i].x < relationshipWidth) newState.relationships[i].x = relationshipWidth;
-        if (newState.relationships[i].y > stageHeight - relationshipHeight)
-          newState.relationships[i].y = stageHeight - relationshipHeight;
-        else if (newState.relationships[i].y < relationshipHeight) newState.relationships[i].y = relationshipHeight;
+        if (newState.relationships[i].x > stageWidth - relationshipWidth - dragBoundOffset)
+          newState.relationships[i].x = stageWidth - relationshipWidth - dragBoundOffset;
+        else if (newState.relationships[i].x < relationshipWidth + dragBoundOffset)
+          newState.relationships[i].x = relationshipWidth + dragBoundOffset;
+        if (newState.relationships[i].y > stageHeight - relationshipHeight - dragBoundOffset)
+          newState.relationships[i].y = stageHeight - relationshipHeight - dragBoundOffset;
+        else if (newState.relationships[i].y < relationshipHeight + dragBoundOffset)
+          newState.relationships[i].y = relationshipHeight + dragBoundOffset;
       }
       for (let i in newState.attributes) {
-        if (newState.attributes[i].x > stageWidth - attributeRadiusX)
-          newState.attributes[i].x = stageWidth - attributeRadiusX;
-        else if (newState.attributes[i].x <= attributeRadiusX) newState.attributes[i].x = attributeRadiusX;
-        if (newState.attributes[i].y > stageHeight - attributeRadiusY)
-          newState.attributes[i].y = stageHeight - attributeRadiusY;
-        else if (newState.attributes[i].y <= attributeRadiusY) newState.attributes[i].y = attributeRadiusY;
+        if (newState.attributes[i].x > stageWidth - attributeRadiusX - dragBoundOffset)
+          newState.attributes[i].x = stageWidth - attributeRadiusX - dragBoundOffset;
+        else if (newState.attributes[i].x <= attributeRadiusX + dragBoundOffset)
+          newState.attributes[i].x = attributeRadiusX + dragBoundOffset;
+        if (newState.attributes[i].y > stageHeight - attributeRadiusY - dragBoundOffset)
+          newState.attributes[i].y = stageHeight - attributeRadiusY - dragBoundOffset;
+        else if (newState.attributes[i].y <= attributeRadiusY + dragBoundOffset)
+          newState.attributes[i].y = attributeRadiusY + dragBoundOffset;
       }
       for (let i in newState.extensions) {
-        if (newState.extensions[i].x > stageWidth - extensionRadius)
-          newState.extensions[i].x = stageWidth - extensionRadius;
-        else if (newState.extensions[i].x <= extensionRadius) newState.extensions[i].x = extensionRadius;
-        if (newState.extensions[i].y > stageHeight - extensionRadius)
-          newState.extensions[i].y = stageHeight - extensionRadius;
-        else if (newState.extensions[i].y <= extensionRadius) newState.extensions[i].y = extensionRadius;
+        if (newState.extensions[i].x > stageWidth - extensionRadius - dragBoundOffset)
+          newState.extensions[i].x = stageWidth - extensionRadius - dragBoundOffset;
+        else if (newState.extensions[i].x <= extensionRadius + dragBoundOffset)
+          newState.extensions[i].x = extensionRadius + dragBoundOffset;
+        if (newState.extensions[i].y > stageHeight - extensionRadius - dragBoundOffset)
+          newState.extensions[i].y = stageHeight - extensionRadius - dragBoundOffset;
+        else if (newState.extensions[i].y <= extensionRadius + dragBoundOffset)
+          newState.extensions[i].y = extensionRadius + dragBoundOffset;
       }
       for (let i in newState.labels) {
-        if (newState.labels[i].x > stageWidth - newState.labels[i].width / 2)
-          newState.labels[i].x = stageWidth - newState.labels[i].width / 2;
-        else if (newState.labels[i].x < newState.labels[i].width / 2)
-          newState.labels[i].x = newState.labels[i].width / 2;
-        if (newState.labels[i].y > stageHeight - newState.labels[i].height / 2)
-          newState.labels[i].y = stageHeight - newState.labels[i].height / 2;
-        else if (newState.labels[i].y < newState.labels[i].height / 2)
-          newState.labels[i].y = newState.labels[i].height / 2;
+        if (newState.labels[i].x > stageWidth - newState.labels[i].width / 2 - dragBoundOffset)
+          newState.labels[i].x = stageWidth - newState.labels[i].width / 2 - dragBoundOffset;
+        else if (newState.labels[i].x < newState.labels[i].width / 2 + dragBoundOffset)
+          newState.labels[i].x = newState.labels[i].width / 2 + dragBoundOffset;
+        if (newState.labels[i].y > stageHeight - newState.labels[i].height / 2 - dragBoundOffset)
+          newState.labels[i].y = stageHeight - newState.labels[i].height / 2 - dragBoundOffset;
+        else if (newState.labels[i].y < newState.labels[i].height / 2 + dragBoundOffset)
+          newState.labels[i].y = newState.labels[i].height / 2 + dragBoundOffset;
       }
       return newState;
     case "SET_COMPONENTS":

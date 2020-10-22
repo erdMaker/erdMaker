@@ -17,6 +17,7 @@ import {
   weakRelationshipOffset,
   fontSize,
   textHeight,
+  dragBoundOffset,
 } from "../../global/constants";
 
 class Relationship extends React.Component {
@@ -27,12 +28,19 @@ class Relationship extends React.Component {
     var newX;
     var newY;
 
-    if (pos.x > stageWidth / 2) newX = pos.x > stageWidth - relationshipWidth ? stageWidth - relationshipWidth : pos.x;
-    else newX = pos.x < relationshipWidth ? relationshipWidth : pos.x;
+    if (pos.x > stageWidth / 2)
+      newX =
+        pos.x > stageWidth - relationshipWidth - dragBoundOffset
+          ? stageWidth - relationshipWidth - dragBoundOffset
+          : pos.x;
+    else newX = pos.x < relationshipWidth + dragBoundOffset ? relationshipWidth + dragBoundOffset : pos.x;
 
     if (pos.y > stageHeight / 2)
-      newY = pos.y > stageHeight - relationshipHeight ? stageHeight - relationshipHeight : pos.y;
-    else newY = pos.y < relationshipHeight ? relationshipHeight : pos.y;
+      newY =
+        pos.y > stageHeight - relationshipHeight - dragBoundOffset
+          ? stageHeight - relationshipHeight - dragBoundOffset
+          : pos.y;
+    else newY = pos.y < relationshipHeight + dragBoundOffset ? relationshipHeight + dragBoundOffset : pos.y;
 
     return {
       x: newX,
