@@ -16,8 +16,8 @@ import {
   relationshipTextWidth,
   weakRelationshipOffset,
   fontSize,
+  textHeight,
 } from "../../global/constants";
-var pixelWidth = require("string-pixel-width");
 
 class Relationship extends React.Component {
   state = { initialPosition: { x: this.props.x, y: this.props.y } };
@@ -41,18 +41,6 @@ class Relationship extends React.Component {
   };
 
   render() {
-    const nameText = this.props.name;
-    var namePixelWidth = pixelWidth(nameText, {
-      font: "Arial",
-      size: fontSize,
-    });
-
-    var nameYOffset;
-    if (namePixelWidth < relationshipTextWidth) nameYOffset = fontSize / 2;
-    else if (namePixelWidth < relationshipTextWidth * 2) nameYOffset = fontSize;
-    else if (namePixelWidth < relationshipTextWidth * 3) nameYOffset = (fontSize * 3) / 2;
-    else nameYOffset = fontSize * 2;
-
     var weakRelationshipRhombus = this.props.type.weak ? (
       <Line
         fill="#94dfea"
@@ -139,12 +127,15 @@ class Relationship extends React.Component {
         />
         {weakRelationshipRhombus}
         <Text
-          text={nameText}
+          text={this.props.name}
           fontSize={fontSize}
           align="center"
+          verticalAlign="middle"
           width={relationshipTextWidth}
+          height={textHeight}
           offsetX={relationshipTextWidth / 2}
-          offsetY={nameYOffset}
+          offsetY={textHeight / 2}
+          listening={false}
         />
       </Group>
     );

@@ -1,8 +1,9 @@
 export const serverHost =
   process.env.NODE_ENV === "production" ? process.env.REACT_APP_DO_HOST : process.env.REACT_APP_LOCALHOST;
 export const diagramLimit = 15;
-export const nameSize = 30; // For entities, relationships and attributes
+export const nameSize = 80; // For entities, relationships and attributes
 export const fontSize = 13; // In the canvas stage
+export const textHeight = 500; // Height of the name text on canvas
 export const toolbarHeight = 60;
 export const stageWidth = 2560;
 export const stageHeight = 1412;

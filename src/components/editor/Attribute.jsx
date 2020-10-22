@@ -16,6 +16,7 @@ import {
   attributeTextWidth,
   multivaluedAttributeOffset,
   fontSize,
+  textHeight,
 } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
@@ -51,12 +52,6 @@ class Attribute extends React.Component {
     if (this.props.type.optional) nameText = nameText + " (O)";
 
     if (this.props.type.composite) nameText = "(" + nameText + ")";
-
-    var nameYOffset;
-    if (namePixelWidth < attributeTextWidth) nameYOffset = fontSize / 2;
-    else if (namePixelWidth < attributeTextWidth * 2) nameYOffset = fontSize;
-    else if (namePixelWidth < attributeTextWidth * 3) nameYOffset = (fontSize * 3) / 2;
-    else nameYOffset = fontSize * 2;
 
     var multivaluedEllipse = this.props.type.multivalued ? (
       <Ellipse
@@ -165,9 +160,12 @@ class Attribute extends React.Component {
           fontSize={fontSize}
           textDecoration={this.props.type.unique ? "underline" : ""}
           align="center"
+          verticalAlign="middle"
           width={attributeTextWidth}
+          height={textHeight}
           offsetX={attributeTextWidth / 2}
-          offsetY={nameYOffset}
+          offsetY={textHeight / 2}
+          listening={false}
         />
         {dashedUnderlineList}
       </Group>

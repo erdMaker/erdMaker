@@ -16,8 +16,8 @@ import {
   entityTextWidth,
   entityWeakOffset,
   fontSize,
+  textHeight,
 } from "../../global/constants";
-var pixelWidth = require("string-pixel-width");
 
 class Entity extends React.Component {
   state = { initialPosition: { x: this.props.x, y: this.props.y } };
@@ -40,18 +40,6 @@ class Entity extends React.Component {
   };
 
   render() {
-    const nameText = this.props.name;
-    var namePixelWidth = pixelWidth(nameText, {
-      font: "Arial",
-      size: fontSize,
-    });
-
-    var nameYOffset;
-    if (namePixelWidth < entityTextWidth) nameYOffset = fontSize / 2;
-    else if (namePixelWidth < entityTextWidth * 2) nameYOffset = fontSize;
-    else if (namePixelWidth < entityTextWidth * 3) nameYOffset = (fontSize * 3) / 2;
-    else nameYOffset = fontSize * 2;
-
     var weakRect =
       this.props.type === "weak" ? (
         <Rect
@@ -149,12 +137,15 @@ class Entity extends React.Component {
         {weakRect}
         {associativeDiamond}
         <Text
-          text={nameText}
+          text={this.props.name}
           fontSize={fontSize}
           align="center"
+          verticalAlign="middle"
           width={entityTextWidth}
+          height={textHeight}
           offsetX={entityTextWidth / 2}
-          offsetY={nameYOffset}
+          offsetY={textHeight / 2}
+          listening={false}
         />
       </Group>
     );
