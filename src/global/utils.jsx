@@ -33,7 +33,7 @@ export const getChildren = (list, array, id) => {
   }
 };
 
-// Check if user is on Safari Browser
+// Check if user is on Safari Browser (NOT VALID, NEEDS TO BE REWORKED)
 export function onSafari() {
   // Get the user-agent string
   let userAgentString = navigator.userAgent;

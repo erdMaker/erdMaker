@@ -29,8 +29,9 @@ import {
   attributeRadiusX,
   attributeRadiusY,
   extensionRadius,
+  dragBoundOffset,
 } from "../../global/constants";
-import { onSafari } from "../../global/utils";
+//import { onSafari } from "../../global/utils";
 var fileDownload = require("js-file-download");
 
 const useStyles = makeStyles((theme) => ({
@@ -186,19 +187,23 @@ const ImportExportMenuListComposition = (props) => {
     var hidden_canvas = document.createElement("canvas");
     hidden_canvas.style.display = "none";
     document.body.appendChild(hidden_canvas);
-    var hiddenCanvasScaling = onSafari() ? 1 : 1.25;
-    hidden_canvas.width = (edges[2] - edges[0]) * hiddenCanvasScaling + 4; // Multiplying by 1.25 because it seems there is internal
-    hidden_canvas.height = (edges[3] - edges[1]) * hiddenCanvasScaling + 4; // scaling taking place. Found out by trial and error
+    //var value = window.devicePixelRatio;
+    //console.log(value);
+    //var hiddenCanvasScaling = onSafari() ? 1 : 1.25;
+    var hiddenCanvasScaling = window.devicePixelRatio;
+    hidden_canvas.width = (edges[2] - edges[0]) * hiddenCanvasScaling + 2 * dragBoundOffset; // Multiplying by 1.25 because it seems there is internal
+    hidden_canvas.height = (edges[3] - edges[1]) * hiddenCanvasScaling + 2 * dragBoundOffset; // scaling taking place. Found out by trial and error
     //console.log(hidden_canvas.width)
     //console.log(hidden_canvas.height)
-    //console.log(edges[0] * hiddenCanvasScaling - 2)
-    //console.log(edges[1] * hiddenCanvasScaling - 2)
+    //console.log(edges[0] * hiddenCanvasScaling - dragBoundOffset)
+    //console.log(edges[1] * hiddenCanvasScaling - dragBoundOffset)
     //Draw the data you want to download to the hidden canvas
+
     var hidden_ctx = hidden_canvas.getContext("2d");
     hidden_ctx.drawImage(
       canvas,
-      edges[0] * hiddenCanvasScaling - 2, //Start Clipping
-      edges[1] * hiddenCanvasScaling - 2, //Start Clipping
+      edges[0] * hiddenCanvasScaling - dragBoundOffset, //Start Clipping
+      edges[1] * hiddenCanvasScaling - dragBoundOffset, //Start Clipping
       hidden_canvas.width, //Clipping Width
       hidden_canvas.height, //Clipping Height
       0, //Place X
