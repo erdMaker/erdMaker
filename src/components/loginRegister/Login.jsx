@@ -137,7 +137,7 @@ class Login extends React.Component {
                       }
                     : null
                 }
-                type="text"
+                type="email"
                 name="email"
                 id="email"
                 placeholder="email"

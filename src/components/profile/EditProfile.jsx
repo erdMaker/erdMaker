@@ -223,7 +223,7 @@ class EditProfile extends React.Component {
                     }
                   : null
               }
-              type="text"
+              type="email"
               id="email"
               name="email"
               maxLength="60"

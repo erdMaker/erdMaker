@@ -155,7 +155,7 @@ class Register extends React.Component {
                     }
                   : null
               }
-              type="text"
+              type="email"
               id="email"
               name="email"
               placeholder="email"

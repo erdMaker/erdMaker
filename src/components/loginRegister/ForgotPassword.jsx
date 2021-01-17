@@ -124,7 +124,7 @@ class ForgotPassword extends React.Component {
                         }
                       : null
                   }
-                  type="text"
+                  type="email"
                   name="email"
                   value={this.state.email}
                   placeholder="enter your email address"

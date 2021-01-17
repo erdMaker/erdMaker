@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   const footerLinks =  [
-    { label: "Terms", link: "/terms", type: "int" },
-    { label: "Privacy", link: "/privacy", type: "int" },
+    //{ label: "Terms", link: "/terms", type: "int" },
+    //{ label: "Privacy", link: "/privacy", type: "int" },
   ];
   
   // External links are rendered as <a> and internal as <Link>

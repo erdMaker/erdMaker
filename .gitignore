@@ -12,3 +12,6 @@ client-start.bat
 
 # Batch file that renames index.html to 200.html for production
 add-200.bat
+
+# File cache that improves linting performance
+.eslintcache
