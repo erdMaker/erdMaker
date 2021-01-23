@@ -13,7 +13,7 @@ const About = () => {
         <p className="about-text">
           If you face any issue, would like to submit a bug report or provide feedback you can do so in the Issues
           section of the{" "}
-          <a href="https://github.com/Raynesz/erdMaker" target="_blank" rel="noopener noreferrer">
+          <a className="text-link" href="https://github.com/Raynesz/erdMaker" target="_blank" rel="noopener noreferrer">
             Github page
           </a>
           .
@@ -27,6 +27,7 @@ const About = () => {
         </p>
         <h3>Credits</h3>
         <a
+          className="text-link"
           href="https://www.freepik.com/free-photos-vectors/technology"
           title="Background Image"
           target="_blank"
@@ -36,11 +37,11 @@ const About = () => {
         </a>
         <div>
           Icons made by{" "}
-          <a href="https://www.flaticon.com/authors/freepik" title="Freepik" target="_blank" rel="noopener noreferrer">
+          <a className="text-link" href="https://www.flaticon.com/authors/freepik" title="Freepik" target="_blank" rel="noopener noreferrer">
             Freepik
           </a>{" "}
           from{" "}
-          <a href="https://www.flaticon.com/" title="Flaticon" target="_blank" rel="noopener noreferrer">
+          <a className="text-link" href="https://www.flaticon.com/" title="Flaticon" target="_blank" rel="noopener noreferrer">
             www.flaticon.com
           </a>
         </div>

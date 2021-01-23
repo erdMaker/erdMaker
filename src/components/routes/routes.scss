@@ -72,6 +72,15 @@
   }
 }
 
+.text-link {
+  color:#1faacd;
+  font-weight: bold;
+  text-decoration: none;
+  &:hover {
+    color:#166b92;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .home-wrapper {
     display: block;
