@@ -2,11 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
-  const footerLinks =  [
-    //{ label: "Terms", link: "/terms", type: "int" },
-    //{ label: "Privacy", link: "/privacy", type: "int" },
-  ];
-  
+  const footerLinks = [{ label: "</> by Raynesz", link: "https://github.com/raynesz", type: "ext" }];
+
   // External links are rendered as <a> and internal as <Link>
   let linksMarkup = footerLinks.map((link, index) => {
     let linkMarkup =
@@ -15,7 +12,7 @@ const Footer = () => {
           {link.label}
         </Link>
       ) : (
-        <a className="nav__link" href={link.link} target="_blank" rel="noopener noreferrer">
+        <a className="default-custom-link" href={link.link} target="_blank" rel="noopener noreferrer">
           {link.label}
         </a>
       );

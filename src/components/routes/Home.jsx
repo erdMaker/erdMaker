@@ -18,7 +18,7 @@ const Home = (props) => {
 const Description = (props) => (
   <div className="description">
     <div>
-      An Online Entity - Relationship Diagram design tool.
+      Design Extended Entity - Relationship (EER) Diagrams.
       <br />
       <br />
       Get started as guest or log in to save your progress.

@@ -1,3 +1,12 @@
+@mixin custom-link($default, $highlight) {
+  color: $default;
+  font-weight: bold;
+  text-decoration: none;
+  &:hover {
+    color: $highlight;
+  }
+}
+
 .home-wrapper {
   width: 100%;
   display: flex;
@@ -72,13 +81,20 @@
   }
 }
 
-.text-link {
-  color:#1faacd;
-  font-weight: bold;
-  text-decoration: none;
-  &:hover {
-    color:#166b92;
-  }
+.default-custom-link {
+  @include custom-link(#06748f, #033850);
+}
+
+.react-custom-link {
+  @include custom-link(#299adb, #147fbd);
+}
+
+.redux-custom-link {
+  @include custom-link(#8c3cc2, #5b148a);
+}
+
+.node-custom-link {
+  @include custom-link(#13b10e, #0d7909);
 }
 
 @media screen and (max-width: 768px) {
