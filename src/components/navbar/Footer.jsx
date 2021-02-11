@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
-  const footerLinks = [{ label: "</> by Raynesz", link: "https://github.com/raynesz", type: "ext" }];
+  const footerLinks = [{ label: "Who made this?", link: "https://github.com/raynesz", type: "ext" }];
 
   // External links are rendered as <a> and internal as <Link>
   let linksMarkup = footerLinks.map((link, index) => {
