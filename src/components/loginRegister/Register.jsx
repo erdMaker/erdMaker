@@ -41,12 +41,12 @@ class Register extends React.Component {
       captcha: captchaVal,
     };
 
-    this.setState({
-      email: "",
-      username: "",
-      password: "",
-      confirmPassword: "",
-    });
+    //this.setState({
+    //  email: "",
+    //  username: "",
+    //  password: "",
+    //  confirmPassword: "",
+    //});
     this.recaptchaRef.current.reset();
 
     register(newUser, this.cancelToken)

@@ -29,9 +29,9 @@ class ForgotPassword extends React.Component {
       captcha: captchaVal,
     };
 
-    this.setState({
-      email: "",
-    });
+    //this.setState({
+    //  email: "",
+    //});
     this.recaptchaRef.current.reset();
 
     forgotpassword(email, this.cancelToken)

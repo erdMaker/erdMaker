@@ -31,10 +31,10 @@ class Login extends React.Component {
       email: this.state.email,
       password: this.state.password,
     };
-    this.setState({
-      email: "",
-      password: "",
-    });
+    //this.setState({
+    //  email: "",
+    //  password: "",
+    //});
 
     login(user, this.cancelToken)
       .then((res) => {

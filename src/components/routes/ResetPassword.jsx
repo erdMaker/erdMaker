@@ -34,10 +34,10 @@ class ResetPassword extends React.Component {
       token: token,
     };
 
-    this.setState({
-      password: "",
-      confirmPassword: "",
-    });
+    //this.setState({
+    //  password: "",
+    //  confirmPassword: "",
+    //});
 
     resetpassword(newPass, this.cancelToken)
       .then((res) => {
