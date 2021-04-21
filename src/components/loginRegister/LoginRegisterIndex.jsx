@@ -9,6 +9,7 @@ class LoginRegisterIndex extends React.Component {
 
   componentDidMount() {
     this.slidingTogglePanel.classList.add("right");
+    this.slidingTogglePanelText.classList.add("right");
   }
 
   // Moves the sliding panel from one side to the other
@@ -16,9 +17,13 @@ class LoginRegisterIndex extends React.Component {
     if (this.state.isLoginActive) {
       this.slidingTogglePanel.classList.remove("right");
       this.slidingTogglePanel.classList.add("left");
+      this.slidingTogglePanelText.classList.remove("right");
+      this.slidingTogglePanelText.classList.add("left");
     } else {
       this.slidingTogglePanel.classList.remove("left");
       this.slidingTogglePanel.classList.add("right");
+      this.slidingTogglePanelText.classList.remove("left");
+      this.slidingTogglePanelText.classList.add("right");
     }
     this.setState((state) => ({ isLoginActive: !state.isLoginActive }));
   };
@@ -33,6 +38,7 @@ class LoginRegisterIndex extends React.Component {
           current={current}
           onClick={this.changeState}
           containerRef={(ref) => (this.slidingTogglePanel = ref)}
+          containerTextRef={(ref) => (this.slidingTogglePanelText = ref)}
         />
       </div>
     );
@@ -43,6 +49,7 @@ const SlidingTogglePanel = (props) => (
   <div className="sliding-toggle-panel" ref={props.containerRef} onClick={props.onClick}>
     <div
       className="sliding-toggle-panel-text"
+      ref={props.containerTextRef}
       style={{
         marginLeft: window.innerWidth / 50,
         marginRight: window.innerWidth / 50,

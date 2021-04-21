@@ -1,4 +1,4 @@
-@mixin userContainerWithToggleSlider($leftColor) {
+@mixin userContainerWithToggleSlider($leftColor, $rightColor) {
   position: relative;
   display: flex;
   align-items: center;
@@ -23,7 +23,7 @@
     box-shadow: 0px 0px 12px 2px rgba(15, 15, 15, 0.281);
     -webkit-tap-highlight-color: transparent;
     &.right {
-      background-color: #3498db;
+      background-color: $rightColor;
       right: -26%;
       align-items: flex-end;
       &:hover {
@@ -62,14 +62,19 @@
     }
 
     .sliding-toggle-panel-text {
-      writing-mode: vertical-rl;
       text-orientation: upright;
+      &.right {
+        writing-mode: vertical-rl;
+      }
+      &.left {
+        writing-mode: vertical-lr;
+      }
     }
   }
 }
 
 .login-register {
-  @include userContainerWithToggleSlider(#14bd76);
+  @include userContainerWithToggleSlider(#14bd76, #3498db);
 }
 
 .forgot-password {
