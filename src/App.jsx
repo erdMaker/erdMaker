@@ -6,7 +6,7 @@ import Header from "./components/navbar/Header";
 import About from "./components/routes/About";
 import Footer from "./components/navbar/Footer";
 import Editor from "./components/editor/Editor";
-import EmailChangeSuccess from "./components/routes/EmailChangeSuccess";
+import ServerMessage from "./components/routes/ServerMessage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
@@ -20,7 +20,7 @@ const App = () => {
             <div className="inner-body">
               <Switch>
                 <Route path="/resetpassword/*" exact component={ResetPassword} />
-                <Route path="/emailchangesuccess" exact component={EmailChangeSuccess} />
+                <Route path="/msg" exact component={ServerMessage} />
                 <Route path="/about" exact component={About} />
                 <Route path="/" exact component={Home} />
                 <Route component={NoMatchPage} />

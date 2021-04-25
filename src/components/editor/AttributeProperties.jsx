@@ -35,6 +35,7 @@ class AttributeProperties extends React.Component {
     this.props.setTypeAttribute({
       id: this.props.selector.current.id,
       type: e.target.value,
+      checked: e.target.checked,
     });
   };
 

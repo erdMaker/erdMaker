@@ -30,11 +30,13 @@ class RelationshipProperties extends React.Component {
       name: e.target.value,
     });
 
-  typeValueChange = (e) =>
+  typeValueChange = (e) => {
     this.props.setTypeRelationship({
       id: this.props.selector.current.id,
       type: e.target.value,
+      checked: e.target.checked,
     });
+  };
 
   handleAddAttribute = (relationshipIndex) => {
     // Randomly position the attribute around the relationship

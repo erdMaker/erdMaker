@@ -105,16 +105,12 @@ const componentsReducer = (state = initialState, action) => {
         ),
       };
     case "MODIFY_EXTENSION":
-      for (let i in newState.extensions) {
-        if (newState.extensions[i].id === action.payload.id) {
-          newState.extensions[i] = {
-            ...newState.extensions[i],
-            [action.payload.prop]: action.payload.value,
-          };
-          break;
-        }
-      }
-      return newState;
+      return {
+        ...state,
+        extensions: state.extensions.map((extension) =>
+          extension.id === action.payload.id ? { ...extension, [action.payload.prop]: action.payload.value } : extension
+        ),
+      };
     case "DELETE_EXTENSION":
       return {
         ...state,
@@ -204,16 +200,14 @@ const componentsReducer = (state = initialState, action) => {
         ),
       };
     case "SET_TYPE_RELATIONSHIP":
-      for (let i in newState.relationships) {
-        if (newState.relationships[i].id === action.payload.id) {
-          newState.relationships[i].type = {
-            ...newState.relationships[i].type,
-            [action.payload.type]: !newState.relationships[i].type[action.payload.type],
-          };
-          break;
-        }
-      }
-      return newState;
+      return {
+        ...state,
+        relationships: state.relationships.map((relationship) =>
+          relationship.id === action.payload.id
+            ? { ...relationship, type: { ...relationship.type, [action.payload.type]: action.payload.checked } }
+            : relationship
+        ),
+      };
     case "DELETE_RELATIONSHIP":
       // Reduce connectionCount of involved entities
       function adjustEntities(connection) {
@@ -354,16 +348,14 @@ const componentsReducer = (state = initialState, action) => {
         ),
       };
     case "SET_TYPE_ATTRIBUTE":
-      for (let i in newState.attributes) {
-        if (newState.attributes[i].id === action.payload.id) {
-          newState.attributes[i].type = {
-            ...newState.attributes[i].type,
-            [action.payload.type]: !newState.attributes[i].type[action.payload.type],
-          };
-          break;
-        }
-      }
-      return newState;
+      return {
+        ...state,
+        attributes: state.attributes.map((attribute) =>
+          attribute.id === action.payload.id
+            ? { ...attribute, type: { ...attribute.type, [action.payload.type]: action.payload.checked } }
+            : attribute
+        ),
+      };
     case "DELETE_ATTRIBUTE":
       return {
         ...state,
