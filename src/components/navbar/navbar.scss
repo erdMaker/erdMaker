@@ -47,7 +47,7 @@
   &:hover,
   &:active {
     color: #1faacd;
-    font-weight: 700;
+    text-shadow: -0.06ex 0 #1faacd, 0.06ex 0 #1faacd; //simulates bold font
   }
 }
 
