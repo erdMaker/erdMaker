@@ -94,6 +94,7 @@
   height: 100%;
 
   select {
+    max-width: 200px;
     margin-right: 10px;
     font-size: $inputFontSize;
     background-color: $inputBackgroundColor;
