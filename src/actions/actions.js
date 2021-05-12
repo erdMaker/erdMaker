@@ -18,6 +18,7 @@ export const DELETE_CONNECTION = "DELETE_CONNECTION";
 export const STORE_USER_DATA = "STORE_USER_DATA";
 export const REMOVE_USER_DATA = "REMOVE_USER_DATA";
 export const SET_ACTIVE_DIAGRAM = "SET_ACTIVE_DIAGRAM";
+export const SET_DIAGRAM_FETCHED = "SET_DIAGRAM_FETCHED";
 export const SET_TITLE = "SET_TITLE";
 export const RESET_ACTIVE_DIAGRAM = "RESET_ACTIVE_DIAGRAM";
 export const SET_SERVER_TIME = "SET_SERVER_TIME";
@@ -139,6 +140,11 @@ export const removeUserData = () => ({
 
 export const setActiveDiagram = (payload) => ({
   type: "SET_ACTIVE_DIAGRAM",
+  payload: payload,
+});
+
+export const setDiagramFetched = (payload) => ({
+  type: "SET_DIAGRAM_FETCHED",
   payload: payload,
 });
 

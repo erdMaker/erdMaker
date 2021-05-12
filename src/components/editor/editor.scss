@@ -185,6 +185,9 @@
   &:focus {
     outline: none;
   }
+  &:disabled {
+    background-color: #818181;
+  }
 }
 
 .tools-button-blue {

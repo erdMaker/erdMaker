@@ -20,10 +20,15 @@ import axios from "axios";
 import { diagramLimit, savePeriod } from "../../global/constants.js";
 
 class Tools extends React.Component {
+  saveIconColors = {
+    red: "#b30d23",
+    blue: "#0086a8",
+    green: "#00b53c",
+  };
   state = {
     saveEnabled:
       this.props.user.confirmed && (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId),
-    saveStatus: { text: "Your progress is being saved.", color: "#00b53c" },
+    saveStatus: { text: "Your progress is being saved.", color: this.saveIconColors.green },
     lastSave: " ",
     clearButtonText: "Clear Diagram",
     toolsListActive: false,
@@ -32,10 +37,6 @@ class Tools extends React.Component {
 
   componentDidMount() {
     window.addEventListener("beforeunload", this.timerCleanup);
-    this.startSaveTimer = setTimeout(() => this.startSave(), 15000);
-  }
-
-  startSave() {
     if (this.state.saveEnabled) this.saveTimer = setInterval(() => this.saveDiagram(), savePeriod);
   }
 
@@ -46,13 +47,13 @@ class Tools extends React.Component {
   }
 
   timerCleanup() {
-    clearTimeout(this.startSaveTimer);
     clearInterval(this.saveTimer);
     clearTimeout(this.clickTimer);
   }
 
   saveDiagram = () => {
-    this.setState({ saveStatus: { text: "Saving...", color: "#0086a8" } });
+    if (!this.props.general.diagramFetched) return;
+    this.setState({ saveStatus: { text: "Saving...", color: this.saveIconColors.blue } });
     savediagram(this.cancelToken)
       .then((res) => {
         if (res && (res.status === 200 || res.status === 201)) {
@@ -64,7 +65,7 @@ class Tools extends React.Component {
           this.setState({
             saveStatus: {
               text: "Your progress is being saved.",
-              color: "#00b53c",
+              color: this.saveIconColors.green,
             },
             lastSave: "Last Save " + hours + ":" + minutes + ":" + seconds,
           });
@@ -72,7 +73,7 @@ class Tools extends React.Component {
           this.setState({
             saveStatus: {
               text: "Not able to save. Leaving or refreshing the page might log you out.",
-              color: "#b30d23",
+              color: this.saveIconColors.red,
             },
           });
         }
@@ -114,7 +115,12 @@ class Tools extends React.Component {
     ) : null;
 
     var saveButton = this.state.saveEnabled ? (
-      <button className="tools-button-blue" type="button" onClick={this.saveDiagram}>
+      <button
+        className="tools-button-blue"
+        type="button"
+        disabled={!this.props.general.diagramFetched}
+        onClick={this.saveDiagram}
+      >
         Save
       </button>
     ) : null;

@@ -14,6 +14,7 @@ const stageInitialState = {
 const generalInitialState = {
   serverTime: null,
   activeDiagramId: null,
+  diagramFetched: false,
 };
 
 export const selectionReducer = (state = selectionInitialState, action) => {
@@ -67,6 +68,11 @@ export const generalReducer = (state = generalInitialState, action) => {
       return {
         ...state,
         activeDiagramId: null,
+      };
+    case "SET_DIAGRAM_FETCHED":
+      return {
+        ...state,
+        diagramFetched: action.payload.fetched,
       };
     default:
       return state;

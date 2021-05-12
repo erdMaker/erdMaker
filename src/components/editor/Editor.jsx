@@ -8,7 +8,7 @@ import {
   updateSidepanelWidth,
   resetComponents,
   resetMeta,
-  //resetActiveDiagram,
+  setDiagramFetched,
   setMeta,
   setComponents,
 } from "../../actions/actions";
@@ -31,14 +31,17 @@ class Editor extends React.Component {
     window.addEventListener("resize", this.props.updateSidepanelWidth);
     window.addEventListener("beforeunload", this.clearEditor);
     this.props.deselect();
-    if (this.props.user.isLogged && this.props.general.activeDiagramId) {
-      getDiagram(this.props.general.activeDiagramId, this.cancelToken);
+    if (this.props.user.isLogged) {
+      if (this.props.general.activeDiagramId) getDiagram(this.props.general.activeDiagramId, this.cancelToken);
+      // Fetch the diagram
+      else this.props.setDiagramFetched({ fetched: true }); // No diagram to fetch so set it to true anyway so the saving process can proceed
     }
   };
 
   componentWillUnmount() {
     this.clearEditor();
     this.cancelToken.cancel("Request is being canceled");
+    this.props.setDiagramFetched({ fetched: false });
     window.removeEventListener("resize", this.props.updateSidepanelWidth);
     window.removeEventListener("beforeunload", this.clearEditor);
   }
@@ -48,7 +51,8 @@ class Editor extends React.Component {
     if (this.props.general.activeDiagramId) {
       this.props.resetComponents();
       this.props.resetMeta();
-      //this.props.resetActiveDiagram();
+      // We do not clear the activeDiagramId so that the user can resume to their most recent diagram
+      // after they leave the page and press Back to return
     }
   };
 
@@ -86,7 +90,7 @@ const mapDispatchToProps = {
   updateSidepanelWidth,
   resetComponents,
   resetMeta,
-  //resetActiveDiagram,
+  setDiagramFetched,
   setMeta,
   setComponents,
 };

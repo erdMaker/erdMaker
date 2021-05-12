@@ -9,6 +9,7 @@ import {
   repositionComponents,
   setMeta,
   resetActiveDiagram,
+  setDiagramFetched,
 } from "../actions/actions";
 
 export const getProfile = (cancelToken) => {
@@ -44,9 +45,9 @@ export const getDiagram = (diagramId, cancelToken) => {
         store.dispatch(setComponents(data.components));
         store.dispatch(setMeta(data.meta));
         store.dispatch(repositionComponents());
+        store.dispatch(setDiagramFetched({ fetched: true }));
       } else {
-        store.dispatch(resetActiveDiagram());
-        window.location.replace("/");
+        throw new Error("Error while fetching the diagram");
       }
     })
     .catch((err) => {
@@ -56,14 +57,14 @@ export const getDiagram = (diagramId, cancelToken) => {
 };
 
 export function makeCompatible(data) {
-  if (!data.components.hasOwnProperty('extensions')) {
+  if (!data.components.hasOwnProperty("extensions")) {
     return {
       ...data,
       components: {
         ...data.components,
-        extensions: []
-      }
-    }
+        extensions: [],
+      },
+    };
   } else {
     return data;
   }
