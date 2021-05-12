@@ -28,12 +28,9 @@ const initialState = {
 };
 
 const componentsReducer = (state = initialState, action) => {
-  var newState = {};
-  Object.assign(newState, state);
-  var childrenList = [];
-  const stage = document.querySelector(".stage");
   switch (action.type) {
-    case "ADD_ENTITY":
+    case "ADD_ENTITY": {
+      let stage = document.querySelector(".stage");
       return {
         ...state,
         entities: [
@@ -49,6 +46,7 @@ const componentsReducer = (state = initialState, action) => {
         ],
         count: state.count + 1,
       };
+    }
     case "UPDATE_POSITION_ENTITY":
       return {
         ...state,
@@ -165,7 +163,8 @@ const componentsReducer = (state = initialState, action) => {
             : extension
         ),
       };
-    case "ADD_RELATIONSHIP":
+    case "ADD_RELATIONSHIP": {
+      let stage = document.querySelector(".stage");
       return {
         ...state,
         relationships: [
@@ -183,6 +182,7 @@ const componentsReducer = (state = initialState, action) => {
         ],
         count: state.count + 1,
       };
+    }
     case "UPDATE_POSITION_RELATIONSHIP":
       return {
         ...state,
@@ -208,7 +208,9 @@ const componentsReducer = (state = initialState, action) => {
             : relationship
         ),
       };
-    case "DELETE_RELATIONSHIP":
+    case "DELETE_RELATIONSHIP": {
+      let newState = {};
+      Object.assign(newState, state);
       // Reduce connectionCount of involved entities
       function adjustEntities(connection) {
         for (let j in newState.entities) {
@@ -221,6 +223,7 @@ const componentsReducer = (state = initialState, action) => {
       }
       newState.relationships = newState.relationships.filter((relationship) => relationship.id !== action.payload.id);
       return newState;
+    }
     case "ADD_CONNECTION":
       return {
         ...state,
@@ -246,8 +249,11 @@ const componentsReducer = (state = initialState, action) => {
         ),
         count: state.count + 1,
       };
-    case "CHANGE_CONNECTION": // Change connected entity
-      var prevConnectId = 0;
+    case "CHANGE_CONNECTION": {
+      // Change connected entity
+      let newState = {};
+      Object.assign(newState, state);
+      let prevConnectId = 0;
       for (let i in newState.relationships) {
         if (newState.relationships[i].id === action.payload.parentId)
           for (let j in newState.relationships[i].connections) {
@@ -273,7 +279,10 @@ const componentsReducer = (state = initialState, action) => {
           };
       }
       return newState;
-    case "MODIFY_CONNECTION":
+    }
+    case "MODIFY_CONNECTION": {
+      let newState = {};
+      Object.assign(newState, state);
       for (let i in newState.relationships) {
         if (newState.relationships[i].id === action.payload.parentId)
           for (let j in newState.relationships[i].connections) {
@@ -287,7 +296,10 @@ const componentsReducer = (state = initialState, action) => {
           }
       }
       return newState;
-    case "DELETE_CONNECTION":
+    }
+    case "DELETE_CONNECTION": {
+      let newState = {};
+      Object.assign(newState, state);
       if (action.payload.id) {
         for (let i in newState.entities) {
           if (newState.entities[i].id === action.payload.connectId)
@@ -311,6 +323,7 @@ const componentsReducer = (state = initialState, action) => {
         }
         return newState;
       }
+    }
     case "ADD_ATTRIBUTE":
       return {
         ...state,
@@ -361,13 +374,17 @@ const componentsReducer = (state = initialState, action) => {
         ...state,
         attributes: state.attributes.filter((attribute) => attribute.id !== action.payload.id),
       };
-    case "DELETE_CHILDREN":
+    case "DELETE_CHILDREN": {
+      let childrenList = [];
       getChildren(childrenList, state.attributes, action.payload.id); // Retrieve children of component with provided id
       return {
         ...state,
         attributes: state.attributes.filter((attribute) => !childrenList.includes(attribute.id)),
       };
-    case "UPDATE_POSITION_CHILDREN": // Moves children along with parent component
+    }
+    case "UPDATE_POSITION_CHILDREN": {
+      // Moves children along with parent component
+      let childrenList = [];
       getChildren(childrenList, state.attributes, action.payload.id); // Retrieve children of component with provided id
       return {
         ...state,
@@ -381,7 +398,9 @@ const componentsReducer = (state = initialState, action) => {
             : attribute
         ),
       };
-    case "ADD_LABEL":
+    }
+    case "ADD_LABEL": {
+      let stage = document.querySelector(".stage");
       return {
         ...state,
         labels: [
@@ -397,6 +416,7 @@ const componentsReducer = (state = initialState, action) => {
         ],
         count: state.count + 1,
       };
+    }
     case "UPDATE_POSITION_LABEL":
       return {
         ...state,
@@ -439,7 +459,10 @@ const componentsReducer = (state = initialState, action) => {
         ...state,
         labels: state.labels.filter((label) => label.id !== action.payload.id),
       };
-    case "REPOSITION_COMPONENTS": // Used to return all components within stage bound if dragged off
+    case "REPOSITION_COMPONENTS": {
+      // Used to return all components within stage bound if dragged off
+      let newState = {};
+      Object.assign(newState, state);
       for (let i in newState.entities) {
         if (newState.entities[i].x > stageWidth - entityWidth / 2 - dragBoundOffset)
           newState.entities[i].x = stageWidth - entityWidth / 2 - dragBoundOffset;
@@ -491,6 +514,7 @@ const componentsReducer = (state = initialState, action) => {
           newState.labels[i].y = newState.labels[i].height / 2 + dragBoundOffset;
       }
       return newState;
+    }
     case "SET_COMPONENTS":
       return action.payload;
     case "RESET_COMPONENTS":
