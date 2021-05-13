@@ -7,14 +7,11 @@ const selectionInitialState = {
   selectionExists: false,
 };
 
-const stageInitialState = {
-  sidepanelWidth: 0,
-};
-
 const generalInitialState = {
   serverTime: null,
   activeDiagramId: null,
   diagramFetched: false,
+  sidepanelWidth: 0,
 };
 
 export const selectionReducer = (state = selectionInitialState, action) => {
@@ -31,22 +28,6 @@ export const selectionReducer = (state = selectionInitialState, action) => {
       };
     case "DESELECT":
       return selectionInitialState;
-    default:
-      return state;
-  }
-};
-
-export const stageReducer = (state = stageInitialState, action) => {
-  switch (action.type) {
-    case "UPDATE_SIDEPANEL_WIDTH":
-      var sidepanelWidth;
-      if (window.innerWidth <= 527) sidepanelWidth = { standard: 100, wide: 100 };
-      else if (window.innerWidth <= 1060) sidepanelWidth = { standard: 40, wide: 50 };
-      else sidepanelWidth = { standard: 25, wide: 30 };
-      return {
-        ...state,
-        sidepanelWidth: sidepanelWidth,
-      };
     default:
       return state;
   }
@@ -73,6 +54,15 @@ export const generalReducer = (state = generalInitialState, action) => {
       return {
         ...state,
         diagramFetched: action.payload.fetched,
+      };
+    case "UPDATE_SIDEPANEL_WIDTH":
+      var sidepanelWidth;
+      if (window.innerWidth <= 527) sidepanelWidth = { standard: 100, wide: 100 };
+      else if (window.innerWidth <= 1060) sidepanelWidth = { standard: 40, wide: 50 };
+      else sidepanelWidth = { standard: 25, wide: 30 };
+      return {
+        ...state,
+        sidepanelWidth: sidepanelWidth,
       };
     default:
       return state;
