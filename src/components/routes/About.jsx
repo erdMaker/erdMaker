@@ -31,7 +31,7 @@ const About = () => {
   const issuesLink = (
     <a
       className="default-custom-link"
-      href="https://github.com/Raynesz/erdMaker/issues"
+      href="https://github.com/erdMaker/erdMaker/issues"
       target="_blank"
       rel="noopener noreferrer"
     >
