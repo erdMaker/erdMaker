@@ -24,7 +24,7 @@ class Surface extends React.Component {
         angle: -90,
       },
       {
-        x: -(entityWidth / 4),
+        x: -(entityWidth / 3),
         y: -(entityHeight / 2) - anchorLength,
         angle: 0,
       },
@@ -34,7 +34,7 @@ class Surface extends React.Component {
         angle: 0,
       },
       {
-        x: entityWidth / 4,
+        x: entityWidth / 3,
         y: -(entityHeight / 2) - anchorLength,
         angle: 0,
       },
@@ -44,7 +44,7 @@ class Surface extends React.Component {
         angle: 90,
       },
       {
-        x: entityWidth / 4,
+        x: entityWidth / 3,
         y: entityHeight / 2 + anchorLength,
         angle: 180,
       },
@@ -54,7 +54,7 @@ class Surface extends React.Component {
         angle: 180,
       },
       {
-        x: -(entityWidth / 4),
+        x: -(entityWidth / 3),
         y: entityHeight / 2 + anchorLength,
         angle: 180,
       },

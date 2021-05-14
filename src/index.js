@@ -7,15 +7,13 @@ import finalReducer from "./reducers";
 import { Provider } from "react-redux";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
-//*
 // Disable React DevTools for production
 if (process.env.NODE_ENV === "production" && typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
   for (let [key, value] of Object.entries(window.__REACT_DEVTOOLS_GLOBAL_HOOK__)) {
     window.__REACT_DEVTOOLS_GLOBAL_HOOK__[key] = typeof value == "function" ? () => {} : null;
   }
-} //*/
+}
 
-//*
 // Persist Redux store in LocalStorage
 const loadState = () => {
   try {
@@ -33,7 +31,6 @@ const saveState = (state) => {
   } catch (err) {}
 };
 const persistedStore = loadState();
-//*/
 
 //Disable Redux DevTools for production
 export const store =
@@ -45,12 +42,10 @@ export const store =
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
       );
 
-//*
 // Save Redux Store in LocalStorage when it changes
 store.subscribe(() => {
   saveState(store.getState());
 });
-//*/
 
 ReactDOM.render(
   <Provider store={store}>
