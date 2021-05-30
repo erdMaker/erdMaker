@@ -1,6 +1,6 @@
 import React from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { ShadowOverlay } from "../../global/globalComponents";
+import { ShadowScreen } from "../../global/globalComponents";
 import emailImg from "../../img/at.png";
 import { forgotpassword } from "../../global/userRequests";
 import axios from "axios";
@@ -108,8 +108,8 @@ class ForgotPassword extends React.Component {
   render() {
     return (
       <>
-        <ShadowOverlay />
-        <div className="forgot-password">
+        <ShadowScreen />
+        <div className="high-zindex-centered-container">
           <div className="container">
             <h2>Forgot Password</h2>
             <form className="form" id="forgot-password-form" onSubmit={this.handleSubmit}>
