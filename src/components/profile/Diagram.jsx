@@ -109,7 +109,7 @@ const SimpleMenu = (props) => {
       {showConfirmCancel && (
         <ConfirmCancelAction
           header="Delete Diagram"
-          text={"Are you sure you want to delete " + props.title + "?"}
+          text={'Are you sure you want to delete "' + props.title + '"?'}
           confirmFunc={deleteConfirmed}
           cancelFunc={() => setShowConfirmCancel(false)}
         />
