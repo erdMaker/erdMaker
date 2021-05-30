@@ -48,6 +48,7 @@ const ImportExportMenuListComposition = (props) => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const cancelToken = useRef(null);
+  var fileName = props.meta.title ? props.meta.title : "diagram";
 
   useEffect(() => {
     cancelToken.current = axios.CancelToken.source();
@@ -110,7 +111,7 @@ const ImportExportMenuListComposition = (props) => {
     exportdiagram(cancelToken.current)
       .then((res) => {
         if (res && res.status === 200) {
-          fileDownload(res.data.token, "diagram.erdm");
+          fileDownload(res.data.token, fileName+".erdm");
         }
       })
       .catch(() => {});
@@ -292,7 +293,7 @@ const ImportExportMenuListComposition = (props) => {
                         handleClose();
                       }}
                     >
-                      <a className="undecorate-link" id="downloadImg" download="diagram.jpg" href="...">
+                      <a className="undecorate-link" id="downloadImg" download={fileName+"_img.jpg"} href="...">
                         Export Image
                       </a>
                     </MenuItem>
@@ -309,6 +310,7 @@ const ImportExportMenuListComposition = (props) => {
 
 const mapStateToProps = (state) => ({
   components: state.components,
+  meta: state.meta,
 });
 
 const mapDispatchToProps = {

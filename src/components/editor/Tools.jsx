@@ -125,24 +125,21 @@ class Tools extends React.Component {
       </button>
     ) : null;
 
-    var titleInput =
-      this.props.user.confirmed &&
-      (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId) ? (
-        <input
-          className="big-editor-input"
-          type="text"
-          name="title"
-          id="title"
-          maxLength="17"
-          value={this.props.meta.title}
-          onChange={(e) =>
-            this.props.setTitle({
-              title: e.target.value,
-            })
-          }
-        />
-      ) : null;
-
+    var titleInput = (
+      <input
+        className="big-editor-input"
+        type="text"
+        name="title"
+        id="title"
+        maxLength="17"
+        value={this.props.meta.title}
+        onChange={(e) =>
+          this.props.setTitle({
+            title: e.target.value,
+          })
+        }
+      />
+    );
     var clearStageButton =
       (!this.props.user.confirmed || this.props.user.diagramsOwned >= diagramLimit) &&
       !this.props.general.activeDiagramId ? (
