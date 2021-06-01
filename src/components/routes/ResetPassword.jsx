@@ -163,7 +163,7 @@ class ResetPassword extends React.Component {
             <button type="submit" form="reset-password" className="blue-button" style={{ marginRight: 20 }}>
               Confirm
             </button>
-            <LinkButton className="red-button" style={{ marginLeft: 20 }} label="Return" useSpan={false} pathname="/" />
+            <LinkButton className="red-button" style={{ marginLeft: 20 }} label="Cancel" useSpan={false} pathname="/" />
           </div>
         </div>
       </div>

@@ -13,11 +13,19 @@ import {
   setComponents,
 } from "../../actions/actions";
 import axios from "axios";
+import { diagramLimit } from "../../global/constants.js";
 
 class Editor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showSaveWarning: true };
+    this.state = {
+      showSaveWarning: true,
+      saveEnabled:
+        this.props.user.confirmed &&
+        (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId)
+          ? true
+          : false,
+    };
     this.props.updateSidepanelWidth();
     this.cancelToken = axios.CancelToken.source();
     var storedDiagram = { meta: this.props.meta, components: this.props.components };
@@ -66,10 +74,10 @@ class Editor extends React.Component {
   render() {
     return (
       <div className="editor" onClick={() => this.setState({ showSaveWarning: false })}>
-        <Tools />
-        {this.props.user.isLogged && (
+        <Tools saveEnabled={this.state.saveEnabled} />
+        {this.state.saveEnabled && (
           <div className="save-warning" style={{ visibility: this.state.showSaveWarning ? "visible" : "hidden" }}>
-            Please make sure you click the 'Save' button, before exiting the editor.
+            Please make sure you manually save your progress by clicking the 'Save' button, before exiting the editor.
           </div>
         )}
         <Surface />

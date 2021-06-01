@@ -26,8 +26,6 @@ class Tools extends React.Component {
     green: "#00b53c",
   };
   state = {
-    saveEnabled:
-      this.props.user.confirmed && (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId),
     saveStatus: { text: "Your progress is being saved.", color: this.saveIconColors.green },
     lastSave: " ",
     clearButtonText: "Clear Diagram",
@@ -37,7 +35,7 @@ class Tools extends React.Component {
 
   componentDidMount() {
     window.addEventListener("beforeunload", this.timerCleanup);
-    if (this.state.saveEnabled) this.saveTimer = setInterval(() => this.saveDiagram(), savePeriod);
+    if (this.props.saveEnabled) this.saveTimer = setInterval(() => this.saveDiagram(), savePeriod);
   }
 
   componentWillUnmount() {
@@ -106,15 +104,15 @@ class Tools extends React.Component {
   };
 
   render() {
-    var saveGroup = this.state.saveEnabled ? (
-      <SaveGroup
+    var saveIconGroup = this.props.saveEnabled ? (
+      <SaveIconGroup
         saveStatus={this.state.saveStatus}
         lastSave={this.state.lastSave}
         savefunc={() => this.saveDiagram()}
       />
     ) : null;
 
-    var saveButton = this.state.saveEnabled ? (
+    var saveButton = this.props.saveEnabled ? (
       <button
         className="tools-button-blue"
         type="button"
@@ -175,7 +173,7 @@ class Tools extends React.Component {
         <Link to="/">
           <img src={Logo} className="logo" alt=":(" />
         </Link>
-        {saveGroup}
+        {saveIconGroup}
         <ul className={toolsClasses}>
           {saveButton}
           <ImportExportMenuListComposition />
@@ -242,10 +240,10 @@ class Tools extends React.Component {
   }
 }
 
-const SaveGroup = (props) => (
-  <div className="save-group" style={{ backgroundColor: props.saveStatus.color }}>
+const SaveIconGroup = (props) => (
+  <div className="save-icon-group" style={{ backgroundColor: props.saveStatus.color }}>
     <img src={saveImg} alt=":(" />
-    <span className="save-tooltip">
+    <span className="save-icon-tooltip">
       {props.saveStatus.text}
       <br />
       {props.lastSave}
