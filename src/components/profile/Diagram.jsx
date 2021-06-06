@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { Component, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { setActiveDiagram, resetComponents, resetMeta } from "../../actions/actions";
@@ -13,7 +13,7 @@ import axios from "axios";
 import { diagramLimit } from "../../global/constants.js";
 import { ConfirmCancelAction } from "../../global/globalComponents";
 
-class Diagram extends React.Component {
+class Diagram extends Component {
   handleClick = () => {
     this.props.resetComponents();
     this.props.resetMeta();

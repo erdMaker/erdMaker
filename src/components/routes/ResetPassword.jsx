@@ -1,10 +1,10 @@
-import React from "react";
+import { Component } from "react";
 import changePwdImg from "../../img/password-change.png";
 import { LinkButton } from "../../global/globalComponents";
 import { resetpassword } from "../../global/userRequests";
 import axios from "axios";
 
-class ResetPassword extends React.Component {
+class ResetPassword extends Component {
   state = {
     password: "",
     confirmPassword: "",

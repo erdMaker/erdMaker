@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import Entity from "./Entity";
 import Relationship from "./Relationship";
 import Attribute from "./Attribute";
@@ -14,7 +14,7 @@ import { deselect } from "../../actions/actions";
 import { distance, minJsonArray } from "../../global/utils";
 import { stageWidth, stageHeight, entityWidth, entityHeight, anchorLength } from "../../global/constants";
 
-class Surface extends React.Component {
+class Surface extends Component {
   state = {
     // Define the anchor points for entities
     entityAnchors: [

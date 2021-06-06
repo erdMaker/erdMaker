@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import Surface from "./Surface";
 import Tools from "./Tools";
 import { getDiagram, makeCompatible } from "../../global/globalFuncs";
@@ -15,7 +15,7 @@ import {
 import axios from "axios";
 import { diagramLimit } from "../../global/constants.js";
 
-class Editor extends React.Component {
+class Editor extends Component {
   constructor(props) {
     super(props);
     this.state = {

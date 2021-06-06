@@ -1,8 +1,8 @@
-import React from "react";
+import { Component } from "react";
 import Profile from "./Profile";
 import EditProfile from "./EditProfile";
 
-class ProfileIndex extends React.Component {
+class ProfileIndex extends Component {
   state = {
     isProfileActive: true,
   };

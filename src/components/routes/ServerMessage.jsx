@@ -1,4 +1,3 @@
-import React from "react";
 import emailConfirmedImg from "../../img/mail.png";
 import fofImg from "../../img/404.png";
 import warningImg from "../../img/warning.png";

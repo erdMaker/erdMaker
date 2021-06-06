@@ -1,4 +1,3 @@
-import React from "react";
 import Diagram from "./Diagram";
 import { connect } from "react-redux";
 import { diagramLimit } from "../../global/constants.js";

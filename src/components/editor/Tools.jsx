@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import {
   addEntity,
@@ -19,7 +19,7 @@ import saveImg from "../../img/saveIcon.png";
 import axios from "axios";
 import { diagramLimit, savePeriod } from "../../global/constants.js";
 
-class Tools extends React.Component {
+class Tools extends Component {
   saveIconColors = {
     red: "#b30d23",
     blue: "#0086a8",

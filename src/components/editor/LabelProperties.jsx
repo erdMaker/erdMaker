@@ -1,4 +1,3 @@
-import React from "react";
 import { connect } from "react-redux";
 import { setTextLabel, deleteLabel, deselect } from "../../actions/actions";
 import { labelTextSize } from "../../global/constants";

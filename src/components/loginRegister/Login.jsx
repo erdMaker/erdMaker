@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import logInImg from "../../img/login.png";
 import emailImg from "../../img/at.png";
 import passwordImg from "../../img/key.png";
@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { storeUserData } from "../../actions/actions";
 import axios from "axios";
 
-class Login extends React.Component {
+class Login extends Component {
   state = {
     showForgotPassword: false,
     email: "",

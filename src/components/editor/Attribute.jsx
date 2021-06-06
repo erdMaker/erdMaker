@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import {
   updatePositionAttribute,
@@ -21,7 +21,7 @@ import {
 } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
-class Attribute extends React.Component {
+class Attribute extends Component {
   state = { initialPosition: { x: this.props.x, y: this.props.y } };
 
   findParentIndex = (parent) => parent.id === this.props.parentId;

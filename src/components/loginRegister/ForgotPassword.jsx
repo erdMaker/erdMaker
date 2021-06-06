@@ -1,11 +1,11 @@
-import React from "react";
+import { createRef, Component } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ShadowScreen } from "../../global/globalComponents";
 import emailImg from "../../img/at.png";
 import { forgotpassword } from "../../global/userRequests";
 import axios from "axios";
 
-class ForgotPassword extends React.Component {
+class ForgotPassword extends Component {
   state = {
     email: "",
     emailError: 0,
@@ -14,7 +14,7 @@ class ForgotPassword extends React.Component {
       color: "#dfdfdf",
     },
   };
-  recaptchaRef = React.createRef();
+  recaptchaRef = createRef();
   cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {

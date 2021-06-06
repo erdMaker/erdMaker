@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import {
   updatePositionEntity,
@@ -20,7 +20,7 @@ import {
   dragBoundOffset,
 } from "../../global/constants";
 
-class Entity extends React.Component {
+class Entity extends Component {
   state = { initialPosition: { x: this.props.x, y: this.props.y } };
 
   // Does not let the entity to be dragged out of stage bounds

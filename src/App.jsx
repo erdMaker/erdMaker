@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.scss";
 import Home from "./components/routes/Home";
 import ResetPassword from "./components/routes/ResetPassword";

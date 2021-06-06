@@ -1,8 +1,8 @@
-import React from "react";
+import { Component } from "react";
 import Login from "./Login";
 import Register from "./Register";
 
-class LoginRegisterIndex extends React.Component {
+class LoginRegisterIndex extends Component {
   state = {
     isLoginActive: true,
   };

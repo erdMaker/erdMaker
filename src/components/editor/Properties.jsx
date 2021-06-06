@@ -1,4 +1,3 @@
-import React from "react";
 import EntityProperties from "./EntityProperties";
 import ExtensionProperties from "./ExtensionProperties";
 import RelationshipProperties from "./RelationshipProperties";

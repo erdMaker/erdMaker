@@ -1,4 +1,4 @@
-import React from "react";
+import { createRef, Component } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import emailImg from "../../img/at.png";
 import usernameImg from "../../img/user.png";
@@ -6,7 +6,7 @@ import passwordImg from "../../img/key.png";
 import { register } from "../../global/userRequests";
 import axios from "axios";
 
-class Register extends React.Component {
+class Register extends Component {
   state = {
     email: "",
     username: "",
@@ -23,7 +23,7 @@ class Register extends React.Component {
       color: "#dfdfdf",
     },
   };
-  recaptchaRef = React.createRef();
+  recaptchaRef = createRef();
   cancelToken = axios.CancelToken.source();
 
   componentWillUnmount() {

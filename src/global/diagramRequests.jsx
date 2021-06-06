@@ -5,7 +5,7 @@ import { serverHost, timeout } from "./constants";
 export const getdiagram = (diagramId, cancelToken) => {
   return axios
     .post(
-      serverHost + "/api/diagram/getdiagram",
+      serverHost + "/diagram/getdiagram",
       { id: diagramId },
       {
         withCredentials: true,
@@ -28,7 +28,7 @@ export const getdiagram = (diagramId, cancelToken) => {
 export const savediagram = (cancelToken) => {
   return axios
     .post(
-      serverHost + "/api/diagram/savediagram",
+      serverHost + "/diagram/savediagram",
       {
         id: store.getState().general.activeDiagramId,
         data: {
@@ -57,7 +57,7 @@ export const savediagram = (cancelToken) => {
 export const duplicatediagram = (diagramid, cancelToken) => {
   return axios
     .post(
-      serverHost + "/api/diagram/duplicatediagram",
+      serverHost + "/diagram/duplicatediagram",
       {
         id: diagramid,
       },
@@ -82,7 +82,7 @@ export const duplicatediagram = (diagramid, cancelToken) => {
 export const deletediagram = (diagramid, cancelToken) => {
   return axios
     .post(
-      serverHost + "/api/diagram/deletediagram",
+      serverHost + "/diagram/deletediagram",
       {
         id: diagramid,
       },
@@ -107,7 +107,7 @@ export const deletediagram = (diagramid, cancelToken) => {
 export const exportdiagram = (cancelToken) => {
   return axios
     .post(
-      serverHost + "/api/diagram/exportdiagram",
+      serverHost + "/diagram/exportdiagram",
       {
         data: {
           components: store.getState().components,
@@ -131,7 +131,7 @@ export const exportdiagram = (cancelToken) => {
 export const importdiagram = (diagram, cancelToken) => {
   return axios
     .post(
-      serverHost + "/api/diagram/importdiagram",
+      serverHost + "/diagram/importdiagram",
       {
         data: diagram,
       },

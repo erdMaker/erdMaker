@@ -1,4 +1,3 @@
-import React from "react";
 import { diagramLimit } from "../../global/constants";
 
 const About = () => {

@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import {
   addAttribute,
@@ -13,7 +13,7 @@ import {
 import { getRandomInt } from "../../global/utils";
 import { nameSize, stageWidth, stageHeight, spawnRadius } from "../../global/constants";
 
-class AttributeProperties extends React.Component {
+class AttributeProperties extends Component {
   componentDidMount() {
     this.nameInput.focus();
   }

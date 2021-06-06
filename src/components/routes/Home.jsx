@@ -1,4 +1,3 @@
-import React from "react";
 import LoginRegisterIndex from "../loginRegister/LoginRegisterIndex";
 import ProfileIndex from "../profile/ProfileIndex";
 import { LinkButton } from "../../global/globalComponents";

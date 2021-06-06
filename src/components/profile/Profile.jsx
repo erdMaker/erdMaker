@@ -1,11 +1,11 @@
-import React from "react";
+import { Component } from "react";
 import Diagrams from "./Diagrams";
 import ConfirmEmailPrompt from "./ConfirmEmailPrompt";
 import { getProfile, logOut } from "../../global/globalFuncs";
 import { connect } from "react-redux";
 import axios from "axios";
 
-class Profile extends React.Component {
+class Profile extends Component {
   state = { loadingProfile: true };
   cancelToken = axios.CancelToken.source();
 

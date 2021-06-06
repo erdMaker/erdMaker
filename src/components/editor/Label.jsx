@@ -1,10 +1,10 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import { updatePositionLabel, resizeLabel, select, repositionComponents } from "../../actions/actions";
 import { Group, Rect, Line, Text } from "react-konva";
 import { stageWidth, stageHeight, resizeRectSize, fontSize, dragBoundOffset } from "../../global/constants";
 
-class Label extends React.Component {
+class Label extends Component {
   state = {
     resizeRect: false,
     isDragging: false,

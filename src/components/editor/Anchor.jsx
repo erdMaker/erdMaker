@@ -1,4 +1,3 @@
-import React from "react";
 import { Group, Line, Ellipse } from "react-konva";
 
 const Anchor = (props) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import {
   updatePositionRelationship,
@@ -20,7 +20,7 @@ import {
   dragBoundOffset,
 } from "../../global/constants";
 
-class Relationship extends React.Component {
+class Relationship extends Component {
   state = { initialPosition: { x: this.props.x, y: this.props.y } };
 
   // Does not let the relationship to be dragged out of stage bounds

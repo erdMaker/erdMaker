@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useHistory } from "react-router-dom";
 
 // This component is a button that enables react-routing

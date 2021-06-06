@@ -1,11 +1,11 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import { updatePositionExtension, select, repositionComponents } from "../../actions/actions";
 import { Group, Circle, Line, Text } from "react-konva";
 import { stageWidth, stageHeight, extensionRadius, fontSize, dragBoundOffset } from "../../global/constants";
 var pixelWidth = require("string-pixel-width");
 
-class Extension extends React.Component {
+class Extension extends Component {
   // Does not let the extension to be dragged out of stage bounds
   stageBound = (pos) => {
     var newX;

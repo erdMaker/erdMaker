@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import {
   setNameEntity,
@@ -15,7 +15,7 @@ import {
 import { getRandomInt } from "../../global/utils";
 import { nameSize, spawnRadius } from "../../global/constants";
 
-class EntityProperties extends React.Component {
+class EntityProperties extends Component {
   componentDidMount() {
     this.nameInput.focus();
   }

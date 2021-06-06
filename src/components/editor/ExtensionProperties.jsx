@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import {
   modifyExtension,
@@ -11,7 +11,7 @@ import {
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-class ExtensionProperties extends React.Component {
+class ExtensionProperties extends Component {
   findExtensionIndex = (extension) => extension.id === this.props.selector.current.id;
 
   findParentIndex = (entity) => entity.id === this.props.selector.current.parentId;

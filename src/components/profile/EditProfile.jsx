@@ -1,9 +1,9 @@
-import React from "react";
+import { Component } from "react";
 import { editprofile, changepassword } from "../../global/userRequests";
 import { connect } from "react-redux";
 import axios from "axios";
 
-class EditProfile extends React.Component {
+class EditProfile extends Component {
   state = {
     firstName: this.props.user.firstName,
     lastName: this.props.user.lastName,

@@ -1,10 +1,10 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import { resend } from "../../global/userRequests";
 import axios from "axios";
 import { diagramLimit } from "../../global/constants.js";
 
-class ConfirmEmailPrompt extends React.Component {
+class ConfirmEmailPrompt extends Component {
   state = {
     response: {
       data: ".",

@@ -1,4 +1,4 @@
-import React from "react";
+import { Component } from "react";
 import { connect } from "react-redux";
 import { changeConnection, deleteConnection, modifyConnection } from "../../actions/actions";
 import IconButton from "@material-ui/core/IconButton";
@@ -6,7 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-class Connection extends React.Component {
+class Connection extends Component {
   state = { expand: false };
 
   findRelationshipIndex = (relationship) => relationship.id === this.props.selector.current.id;

@@ -1,4 +1,4 @@
-import React from "react";
+import { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import {
   addAttribute,
@@ -15,7 +15,7 @@ import Connection from "./Connection";
 import { getRandomInt } from "../../global/utils";
 import { nameSize, spawnRadius } from "../../global/constants";
 
-class RelationshipProperties extends React.Component {
+class RelationshipProperties extends Component {
   componentDidMount() {
     this.nameInput.focus();
   }
@@ -155,14 +155,14 @@ const Connections = (props) => {
   let relationshipIndex = props.relationships.findIndex(props.findRelationshipIndex);
   for (let i in props.relationships[relationshipIndex].connections) {
     connectionList.push(
-      <React.Fragment key={i}>
+      <Fragment key={i}>
         <Connection
           index={i}
           connection={props.relationships[relationshipIndex].connections[i]}
           relationshipIndex={relationshipIndex}
           relationshipId={props.selected.id}
         />
-      </React.Fragment>
+      </Fragment>
     );
   }
   return connectionList;
