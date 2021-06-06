@@ -43,7 +43,7 @@ class Diagram extends Component {
     return (
       <tr>
         <td>
-          <Link className="title-link" to="/designer" onClick={this.handleClick}>
+          <Link className="title-link" to="/editor" onClick={this.handleClick}>
             {this.props.user.diagrams[this.props.index].title}
           </Link>
         </td>

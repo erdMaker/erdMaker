@@ -28,7 +28,7 @@ const Description = (props) => (
       label="New Diagram"
       useSpan={true}
       onClick={props.resetActiveDiagram}
-      pathname="/designer"
+      pathname="/editor"
     />
   </div>
 );

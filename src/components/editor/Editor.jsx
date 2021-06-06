@@ -35,7 +35,7 @@ class Editor extends Component {
   }
 
   componentDidMount = () => {
-    document.title = "ERD Maker - Designer";
+    document.title = "ERD Maker - Editor";
     window.addEventListener("resize", this.props.updateSidepanelWidth);
     window.addEventListener("beforeunload", this.clearEditor);
     this.props.deselect();

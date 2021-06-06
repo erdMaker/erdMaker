@@ -12,7 +12,7 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/designer" exact component={Editor} />
+        <Route path="/editor" exact component={Editor} />
         <Route>
           <div className="main-page">
             <Header />
