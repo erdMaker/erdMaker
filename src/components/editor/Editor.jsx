@@ -1,7 +1,7 @@
 import { Component } from "react";
 import Surface from "./Surface";
 import Tools from "./Tools";
-import { getDiagram, makeCompatible } from "../../global/globalFuncs";
+import { getDiagram, makeCompatible, getComponentById } from "../../global/globalFuncs";
 import { connect } from "react-redux";
 import {
   deselect,
@@ -72,6 +72,8 @@ class Editor extends Component {
   }
 
   render() {
+    let x = getComponentById(3);
+    console.log(x)
     return (
       <div className="editor" onClick={() => this.setState({ showSaveWarning: false })}>
         <Tools saveEnabled={this.state.saveEnabled} />

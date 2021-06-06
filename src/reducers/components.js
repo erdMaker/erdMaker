@@ -83,7 +83,7 @@ const componentsReducer = (state = initialState, action) => {
           {
             id: state.count + 1,
             parentId: action.payload.id,
-            text: "",
+            //text: "",
             x: action.payload.x,
             y: action.payload.y,
             type: "undefined",
