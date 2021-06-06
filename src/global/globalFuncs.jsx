@@ -79,3 +79,22 @@ export const logOut = () => {
     })
     .catch(() => {});
 };
+
+export function getComponentById(id) {
+  const components = store.getState().components;
+  const test = (component) => component.id === id;
+  let x = null;
+  if ((x = components.entities.find(test))) return x;
+  else if ((x = components.attributes.find(test))) return x;
+  else if ((x = components.extensions.find(test))) return x;
+  else if ((x = components.labels.find(test))) return x;
+  else {
+    for (let i in components.relationships) {
+      if (components.relationships[i].id === id) return components.relationships[i];
+      for (let j in components.relationships[i].connections) {
+        if (components.relationships[i].connections[j].id === id) return components.relationships[i].connections[j];
+      }
+    }
+  }
+  return x;
+}
