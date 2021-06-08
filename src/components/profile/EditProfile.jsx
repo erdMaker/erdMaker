@@ -65,7 +65,7 @@ class EditProfile extends Component {
             });
           } else if (res.status === 400) {
             this.setState({
-              response: { color: "red", data: res.data },
+              response: { color: "red", data: "Bad input" },
             });
           } else {
             this.setState({
@@ -101,26 +101,20 @@ class EditProfile extends Component {
     let usernameError = 0;
     let firstNameError = 0;
     let lastNameError = 0;
-    let specialChars = /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
-    let nameVal = /^[a-zA-Z ]+$/;
+    let englishGreek = /^[a-zA-ZΑ-Ωα-ωίϊΐόάέύϋΰήώ' ]+$/;
+    let alphanum = /^[a-zA-Z0-9]+$/;
 
     if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || this.state.email.length > 60) {
       emailError = 1;
     }
 
-    if (!this.state.username || this.state.username.match(specialChars) || this.state.username.length > 20) {
+    if (!this.state.username || !this.state.username.match(alphanum) || this.state.username.length > 20) {
       usernameError = 1;
     }
 
-    if (this.state.firstName) {
-      if (this.state.firstName.match(nameVal)) {
-      } else firstNameError = 1;
-    }
+    if (this.state.firstName && !this.state.firstName.match(englishGreek)) firstNameError = 1;
 
-    if (this.state.lastName) {
-      if (this.state.lastName.match(nameVal)) {
-      } else lastNameError = 1;
-    }
+    if (this.state.lastName && !this.state.lastName.match(englishGreek)) lastNameError = 1;
 
     if (emailError || usernameError || firstNameError || lastNameError) {
       this.setState({ emailError, usernameError, firstNameError, lastNameError });

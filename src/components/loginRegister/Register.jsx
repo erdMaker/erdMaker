@@ -58,7 +58,7 @@ class Register extends Component {
             });
           } else if (res.status === 400) {
             this.setState({
-              response: { color: "red", data: res.data },
+              response: { color: "red", data: "Bad Input" },
             });
           } else {
             this.setState({
@@ -98,13 +98,13 @@ class Register extends Component {
     let lowerCaseLetters = /[a-z]/g;
     let upperCaseLetters = /[A-Z]/g;
     let numbers = /[0-9]/g;
-    let specialChars = /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+    let alphanum = /^[a-zA-Z0-9]+$/;
 
     if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || this.state.email.length > 60) {
       emailError = 1;
     }
 
-    if (!this.state.username || this.state.username.match(specialChars) || this.state.username.length > 20) {
+    if (!this.state.username || !this.state.username.match(alphanum) || this.state.username.length > 20) {
       usernameError = 1;
     }
 
