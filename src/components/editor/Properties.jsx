@@ -13,6 +13,7 @@ import {
   relationshipWidth,
   attributeRadiusX,
 } from "../../global/constants";
+import { getComponentById } from "../../global/globalFuncs";
 
 const Properties = (props) => {
   var stage = props.getStage(); // Reference to the stage
@@ -37,35 +38,29 @@ const Properties = (props) => {
     // Configure sidepanel based on what kind of component is selected
     switch (props.selector.current.type) {
       case "entity":
-        let entityIndex = props.components.entities.findIndex((entity) => entity.id === props.selector.current.id);
-        xPosition = props.components.entities[entityIndex].x + entityWidth / 2;
+        let entity = getComponentById(props.selector.current.id);
+        xPosition = entity.x + entityWidth / 2;
         loadedProperties = <EntityProperties />;
         break;
       case "extension":
-        let extensionIndex = props.components.extensions.findIndex(
-          (extension) => extension.id === props.selector.current.id
-        );
-        xPosition = props.components.extensions[extensionIndex].x + extensionRadius;
+        let extension = getComponentById(props.selector.current.id);
+        xPosition = extension.x + extensionRadius;
         loadedProperties = <ExtensionProperties />;
         break;
       case "relationship":
-        let relationshipIndex = props.components.relationships.findIndex(
-          (relationship) => relationship.id === props.selector.current.id
-        );
-        xPosition = props.components.relationships[relationshipIndex].x + relationshipWidth;
+        let relationship = getComponentById(props.selector.current.id);
+        xPosition = relationship.x + relationshipWidth;
         loadedProperties = <RelationshipProperties />;
         break;
       case "attribute":
-        let attributeIndex = props.components.attributes.findIndex(
-          (attribute) => attribute.id === props.selector.current.id
-        );
-        xPosition = props.components.attributes[attributeIndex].x + attributeRadiusX;
+        let attribute = getComponentById(props.selector.current.id);
+        xPosition = attribute.x + attributeRadiusX;
         loadedProperties = <AttributeProperties />;
         break;
       case "label":
         sidepanelHeightCutoff = mobile ? 300 : 0;
-        let labelIndex = props.components.labels.findIndex((label) => label.id === props.selector.current.id);
-        xPosition = props.components.labels[labelIndex].x + props.components.labels[labelIndex].width / 2;
+        let label = getComponentById(props.selector.current.id);
+        xPosition = label.x + label.width / 2;
         loadedProperties = <LabelProperties />;
         break;
       default:

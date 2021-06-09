@@ -1,7 +1,7 @@
 import { Component } from "react";
 import Surface from "./Surface";
 import Tools from "./Tools";
-import { getDiagram, makeCompatible, getComponentById } from "../../global/globalFuncs";
+import { getDiagram, makeCompatible } from "../../global/globalFuncs";
 import { connect } from "react-redux";
 import {
   deselect,
@@ -30,6 +30,7 @@ class Editor extends Component {
     this.cancelToken = axios.CancelToken.source();
     var storedDiagram = { meta: this.props.meta, components: this.props.components };
     var compatibleDiagram = makeCompatible(storedDiagram);
+    this.props.deselect();
     this.props.setMeta(compatibleDiagram.meta);
     this.props.setComponents(compatibleDiagram.components);
   }
@@ -38,7 +39,6 @@ class Editor extends Component {
     document.title = "ERD Maker - Editor";
     window.addEventListener("resize", this.props.updateSidepanelWidth);
     window.addEventListener("beforeunload", this.clearEditor);
-    this.props.deselect();
     if (this.props.user.isLogged) {
       if (this.props.general.activeDiagramId) getDiagram(this.props.general.activeDiagramId, this.cancelToken);
       // Fetch the diagram
@@ -72,8 +72,6 @@ class Editor extends Component {
   }
 
   render() {
-    let x = getComponentById(3);
-    console.log(x)
     return (
       <div className="editor" onClick={() => this.setState({ showSaveWarning: false })}>
         <Tools saveEnabled={this.state.saveEnabled} />

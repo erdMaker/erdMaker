@@ -13,6 +13,7 @@ import { Provider, ReactReduxContext, connect } from "react-redux";
 import { deselect } from "../../actions/actions";
 import { distance, minJsonArray } from "../../global/utils";
 import { stageWidth, stageHeight, entityWidth, entityHeight, anchorLength } from "../../global/constants";
+import { getComponentById } from "../../global/globalFuncs";
 
 class Surface extends Component {
   state = {
@@ -120,104 +121,45 @@ class Surface extends Component {
 
   // Responsible  for drawing every line connecting things in the diagram
   drawLines = () => {
-    // Used with array.findIndex() to find the index of the component with id = connectId
-    function locateIndex(element) {
-      return element.id === connectId;
-    }
-
     var lineList = []; // The list with all the lines eventually being rendered
     var lockedAnchorPoints = []; // Array with the anchor points that are occupied for the current entity
-
-    // I use connectId to find the index of the parent in its array and then finally retrieve its coordinates
     var connectId; // parentId of current attribute
-    var index; // Index of component in its respective array with id = connectId
-    var parentCoords; // Location of the parent component
-    var childCoords; // Location of a child component
-
+    var child;
     var anchor; // Object that holds the location of the anchor to connect too and the angle at which it ll be displayed
     var specificValuesPoints; // Object that holds the location for specificValues text
     var specificValuesText; // Object that holds the value for the text of specificValues
-
+    var parent;
     var keyIndex = 0; // Only used to distinguish items in a list
 
     // This loop creates the lines that connect attributes to their parents
-    for (let i in this.props.components.attributes) {
-      connectId = this.props.components.attributes[i].parentId;
-      if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
-        parentCoords = {
-          x: this.props.components.entities[index].x,
-          y: this.props.components.entities[index].y,
-        };
-      } else if ((index = this.props.components.relationships.findIndex(locateIndex)) !== -1) {
-        parentCoords = {
-          x: this.props.components.relationships[index].x,
-          y: this.props.components.relationships[index].y,
-        };
-      } else if ((index = this.props.components.attributes.findIndex(locateIndex)) !== -1) {
-        parentCoords = {
-          x: this.props.components.attributes[index].x,
-          y: this.props.components.attributes[index].y,
-        };
-      } else {
-        continue;
-      }
+    for (let attribute of this.props.components.attributes) {
+      connectId = attribute.parentId;
+      if (!(parent = getComponentById(connectId))) continue;
+
       lineList.push(
-        <Line
-          key={keyIndex}
-          stroke="black"
-          strokeWidth={2}
-          points={[
-            this.props.components.attributes[i].x,
-            this.props.components.attributes[i].y,
-            parentCoords.x,
-            parentCoords.y,
-          ]}
-        />
+        <Line key={keyIndex} stroke="black" strokeWidth={2} points={[attribute.x, attribute.y, parent.x, parent.y]} />
       );
       keyIndex = keyIndex + 1;
     }
 
     // This loop creates the lines that connect extensions to their parents and children
-    for (let i in this.props.components.extensions) {
+    for (let extension of this.props.components.extensions) {
       // Extension-Children lines
-      for (let j in this.props.components.extensions[i].xconnections) {
-        connectId = this.props.components.extensions[i].xconnections[j].connectId;
-        if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
-          childCoords = {
-            x: this.props.components.entities[index].x,
-            y: this.props.components.entities[index].y,
-          };
-        } else {
-          continue;
-        }
+      for (let xconnection of extension.xconnections) {
+        connectId = xconnection.connectId;
+        if (!(child = getComponentById(connectId))) continue;
         lineList.push(
-          <Line
-            key={keyIndex}
-            stroke={"black"}
-            strokeWidth={2}
-            points={[
-              this.props.components.extensions[i].x,
-              this.props.components.extensions[i].y,
-              childCoords.x,
-              childCoords.y,
-            ]}
-          />
+          <Line key={keyIndex} stroke={"black"} strokeWidth={2} points={[extension.x, extension.y, child.x, child.y]} />
         );
         keyIndex = keyIndex + 1;
-        if (this.props.components.extensions[i].type === "specialize") {
+        if (extension.type === "specialize") {
           let extensionSplinePos = {
-            x: (this.props.components.extensions[i].x + childCoords.x) / 2,
-            y: (this.props.components.extensions[i].y + childCoords.y) / 2,
+            x: (extension.x + child.x) / 2,
+            y: (extension.y + child.y) / 2,
           };
-          let angle =
-            (Math.atan(
-              (this.props.components.extensions[i].y - childCoords.y) /
-                (this.props.components.extensions[i].x - childCoords.x)
-            ) *
-              180) /
-            Math.PI;
+          let angle = (Math.atan((extension.y - child.y) / (extension.x - child.x)) * 180) / Math.PI;
           let auxAngle;
-          if (childCoords.x > this.props.components.extensions[i].x) auxAngle = 90;
+          if (child.x > extension.x) auxAngle = 90;
           else auxAngle = 270;
           angle = angle - auxAngle;
           lineList.push(
@@ -228,60 +170,32 @@ class Surface extends Component {
       }
 
       // Extension-Parent lines
-      connectId = this.props.components.extensions[i].parentId;
-      if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
-        parentCoords = {
-          x: this.props.components.entities[index].x,
-          y: this.props.components.entities[index].y,
-        };
-      } else {
-        continue;
-      }
+      connectId = extension.parentId;
+      if (!(parent = getComponentById(connectId))) continue;
       lineList.push(
         <Line
           key={keyIndex}
           stroke="black"
-          strokeWidth={this.props.components.extensions[i].participation === "partial" ? 2 : 6}
-          points={[
-            this.props.components.extensions[i].x,
-            this.props.components.extensions[i].y,
-            parentCoords.x,
-            parentCoords.y,
-          ]}
+          strokeWidth={extension.participation === "partial" ? 2 : 6}
+          points={[extension.x, extension.y, parent.x, parent.y]}
         />
       );
       keyIndex = keyIndex + 1;
-      if (this.props.components.extensions[i].participation === "total") {
+      if (extension.participation === "total") {
         lineList.push(
-          <Line
-            key={keyIndex}
-            stroke="white"
-            strokeWidth={2}
-            points={[
-              this.props.components.extensions[i].x,
-              this.props.components.extensions[i].y,
-              parentCoords.x,
-              parentCoords.y,
-            ]}
-          />
+          <Line key={keyIndex} stroke="white" strokeWidth={2} points={[extension.x, extension.y, parent.x, parent.y]} />
         );
         keyIndex = keyIndex + 1;
       }
 
-      if (this.props.components.extensions[i].type === "union") {
+      if (extension.type === "union") {
         let extensionSplinePos = {
-          x: (this.props.components.extensions[i].x + parentCoords.x) / 2,
-          y: (this.props.components.extensions[i].y + parentCoords.y) / 2,
+          x: (extension.x + parent.x) / 2,
+          y: (extension.y + parent.y) / 2,
         };
-        let angle =
-          (Math.atan(
-            (this.props.components.extensions[i].y - parentCoords.y) /
-              (this.props.components.extensions[i].x - parentCoords.x)
-          ) *
-            180) /
-          Math.PI;
+        let angle = (Math.atan((extension.y - parent.y) / (extension.x - parent.x)) * 180) / Math.PI;
         let auxAngle;
-        if (parentCoords.x > this.props.components.extensions[i].x) auxAngle = 90;
+        if (parent.x > extension.x) auxAngle = 90;
         else auxAngle = 270;
         angle = angle - auxAngle;
         lineList.push(
@@ -292,31 +206,26 @@ class Surface extends Component {
     }
 
     // This loop creates the lines that connect relationships with entities
-    for (let i = 0; i < this.props.components.relationships.length; i++) {
-      for (let j = 0; j < this.props.components.relationships[i].connections.length; j++) {
-        if (this.props.components.relationships[i].connections[j].connectId !== 0) {
-          connectId = this.props.components.relationships[i].connections[j].connectId;
-          index = this.props.components.entities.findIndex(locateIndex);
+    for (let relationship of this.props.components.relationships) {
+      for (let connection of relationship.connections) {
+        if (connection.connectId !== 0) {
+          connectId = connection.connectId;
+          var entity = getComponentById(connectId);
 
           // If current connection 8 connections don't draw any line
-          if (this.props.components.entities[index].connectionCount > 8) continue;
+          if (entity.connectionCount > 8) continue;
 
           // Get the nearest available anchor to this relationship for this connected entity
-          anchor = this.findNearestAnchor(lockedAnchorPoints, index, i);
+          anchor = this.findNearestAnchor(lockedAnchorPoints, entity, relationship);
 
-          specificValuesPoints = this.calculateSpecificValuesPoints(anchor, this.props.components.relationships[i]);
+          specificValuesPoints = this.calculateSpecificValuesPoints(anchor, relationship);
 
           lineList.push(
             <Line
               key={keyIndex}
               stroke="black"
               strokeWidth={2}
-              points={[
-                this.props.components.relationships[i].x,
-                this.props.components.relationships[i].y,
-                anchor.x,
-                anchor.y,
-              ]}
+              points={[relationship.x, relationship.y, anchor.x, anchor.y]}
             />
           );
           keyIndex = keyIndex + 1;
@@ -327,37 +236,30 @@ class Surface extends Component {
               x={anchor.x}
               y={anchor.y}
               angle={anchor.angle}
-              minimum={this.props.components.relationships[i].connections[j].min}
-              maximum={this.props.components.relationships[i].connections[j].max}
+              minimum={connection.min}
+              maximum={connection.max}
             />
           );
           keyIndex = keyIndex + 1;
 
-          if (this.props.components.relationships[i].connections[j].role) {
+          if (connection.role) {
             lineList.push(
               <SpecificValues
                 key={keyIndex}
                 x={specificValuesPoints.roleTextPos.x}
                 y={specificValuesPoints.roleTextPos.y}
-                text={this.props.components.relationships[i].connections[j].role}
+                text={connection.role}
               />
             );
             keyIndex = keyIndex + 1;
           }
 
-          if (
-            this.props.components.relationships[i].connections[j].exactMin ||
-            this.props.components.relationships[i].connections[j].exactMax
-          ) {
+          if (connection.exactMin || connection.exactMax) {
             specificValuesText =
               "(" +
-              (this.props.components.relationships[i].connections[j].exactMin === ""
-                ? "-"
-                : this.props.components.relationships[i].connections[j].exactMin) +
+              (connection.exactMin === "" ? "-" : connection.exactMin) +
               "," +
-              (this.props.components.relationships[i].connections[j].exactMax === ""
-                ? "N"
-                : this.props.components.relationships[i].connections[j].exactMax) +
+              (connection.exactMax === "" ? "N" : connection.exactMax) +
               ")";
 
             lineList.push(
@@ -405,11 +307,11 @@ class Surface extends Component {
     return { roleTextPos: roleTextPos, anchorTextPoint: anchorTextPoint };
   };
 
-  findNearestAnchor = (lockedAnchorPoints, entityIndex, relationshipIndex) => {
+  findNearestAnchor = (lockedAnchorPoints, entity, relationship) => {
     var distances = []; // All distances from the relationship to the entity's anchors
     var anchorId;
     for (let i in this.state.entityAnchors) {
-      anchorId = this.props.components.entities[entityIndex].id.toString() + i.toString();
+      anchorId = entity.id.toString() + i.toString();
 
       // If current anchor is occupied then ignore it, else include its distance for calculation
       if (!lockedAnchorPoints.includes(anchorId)) {
@@ -418,12 +320,12 @@ class Surface extends Component {
           anchorId: anchorId,
           distance: distance(
             {
-              x: this.props.components.entities[entityIndex].x + this.state.entityAnchors[i].x,
-              y: this.props.components.entities[entityIndex].y + this.state.entityAnchors[i].y,
+              x: entity.x + this.state.entityAnchors[i].x,
+              y: entity.y + this.state.entityAnchors[i].y,
             },
             {
-              x: this.props.components.relationships[relationshipIndex].x,
-              y: this.props.components.relationships[relationshipIndex].y,
+              x: relationship.x,
+              y: relationship.y,
             }
           ),
         });
@@ -432,8 +334,8 @@ class Surface extends Component {
     var min = minJsonArray(distances, "distance"); // Get the anchor with the smallest distance
     lockedAnchorPoints.push(min.anchorId);
     return {
-      x: this.props.components.entities[entityIndex].x + this.state.entityAnchors[min.anchorIndex].x,
-      y: this.props.components.entities[entityIndex].y + this.state.entityAnchors[min.anchorIndex].y,
+      x: entity.x + this.state.entityAnchors[min.anchorIndex].x,
+      y: entity.y + this.state.entityAnchors[min.anchorIndex].y,
       angle: this.state.entityAnchors[min.anchorIndex].angle,
     };
   };

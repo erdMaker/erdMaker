@@ -11,7 +11,8 @@ import {
   repositionComponents,
 } from "../../actions/actions";
 import { getRandomInt } from "../../global/utils";
-import { nameSize, stageWidth, stageHeight, spawnRadius } from "../../global/constants";
+import { nameSize, spawnRadius } from "../../global/constants";
+import { getComponentById } from "../../global/globalFuncs";
 
 class AttributeProperties extends Component {
   componentDidMount() {
@@ -19,10 +20,6 @@ class AttributeProperties extends Component {
   }
 
   handleFocus = (e) => e.target.select();
-
-  findAttributeIndex = (attribute) => attribute.id === this.props.selector.current.id;
-
-  findParentIndex = (parent) => parent.id === this.props.selector.current.parentId;
 
   nameValueChange = (e) =>
     this.props.setNameAttribute({
@@ -44,25 +41,9 @@ class AttributeProperties extends Component {
     var randomAngle = getRandomInt(0, 360);
     var xOffset = radius * Math.cos(randomAngle);
     var yOffset = radius * Math.sin(randomAngle);
-    var x;
-    var y;
-    switch (parent.type) {
-      case "entity":
-        x = this.props.components.entities[parent.index].x + xOffset;
-        y = this.props.components.entities[parent.index].y + yOffset;
-        break;
-      case "relationship":
-        x = this.props.components.relationships[parent.index].x + xOffset;
-        y = this.props.components.relationships[parent.index].y + yOffset;
-        break;
-      case "attribute":
-        x = this.props.components.attributes[parent.index].x + xOffset;
-        y = this.props.components.attributes[parent.index].y + yOffset;
-        break;
-      default:
-        x = stageWidth / 2;
-        y = stageHeight / 2;
-    }
+    var x = parent.x + xOffset;
+    var y = parent.y + yOffset;
+
     this.props.addAttribute({
       id: this.props.selector.current.parentId,
       x: x,
@@ -77,7 +58,7 @@ class AttributeProperties extends Component {
     this.nameInput.focus();
   };
 
-  handleAddAttribute = (attributeIndex) => {
+  handleAddAttribute = (attribute) => {
     // Randomly position the attribute around the attribute
     const radius = spawnRadius;
     var randomAngle = getRandomInt(0, 360);
@@ -85,8 +66,8 @@ class AttributeProperties extends Component {
     var yOffset = radius * Math.sin(randomAngle);
     this.props.addAttribute({
       id: this.props.selector.current.id,
-      x: this.props.components.attributes[attributeIndex].x + xOffset,
-      y: this.props.components.attributes[attributeIndex].y + yOffset,
+      x: attribute.x + xOffset,
+      y: attribute.y + yOffset,
     });
     this.props.repositionComponents();
     this.props.select({
@@ -98,26 +79,15 @@ class AttributeProperties extends Component {
   };
 
   render() {
-    var parent = { index: null, type: "" };
-    var uniqueLabel = "Unique";
+    var parent = getComponentById(this.props.selector.current.parentId);
 
-    if ((parent.index = this.props.components.entities.findIndex(this.findParentIndex)) !== -1) {
-      parent.type = "entity";
-      if (this.props.components.entities[parent.index].type === "weak") uniqueLabel = "Partially Unique";
-    } else if ((parent.index = this.props.components.relationships.findIndex(this.findParentIndex)) !== -1)
-      parent.type = "relationship";
-    else if ((parent.index = this.props.components.attributes.findIndex(this.findParentIndex)) !== -1)
-      parent.type = "attribute";
+    var uniqueLabel = parent.type === "weak" ? "Partially Unique" : "Unique";
 
-    var attributeIndex = this.props.components.attributes.findIndex(this.findAttributeIndex);
+    var attribute = getComponentById(this.props.selector.current.id);
 
     // addAttributeButton is enabled only for composite attributes
-    var addAttributeButton = this.props.components.attributes[attributeIndex].type.composite ? (
-      <button
-        className="properties-neutral-button"
-        type="button"
-        onClick={() => this.handleAddAttribute(attributeIndex)}
-      >
+    var addAttributeButton = attribute.type.composite ? (
+      <button className="properties-neutral-button" type="button" onClick={() => this.handleAddAttribute(attribute)}>
         New Attribute
       </button>
     ) : null;
@@ -137,7 +107,7 @@ class AttributeProperties extends Component {
             }}
             onFocus={this.handleFocus}
             maxLength={nameSize}
-            value={this.props.components.attributes[attributeIndex].name}
+            value={attribute.name}
             onChange={this.nameValueChange}
           />
         </label>
@@ -152,7 +122,7 @@ class AttributeProperties extends Component {
                     type="checkbox"
                     name="type"
                     value="unique"
-                    checked={this.props.components.attributes[attributeIndex].type.unique}
+                    checked={attribute.type.unique}
                     onChange={this.typeValueChange}
                   />
                   {uniqueLabel}
@@ -166,7 +136,7 @@ class AttributeProperties extends Component {
                     type="checkbox"
                     name="type"
                     value="multivalued"
-                    checked={this.props.components.attributes[attributeIndex].type.multivalued}
+                    checked={attribute.type.multivalued}
                     onChange={this.typeValueChange}
                   />
                   Multivalued
@@ -180,7 +150,7 @@ class AttributeProperties extends Component {
                     type="checkbox"
                     name="type"
                     value="optional"
-                    checked={this.props.components.attributes[attributeIndex].type.optional}
+                    checked={attribute.type.optional}
                     onChange={this.typeValueChange}
                   />
                   Optional
@@ -194,7 +164,7 @@ class AttributeProperties extends Component {
                     type="checkbox"
                     name="type"
                     value="composite"
-                    checked={this.props.components.attributes[attributeIndex].type.composite}
+                    checked={attribute.type.composite}
                     onChange={this.typeValueChange}
                   />
                   Composite
@@ -208,7 +178,7 @@ class AttributeProperties extends Component {
                     type="checkbox"
                     name="type"
                     value="derived"
-                    checked={this.props.components.attributes[attributeIndex].type.derived}
+                    checked={attribute.type.derived}
                     onChange={this.typeValueChange}
                   />
                   Derived

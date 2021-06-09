@@ -9,10 +9,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 class Connection extends Component {
   state = { expand: false };
 
-  findRelationshipIndex = (relationship) => relationship.id === this.props.selector.current.id;
-
-  findConnectionIndex = (connection) => connection.id === this.props.connection.id;
-
   handleEntityChange = (e) =>
     this.props.changeConnection({
       id: this.props.connection.id,
@@ -32,8 +28,6 @@ class Connection extends Component {
   handleExpand = () => this.setState({ expand: !this.state.expand });
 
   render() {
-    var parentIndex = this.props.components.relationships.findIndex(this.findRelationshipIndex);
-    var childIndex = this.props.components.relationships[parentIndex].connections.findIndex(this.findConnectionIndex);
     var specificValues = this.state.expand ? (
       <>
         <div className="connection-input-group">
@@ -89,10 +83,7 @@ class Connection extends Component {
         <div className="connection-input-group">
           <label>
             <b>Entity: </b>
-            <select
-              value={this.props.components.relationships[parentIndex].connections[childIndex].connectId}
-              onChange={this.handleEntityChange}
-            >
+            <select value={this.props.connection.connectId} onChange={this.handleEntityChange}>
               <option value={0} disabled>
                 Select an Entity
               </option>

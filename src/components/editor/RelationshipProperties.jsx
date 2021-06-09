@@ -14,6 +14,7 @@ import {
 import Connection from "./Connection";
 import { getRandomInt } from "../../global/utils";
 import { nameSize, spawnRadius } from "../../global/constants";
+import { getComponentById } from "../../global/globalFuncs";
 
 class RelationshipProperties extends Component {
   componentDidMount() {
@@ -21,8 +22,6 @@ class RelationshipProperties extends Component {
   }
 
   handleFocus = (e) => e.target.select();
-
-  findRelationshipIndex = (relationship) => relationship.id === this.props.selector.current.id;
 
   nameValueChange = (e) =>
     this.props.setNameRelationship({
@@ -38,7 +37,7 @@ class RelationshipProperties extends Component {
     });
   };
 
-  handleAddAttribute = (relationshipIndex) => {
+  handleAddAttribute = (relationship) => {
     // Randomly position the attribute around the relationship
     const radius = spawnRadius;
     var randomAngle = getRandomInt(0, 360);
@@ -46,8 +45,8 @@ class RelationshipProperties extends Component {
     var yOffset = radius * Math.sin(randomAngle);
     this.props.addAttribute({
       id: this.props.selector.current.id,
-      x: this.props.components.relationships[relationshipIndex].x + xOffset,
-      y: this.props.components.relationships[relationshipIndex].y + yOffset,
+      x: relationship.x + xOffset,
+      y: relationship.y + yOffset,
     });
     this.props.repositionComponents();
     this.props.select({
@@ -58,9 +57,9 @@ class RelationshipProperties extends Component {
   };
 
   render() {
-    var relationshipIndex = this.props.components.relationships.findIndex(this.findRelationshipIndex);
+    var relationship = getComponentById(this.props.selector.current.id);
     var addConnectionButton =
-      this.props.components.relationships[relationshipIndex].connections.length < 5 ? (
+      relationship.connections.length < 5 ? (
         <button
           className="properties-neutral-button"
           type="button"
@@ -87,7 +86,7 @@ class RelationshipProperties extends Component {
             }}
             onFocus={this.handleFocus}
             maxLength={nameSize}
-            value={this.props.components.relationships[relationshipIndex].name}
+            value={relationship.name}
             onChange={this.nameValueChange}
           />
         </label>
@@ -102,7 +101,7 @@ class RelationshipProperties extends Component {
                     type="checkbox"
                     name="type"
                     value="weak"
-                    checked={this.props.components.relationships[relationshipIndex].type.weak}
+                    checked={relationship.type.weak}
                     onChange={this.typeValueChange}
                   />
                   Identifying
@@ -117,7 +116,7 @@ class RelationshipProperties extends Component {
             selected={this.props.selector.current}
             entities={this.props.components.entities}
             relationships={this.props.components.relationships}
-            findRelationshipIndex={this.findRelationshipIndex}
+            relationship={relationship}
           />
         </div>
         {addConnectionButton}
@@ -126,7 +125,7 @@ class RelationshipProperties extends Component {
           <button
             className="properties-neutral-button"
             type="button"
-            onClick={() => this.handleAddAttribute(relationshipIndex)}
+            onClick={() => this.handleAddAttribute(relationship)}
           >
             New Attribute
           </button>
@@ -152,16 +151,10 @@ class RelationshipProperties extends Component {
 // Component for all connections
 const Connections = (props) => {
   let connectionList = [];
-  let relationshipIndex = props.relationships.findIndex(props.findRelationshipIndex);
-  for (let i in props.relationships[relationshipIndex].connections) {
+  for (let i in props.relationship.connections) {
     connectionList.push(
       <Fragment key={i}>
-        <Connection
-          index={i}
-          connection={props.relationships[relationshipIndex].connections[i]}
-          relationshipIndex={relationshipIndex}
-          relationshipId={props.selected.id}
-        />
+        <Connection index={i} connection={props.relationship.connections[i]} relationshipId={props.selected.id} />
       </Fragment>
     );
   }

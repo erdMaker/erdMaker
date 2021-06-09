@@ -14,6 +14,7 @@ import {
 } from "../../actions/actions";
 import { getRandomInt } from "../../global/utils";
 import { nameSize, spawnRadius } from "../../global/constants";
+import { getComponentById } from "../../global/globalFuncs";
 
 class EntityProperties extends Component {
   componentDidMount() {
@@ -21,8 +22,6 @@ class EntityProperties extends Component {
   }
 
   handleFocus = (e) => e.target.select();
-
-  findEntityIndex = (entity) => entity.id === this.props.selector.current.id;
 
   nameValueChange = (e) =>
     this.props.setNameEntity({
@@ -36,7 +35,7 @@ class EntityProperties extends Component {
       type: e.target.value,
     });
 
-  handleAddAttribute = (entityIndex) => {
+  handleAddAttribute = (entity) => {
     // Randomly position the attribute around the entity
     const radius = spawnRadius;
     var randomAngle = getRandomInt(0, 360);
@@ -44,8 +43,8 @@ class EntityProperties extends Component {
     var yOffset = radius * Math.sin(randomAngle);
     this.props.addAttribute({
       id: this.props.selector.current.id,
-      x: this.props.components.entities[entityIndex].x + xOffset,
-      y: this.props.components.entities[entityIndex].y + yOffset,
+      x: entity.x + xOffset,
+      y: entity.y + yOffset,
     });
     this.props.repositionComponents();
     this.props.select({
@@ -55,7 +54,7 @@ class EntityProperties extends Component {
     });
   };
 
-  handleAddExtension = (entityIndex) => {
+  handleAddExtension = (entity) => {
     // Randomly position the extension around the entity
     const radius = spawnRadius;
     var randomAngle = getRandomInt(0, 360);
@@ -63,8 +62,8 @@ class EntityProperties extends Component {
     var yOffset = radius * Math.sin(randomAngle);
     this.props.addExtension({
       id: this.props.selector.current.id,
-      x: this.props.components.entities[entityIndex].x + xOffset,
-      y: this.props.components.entities[entityIndex].y + yOffset,
+      x: entity.x + xOffset,
+      y: entity.y + yOffset,
     });
     this.props.repositionComponents();
     this.props.select({
@@ -75,7 +74,7 @@ class EntityProperties extends Component {
   };
 
   render() {
-    var entityIndex = this.props.components.entities.findIndex(this.findEntityIndex);
+    var entity = getComponentById(this.props.selector.current.id);
     return (
       <div className="sidepanel-content">
         <h3>Entity</h3>
@@ -91,7 +90,7 @@ class EntityProperties extends Component {
             }}
             onFocus={this.handleFocus}
             maxLength={nameSize}
-            value={this.props.components.entities[entityIndex].name}
+            value={entity.name}
             onChange={this.nameValueChange}
           />
         </label>
@@ -106,7 +105,7 @@ class EntityProperties extends Component {
                     type="radio"
                     name="type"
                     value="regular"
-                    checked={this.props.components.entities[entityIndex].type === "regular"}
+                    checked={entity.type === "regular"}
                     onChange={this.typeValueChange}
                   />
                   Regular
@@ -120,7 +119,7 @@ class EntityProperties extends Component {
                     type="radio"
                     name="type"
                     value="weak"
-                    checked={this.props.components.entities[entityIndex].type === "weak"}
+                    checked={entity.type === "weak"}
                     onChange={this.typeValueChange}
                   />
                   Weak
@@ -134,7 +133,7 @@ class EntityProperties extends Component {
                     type="radio"
                     name="type"
                     value="associative"
-                    checked={this.props.components.entities[entityIndex].type === "associative"}
+                    checked={entity.type === "associative"}
                     onChange={this.typeValueChange}
                   />
                   Associative
@@ -145,18 +144,10 @@ class EntityProperties extends Component {
         </table>
         <hr />
         <div className="buttons-list">
-          <button
-            className="properties-neutral-button"
-            type="button"
-            onClick={() => this.handleAddAttribute(entityIndex)}
-          >
+          <button className="properties-neutral-button" type="button" onClick={() => this.handleAddAttribute(entity)}>
             New Attribute
           </button>
-          <button
-            className="properties-neutral-button"
-            type="button"
-            onClick={() => this.handleAddExtension(entityIndex)}
-          >
+          <button className="properties-neutral-button" type="button" onClick={() => this.handleAddExtension(entity)}>
             New Extension
           </button>
           <button
