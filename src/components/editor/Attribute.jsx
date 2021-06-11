@@ -19,12 +19,11 @@ import {
   textHeight,
   dragBoundOffset,
 } from "../../global/constants";
+import { getComponentById } from "../../global/globalFuncs";
 var pixelWidth = require("string-pixel-width");
 
 class Attribute extends Component {
   state = { initialPosition: { x: this.props.x, y: this.props.y } };
-
-  findParentIndex = (parent) => parent.id === this.props.parentId;
 
   // Does not let the attribute to be dragged out of stage bounds
   stageBound = (pos) => {
@@ -79,12 +78,9 @@ class Attribute extends Component {
 
     // Implementation of dashed text underline
     var textRows = Math.ceil(namePixelWidth / attributeTextWidth);
-    var parentIndex;
-    if (
-      this.props.components.entities.length &&
-      (parentIndex = this.props.components.entities.findIndex(this.findParentIndex)) !== -1
-    ) {
-      if (this.props.type.unique && this.props.components.entities[parentIndex].type === "weak") {
+    var parent;
+    if ((parent = getComponentById(this.props.parentId))) {
+      if (this.props.type.unique && parent.type === "weak") {
         var dashedUnderlineList = [];
         if (textRows < 4) {
           for (let i = 0; i < textRows; i++) {

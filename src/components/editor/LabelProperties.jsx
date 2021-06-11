@@ -1,9 +1,10 @@
 import { connect } from "react-redux";
 import { setTextLabel, deleteLabel, deselect } from "../../actions/actions";
 import { labelTextSize } from "../../global/constants";
+import { getComponentById } from "../../global/globalFuncs";
 
 const LabelProperties = (props) => {
-  let labelIndex = props.components.labels.findIndex((label) => label.id === props.selector.current.id);
+  var label = getComponentById(props.selector.current.id);
   return (
     <div className="sidepanel-content">
       <h3>Label</h3>
@@ -11,7 +12,7 @@ const LabelProperties = (props) => {
         className="label-input"
         name="text"
         id="text"
-        value={props.components.labels[labelIndex].text}
+        value={label.text}
         maxLength={labelTextSize}
         onChange={(e) =>
           props.setTextLabel({

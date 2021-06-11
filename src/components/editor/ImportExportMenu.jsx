@@ -112,7 +112,7 @@ const ImportExportMenuListComposition = (props) => {
     exportdiagram(cancelToken.current)
       .then((res) => {
         if (res && res.status === 200) {
-          fileDownload(res.data.token, fileName+".erdm");
+          fileDownload(res.data.token, fileName + ".erdm");
         }
       })
       .catch(() => {});
@@ -126,55 +126,35 @@ const ImportExportMenuListComposition = (props) => {
       0, // rightMost x
       0, // bottomMost y
     ];
-    for (let i in props.components.entities) {
-      if (props.components.entities[i].x - entityWidth / 2 < edges[0])
-        edges[0] = props.components.entities[i].x - entityWidth / 2;
-      if (props.components.entities[i].y - entityHeight / 2 < edges[1])
-        edges[1] = props.components.entities[i].y - entityHeight / 2;
-      if (props.components.entities[i].x + entityWidth / 2 > edges[2])
-        edges[2] = props.components.entities[i].x + entityWidth / 2;
-      if (props.components.entities[i].y + entityHeight / 2 > edges[3])
-        edges[3] = props.components.entities[i].y + entityHeight / 2;
+    for (let entity of props.components.entities) {
+      if (entity.x - entityWidth / 2 < edges[0]) edges[0] = entity.x - entityWidth / 2;
+      if (entity.y - entityHeight / 2 < edges[1]) edges[1] = entity.y - entityHeight / 2;
+      if (entity.x + entityWidth / 2 > edges[2]) edges[2] = entity.x + entityWidth / 2;
+      if (entity.y + entityHeight / 2 > edges[3]) edges[3] = entity.y + entityHeight / 2;
     }
-    for (let i in props.components.relationships) {
-      if (props.components.relationships[i].x - relationshipWidth < edges[0])
-        edges[0] = props.components.relationships[i].x - relationshipWidth;
-      if (props.components.relationships[i].y - relationshipHeight < edges[1])
-        edges[1] = props.components.relationships[i].y - relationshipHeight;
-      if (props.components.relationships[i].x + relationshipWidth > edges[2])
-        edges[2] = props.components.relationships[i].x + relationshipWidth;
-      if (props.components.relationships[i].y + relationshipHeight > edges[3])
-        edges[3] = props.components.relationships[i].y + relationshipHeight;
+    for (let relationship of props.components.relationships) {
+      if (relationship.x - relationshipWidth < edges[0]) edges[0] = relationship.x - relationshipWidth;
+      if (relationship.y - relationshipHeight < edges[1]) edges[1] = relationship.y - relationshipHeight;
+      if (relationship.x + relationshipWidth > edges[2]) edges[2] = relationship.x + relationshipWidth;
+      if (relationship.y + relationshipHeight > edges[3]) edges[3] = relationship.y + relationshipHeight;
     }
-    for (let i in props.components.attributes) {
-      if (props.components.attributes[i].x - attributeRadiusX < edges[0])
-        edges[0] = props.components.attributes[i].x - attributeRadiusX;
-      if (props.components.attributes[i].y - attributeRadiusY < edges[1])
-        edges[1] = props.components.attributes[i].y - attributeRadiusY;
-      if (props.components.attributes[i].x + attributeRadiusX > edges[2])
-        edges[2] = props.components.attributes[i].x + attributeRadiusX;
-      if (props.components.attributes[i].y + attributeRadiusY > edges[3])
-        edges[3] = props.components.attributes[i].y + attributeRadiusY;
+    for (let attribute of props.components.attributes) {
+      if (attribute.x - attributeRadiusX < edges[0]) edges[0] = attribute.x - attributeRadiusX;
+      if (attribute.y - attributeRadiusY < edges[1]) edges[1] = attribute.y - attributeRadiusY;
+      if (attribute.x + attributeRadiusX > edges[2]) edges[2] = attribute.x + attributeRadiusX;
+      if (attribute.y + attributeRadiusY > edges[3]) edges[3] = attribute.y + attributeRadiusY;
     }
-    for (let i in props.components.extensions) {
-      if (props.components.extensions[i].x - extensionRadius < edges[0])
-        edges[0] = props.components.extensions[i].x - extensionRadius;
-      if (props.components.extensions[i].y - extensionRadius < edges[1])
-        edges[1] = props.components.extensions[i].y - extensionRadius;
-      if (props.components.extensions[i].x + extensionRadius > edges[2])
-        edges[2] = props.components.extensions[i].x + extensionRadius;
-      if (props.components.extensions[i].y + extensionRadius > edges[3])
-        edges[3] = props.components.extensions[i].y + extensionRadius;
+    for (let extension of props.components.extensions) {
+      if (extension.x - extensionRadius < edges[0]) edges[0] = extension.x - extensionRadius;
+      if (extension.y - extensionRadius < edges[1]) edges[1] = extension.y - extensionRadius;
+      if (extension.x + extensionRadius > edges[2]) edges[2] = extension.x + extensionRadius;
+      if (extension.y + extensionRadius > edges[3]) edges[3] = extension.y + extensionRadius;
     }
-    for (let i in props.components.labels) {
-      if (props.components.labels[i].x - props.components.labels[i].width / 2 < edges[0])
-        edges[0] = props.components.labels[i].x - props.components.labels[i].width / 2;
-      if (props.components.labels[i].y - props.components.labels[i].height / 2 < edges[1])
-        edges[1] = props.components.labels[i].y - props.components.labels[i].height / 2;
-      if (props.components.labels[i].x + props.components.labels[i].width / 2 > edges[2])
-        edges[2] = props.components.labels[i].x + props.components.labels[i].width / 2;
-      if (props.components.labels[i].y + props.components.labels[i].height / 2 > edges[3])
-        edges[3] = props.components.labels[i].y + props.components.labels[i].height / 2;
+    for (let label of props.components.labels) {
+      if (label.x - label.width / 2 < edges[0]) edges[0] = label.x - label.width / 2;
+      if (label.y - label.height / 2 < edges[1]) edges[1] = label.y - label.height / 2;
+      if (label.x + label.width / 2 > edges[2]) edges[2] = label.x + label.width / 2;
+      if (label.y + label.height / 2 > edges[3]) edges[3] = label.y + label.height / 2;
     }
     return edges;
   };
@@ -191,7 +171,7 @@ const ImportExportMenuListComposition = (props) => {
     var hiddenCanvasScaling = window.devicePixelRatio;
     hidden_canvas.width = (edges[2] - edges[0]) * hiddenCanvasScaling + 2 * dragBoundOffset; // Multiplying by 1.25 because it seems there is internal
     hidden_canvas.height = (edges[3] - edges[1]) * hiddenCanvasScaling + 2 * dragBoundOffset; // scaling taking place. Found out by trial and error
-    
+
     //Draw the data you want to download to the hidden canvas
     var hidden_ctx = hidden_canvas.getContext("2d");
     hidden_ctx.drawImage(
@@ -294,7 +274,7 @@ const ImportExportMenuListComposition = (props) => {
                         handleClose();
                       }}
                     >
-                      <a className="undecorate-link" id="downloadImg" download={fileName+"_img.jpg"} href="...">
+                      <a className="undecorate-link" id="downloadImg" download={fileName + "_img.jpg"} href="...">
                         Export Image
                       </a>
                     </MenuItem>

@@ -10,12 +10,9 @@ import {
 } from "../../actions/actions";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { getComponentById } from "../../global/globalFuncs";
 
 class ExtensionProperties extends Component {
-  findExtensionIndex = (extension) => extension.id === this.props.selector.current.id;
-
-  findParentIndex = (entity) => entity.id === this.props.selector.current.parentId;
-
   handleModifyExtension = (e) => {
     this.props.modifyExtension({
       id: this.props.selector.current.id,
@@ -25,30 +22,17 @@ class ExtensionProperties extends Component {
   };
 
   render() {
-    var extensionIndex = this.props.components.extensions.findIndex(this.findExtensionIndex);
-    var parentIndex = this.props.components.entities.findIndex(this.findParentIndex);
+    var extension = getComponentById(this.props.selector.current.id);
+    var parent = getComponentById(this.props.selector.current.parentId);
     var content;
-    if (this.props.components.extensions[extensionIndex].type === "specialize")
-      content = (
-        <Specialize
-          extension={this.props.components.extensions[extensionIndex]}
-          parent={this.props.components.entities[parentIndex]}
-          handleModifyExtension={this.handleModifyExtension}
-        />
-      );
-    else if (this.props.components.extensions[extensionIndex].type === "union")
-      content = (
-        <Union
-          extension={this.props.components.extensions[extensionIndex]}
-          parent={this.props.components.entities[parentIndex]}
-          handleModifyExtension={this.handleModifyExtension}
-        />
-      );
+    if (extension.type === "specialize")
+      content = <Specialize extension={extension} parent={parent} handleModifyExtension={this.handleModifyExtension} />;
+    else if (extension.type === "union")
+      content = <Union extension={extension} parent={parent} handleModifyExtension={this.handleModifyExtension} />;
     else content = null;
 
     const addEntityButton =
-      this.props.components.extensions[extensionIndex].type !== "undefined" &&
-      this.props.components.extensions[extensionIndex].xconnections.length < 30 ? (
+      extension.type !== "undefined" && extension.xconnections.length < 30 ? (
         <button
           className="properties-neutral-button"
           type="button"
@@ -65,11 +49,7 @@ class ExtensionProperties extends Component {
         <h3>Extension</h3>
         <div className="extension-group">
           Type:
-          <select
-            id="type"
-            value={this.props.components.extensions[extensionIndex].type}
-            onChange={this.handleModifyExtension}
-          >
+          <select id="type" value={extension.type} onChange={this.handleModifyExtension}>
             <option value="undefined" disabled>
               Select Type
             </option>
@@ -79,7 +59,7 @@ class ExtensionProperties extends Component {
         </div>
         {content}
         <div className="connections-list">
-          <XConnections extension={this.props.components.extensions[extensionIndex]} />
+          <XConnections extension={extension} />
         </div>
         <div className="buttons-list">
           {addEntityButton}
