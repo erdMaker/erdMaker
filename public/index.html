@@ -4,8 +4,9 @@
     <% if (process.env.NODE_ENV === 'production') { %>
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src https: 'self' www.google.com www.gstatic.com fonts.googleapis.com fonts.gstatic.com api.erdmaker.com;
-      img-src https: 'self' data:;"
+      content="default-src 'self' https://www.google.com https://www.gstatic.com 
+      https://fonts.googleapis.com https://fonts.gstatic.com https://api.erdmaker.com;
+      img-src 'self' data:;"
     />
     <% } %>
     <meta charset="utf-8" />
