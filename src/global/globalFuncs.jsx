@@ -89,10 +89,10 @@ export function getComponentById(id) {
   else if ((x = components.extensions.find(test))) return x;
   else if ((x = components.labels.find(test))) return x;
   else {
-    for (let i in components.relationships) {
-      if (components.relationships[i].id === id) return components.relationships[i];
-      for (let j in components.relationships[i].connections) {
-        if (components.relationships[i].connections[j].id === id) return components.relationships[i].connections[j];
+    for (let relationship of components.relationships) {
+      if (relationship.id === id) return relationship;
+      for (let connection of relationship.connections) {
+        if (connection.id === id) return connection;
       }
     }
   }

@@ -25,10 +25,10 @@ export function minJsonArray(arr, prop) {
 
 // Recursively return the entire subtree of node (id) in a list (of ids)
 export const getChildren = (list, array, id) => {
-  for (let i in array) {
-    if (array[i].parentId === id) {
-      list.push(array[i].id);
-      getChildren(list, array, array[i].id);
+  for (let element of array) {
+    if (element.parentId === id) {
+      list.push(element.id);
+      getChildren(list, array, element.id);
     }
   }
 };

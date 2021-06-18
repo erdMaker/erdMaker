@@ -141,17 +141,14 @@ const XConnections = connect(
   const handleChangeXConnection = (xconnectionId, e) =>
     props.changeXConnection({
       id: props.extension.id,
-      xconnectionIndex: xconnectionId,
+      xconnectionId: xconnectionId,
       connectId: Number(e.target.value),
     });
 
-  for (let i in props.extension.xconnections) {
+  for (let xconnection of props.extension.xconnections) {
     xconnectionList.push(
-      <span key={i} style={{ margin: "auto", marginBottom: "10px" }}>
-        <select
-          value={props.extension.xconnections[i].connectId}
-          onChange={(e) => handleChangeXConnection(props.extension.xconnections[i].id, e)}
-        >
+      <span key={xconnection.id} style={{ margin: "auto", marginBottom: "10px" }}>
+        <select value={xconnection.connectId} onChange={(e) => handleChangeXConnection(xconnection.id, e)}>
           <option value={0} disabled>
             Select Entity
           </option>
@@ -161,7 +158,7 @@ const XConnections = connect(
           onClick={() => {
             props.deleteXConnection({
               extensionId: props.extension.id,
-              xconnectionId: props.extension.xconnections[i].id,
+              xconnectionId: xconnection.id,
             });
           }}
         >
@@ -179,18 +176,18 @@ const XEntityList = connect(
 )((props) => {
   var entityList = [];
   var found;
-  for (let i in props.components.entities) {
+  for (let entity of props.components.entities) {
     found = false;
-    if (props.components.entities[i].id === props.extension.parentId) continue;
-    for (let j in props.extension.xconnections) {
-      if (props.components.entities[i].id === props.extension.xconnections[j].connectId) {
+    if (entity.id === props.extension.parentId) continue;
+    for (let xconnection of props.extension.xconnections) {
+      if (entity.id === xconnection.connectId) {
         found = true;
         break;
       }
     }
     entityList.push(
-      <option key={props.components.entities[i].id} value={props.components.entities[i].id} disabled={found}>
-        {props.components.entities[i].name}
+      <option key={entity.id} value={entity.id} disabled={found}>
+        {entity.name}
       </option>
     );
   }

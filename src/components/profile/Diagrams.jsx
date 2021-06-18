@@ -7,10 +7,10 @@ const Diagrams = (props) => {
   var sortedDiagramsList = [];
 
   // Place user diagram info in a list
-  for (let i in props.user.diagrams) {
+  for (let diagram of props.user.diagrams) {
     unsortedDiagramsList.push({
-      diagram: <Diagram key={i} index={i} />,
-      date: props.user.diagrams[i].updatedAt,
+      diagram: <Diagram key={diagram.id} diagram={diagram} />,
+      date: diagram.updatedAt,
     });
   }
 
@@ -20,8 +20,8 @@ const Diagrams = (props) => {
   });
 
   // We add the diagram components in another list for rendering
-  for (let i in unsortedDiagramsList) {
-    sortedDiagramsList.push(unsortedDiagramsList[i].diagram);
+  for (let unsortedDiagram of unsortedDiagramsList) {
+    sortedDiagramsList.push(unsortedDiagram.diagram);
   }
 
   var diagramCountText = (

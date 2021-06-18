@@ -141,7 +141,7 @@ const componentsReducer = (state = initialState, action) => {
             ? {
                 ...extension,
                 xconnections: extension.xconnections.map((xconnection) =>
-                  xconnection.id === action.payload.xconnectionIndex
+                  xconnection.id === action.payload.xconnectionId
                     ? { ...xconnection, connectId: action.payload.connectId }
                     : xconnection
                 ),
@@ -213,13 +213,12 @@ const componentsReducer = (state = initialState, action) => {
       Object.assign(newState, state);
       // Reduce connectionCount of involved entities
       function adjustEntities(connection) {
-        for (let j in newState.entities) {
-          if (newState.entities[j].id === connection.connectId) newState.entities[j].connectionCount--;
+        for (let entity of newState.entities) {
+          if (entity.id === connection.connectId) entity.connectionCount--;
         }
       }
-      for (let i in newState.relationships) {
-        if (newState.relationships[i].id === action.payload.id)
-          newState.relationships[i].connections.forEach(adjustEntities);
+      for (let relationship of newState.relationships) {
+        if (relationship.id === action.payload.id) relationship.connections.forEach(adjustEntities);
       }
       newState.relationships = newState.relationships.filter((relationship) => relationship.id !== action.payload.id);
       return newState;
@@ -254,28 +253,28 @@ const componentsReducer = (state = initialState, action) => {
       let newState = {};
       Object.assign(newState, state);
       let prevConnectId = 0;
-      for (let i in newState.relationships) {
-        if (newState.relationships[i].id === action.payload.parentId)
-          for (let j in newState.relationships[i].connections) {
-            if (newState.relationships[i].connections[j].id === action.payload.id) {
-              prevConnectId = newState.relationships[i].connections[j].connectId;
-              newState.relationships[i].connections[j] = {
-                ...newState.relationships[i].connections[j],
+      for (let relationship of newState.relationships) {
+        if (relationship.id === action.payload.parentId)
+          for (let connection of relationship.connections) {
+            if (connection.id === action.payload.id) {
+              prevConnectId = connection.connectId;
+              connection = {
+                ...connection,
                 connectId: action.payload.connectId,
               };
             }
           }
       }
-      for (let i in newState.entities) {
-        if (newState.entities[i].id === prevConnectId)
-          newState.entities[i] = {
-            ...newState.entities[i],
-            connectionCount: newState.entities[i].connectionCount - 1,
+      for (let entity of newState.entities) {
+        if (entity.id === prevConnectId)
+          entity = {
+            ...entity,
+            connectionCount: entity.connectionCount - 1,
           };
-        if (newState.entities[i].id === action.payload.connectId)
-          newState.entities[i] = {
-            ...newState.entities[i],
-            connectionCount: newState.entities[i].connectionCount + 1,
+        if (entity.id === action.payload.connectId)
+          entity = {
+            ...entity,
+            connectionCount: entity.connectionCount + 1,
           };
       }
       return newState;
@@ -283,12 +282,12 @@ const componentsReducer = (state = initialState, action) => {
     case "MODIFY_CONNECTION": {
       let newState = {};
       Object.assign(newState, state);
-      for (let i in newState.relationships) {
-        if (newState.relationships[i].id === action.payload.parentId)
-          for (let j in newState.relationships[i].connections) {
-            if (newState.relationships[i].connections[j].id === action.payload.id) {
-              newState.relationships[i].connections[j] = {
-                ...newState.relationships[i].connections[j],
+      for (let relationship of newState.relationships) {
+        if (relationship.id === action.payload.parentId)
+          for (let connection of relationship.connections) {
+            if (connection.id === action.payload.id) {
+              connection = {
+                ...connection,
                 [action.payload.prop]: action.payload.value,
               };
               break;
@@ -301,23 +300,23 @@ const componentsReducer = (state = initialState, action) => {
       let newState = {};
       Object.assign(newState, state);
       if (action.payload.id) {
-        for (let i in newState.entities) {
-          if (newState.entities[i].id === action.payload.connectId)
-            newState.entities[i] = {
-              ...newState.entities[i],
-              connectionCount: newState.entities[i].connectionCount - 1,
+        for (let entity of newState.entities) {
+          if (entity.id === action.payload.connectId)
+            entity = {
+              ...entity,
+              connectionCount: entity.connectionCount - 1,
             };
         }
-        for (let i in newState.relationships) {
-          if (newState.relationships[i].id === action.payload.parentId)
-            newState.relationships[i].connections = newState.relationships[i].connections.filter(
+        for (let relationship of newState.relationships) {
+          if (relationship.id === action.payload.parentId)
+            relationship.connections = relationship.connections.filter(
               (connection) => connection.id !== action.payload.id
             );
         }
         return newState;
       } else {
-        for (let i in newState.relationships) {
-          newState.relationships[i].connections = newState.relationships[i].connections.filter(
+        for (let relationship of newState.relationships) {
+          relationship.connections = relationship.connections.filter(
             (connection) => connection.connectId !== action.payload.connectId
           );
         }
@@ -463,55 +462,47 @@ const componentsReducer = (state = initialState, action) => {
       // Used to return all components within stage bound if dragged off
       let newState = {};
       Object.assign(newState, state);
-      for (let i in newState.entities) {
-        if (newState.entities[i].x > stageWidth - entityWidth / 2 - dragBoundOffset)
-          newState.entities[i].x = stageWidth - entityWidth / 2 - dragBoundOffset;
-        else if (newState.entities[i].x < entityWidth / 2 + dragBoundOffset)
-          newState.entities[i].x = entityWidth / 2 + dragBoundOffset;
-        if (newState.entities[i].y > stageHeight - entityHeight / 2 - dragBoundOffset)
-          newState.entities[i].y = stageHeight - entityHeight / 2 - dragBoundOffset;
-        else if (newState.entities[i].y < entityHeight / 2 + dragBoundOffset)
-          newState.entities[i].y = entityHeight / 2 + dragBoundOffset;
+      for (let entity of newState.entities) {
+        if (entity.x > stageWidth - entityWidth / 2 - dragBoundOffset)
+          entity.x = stageWidth - entityWidth / 2 - dragBoundOffset;
+        else if (entity.x < entityWidth / 2 + dragBoundOffset) entity.x = entityWidth / 2 + dragBoundOffset;
+        if (entity.y > stageHeight - entityHeight / 2 - dragBoundOffset)
+          entity.y = stageHeight - entityHeight / 2 - dragBoundOffset;
+        else if (entity.y < entityHeight / 2 + dragBoundOffset) entity.y = entityHeight / 2 + dragBoundOffset;
       }
-      for (let i in newState.relationships) {
-        if (newState.relationships[i].x > stageWidth - relationshipWidth - dragBoundOffset)
-          newState.relationships[i].x = stageWidth - relationshipWidth - dragBoundOffset;
-        else if (newState.relationships[i].x < relationshipWidth + dragBoundOffset)
-          newState.relationships[i].x = relationshipWidth + dragBoundOffset;
-        if (newState.relationships[i].y > stageHeight - relationshipHeight - dragBoundOffset)
-          newState.relationships[i].y = stageHeight - relationshipHeight - dragBoundOffset;
-        else if (newState.relationships[i].y < relationshipHeight + dragBoundOffset)
-          newState.relationships[i].y = relationshipHeight + dragBoundOffset;
+      for (let relationship of newState.relationships) {
+        if (relationship.x > stageWidth - relationshipWidth - dragBoundOffset)
+          relationship.x = stageWidth - relationshipWidth - dragBoundOffset;
+        else if (relationship.x < relationshipWidth + dragBoundOffset)
+          relationship.x = relationshipWidth + dragBoundOffset;
+        if (relationship.y > stageHeight - relationshipHeight - dragBoundOffset)
+          relationship.y = stageHeight - relationshipHeight - dragBoundOffset;
+        else if (relationship.y < relationshipHeight + dragBoundOffset)
+          relationship.y = relationshipHeight + dragBoundOffset;
       }
-      for (let i in newState.attributes) {
-        if (newState.attributes[i].x > stageWidth - attributeRadiusX - dragBoundOffset)
-          newState.attributes[i].x = stageWidth - attributeRadiusX - dragBoundOffset;
-        else if (newState.attributes[i].x <= attributeRadiusX + dragBoundOffset)
-          newState.attributes[i].x = attributeRadiusX + dragBoundOffset;
-        if (newState.attributes[i].y > stageHeight - attributeRadiusY - dragBoundOffset)
-          newState.attributes[i].y = stageHeight - attributeRadiusY - dragBoundOffset;
-        else if (newState.attributes[i].y <= attributeRadiusY + dragBoundOffset)
-          newState.attributes[i].y = attributeRadiusY + dragBoundOffset;
+      for (let attribute of newState.attributes) {
+        if (attribute.x > stageWidth - attributeRadiusX - dragBoundOffset)
+          attribute.x = stageWidth - attributeRadiusX - dragBoundOffset;
+        else if (attribute.x <= attributeRadiusX + dragBoundOffset) attribute.x = attributeRadiusX + dragBoundOffset;
+        if (attribute.y > stageHeight - attributeRadiusY - dragBoundOffset)
+          attribute.y = stageHeight - attributeRadiusY - dragBoundOffset;
+        else if (attribute.y <= attributeRadiusY + dragBoundOffset) attribute.y = attributeRadiusY + dragBoundOffset;
       }
-      for (let i in newState.extensions) {
-        if (newState.extensions[i].x > stageWidth - extensionRadius - dragBoundOffset)
-          newState.extensions[i].x = stageWidth - extensionRadius - dragBoundOffset;
-        else if (newState.extensions[i].x <= extensionRadius + dragBoundOffset)
-          newState.extensions[i].x = extensionRadius + dragBoundOffset;
-        if (newState.extensions[i].y > stageHeight - extensionRadius - dragBoundOffset)
-          newState.extensions[i].y = stageHeight - extensionRadius - dragBoundOffset;
-        else if (newState.extensions[i].y <= extensionRadius + dragBoundOffset)
-          newState.extensions[i].y = extensionRadius + dragBoundOffset;
+      for (let extension of newState.extensions) {
+        if (extension.x > stageWidth - extensionRadius - dragBoundOffset)
+          extension.x = stageWidth - extensionRadius - dragBoundOffset;
+        else if (extension.x <= extensionRadius + dragBoundOffset) extension.x = extensionRadius + dragBoundOffset;
+        if (extension.y > stageHeight - extensionRadius - dragBoundOffset)
+          extension.y = stageHeight - extensionRadius - dragBoundOffset;
+        else if (extension.y <= extensionRadius + dragBoundOffset) extension.y = extensionRadius + dragBoundOffset;
       }
-      for (let i in newState.labels) {
-        if (newState.labels[i].x > stageWidth - newState.labels[i].width / 2 - dragBoundOffset)
-          newState.labels[i].x = stageWidth - newState.labels[i].width / 2 - dragBoundOffset;
-        else if (newState.labels[i].x < newState.labels[i].width / 2 + dragBoundOffset)
-          newState.labels[i].x = newState.labels[i].width / 2 + dragBoundOffset;
-        if (newState.labels[i].y > stageHeight - newState.labels[i].height / 2 - dragBoundOffset)
-          newState.labels[i].y = stageHeight - newState.labels[i].height / 2 - dragBoundOffset;
-        else if (newState.labels[i].y < newState.labels[i].height / 2 + dragBoundOffset)
-          newState.labels[i].y = newState.labels[i].height / 2 + dragBoundOffset;
+      for (let label of newState.labels) {
+        if (label.x > stageWidth - label.width / 2 - dragBoundOffset)
+          label.x = stageWidth - label.width / 2 - dragBoundOffset;
+        else if (label.x < label.width / 2 + dragBoundOffset) label.x = label.width / 2 + dragBoundOffset;
+        if (label.y > stageHeight - label.height / 2 - dragBoundOffset)
+          label.y = stageHeight - label.height / 2 - dragBoundOffset;
+        else if (label.y < label.height / 2 + dragBoundOffset) label.y = label.height / 2 + dragBoundOffset;
       }
       return newState;
     }

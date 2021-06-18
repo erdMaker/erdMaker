@@ -17,13 +17,13 @@ class Diagram extends Component {
   handleClick = () => {
     this.props.resetComponents();
     this.props.resetMeta();
-    this.props.setActiveDiagram(this.props.user.diagrams[this.props.index].id);
+    this.props.setActiveDiagram(this.props.diagram.id);
   };
 
   // Calculates how much time has passed since each diagram got updated
   calculateLastUpdate = () => {
     var lastUpdate;
-    var updatedAt = this.props.user.diagrams[this.props.index].updatedAt;
+    var updatedAt = this.props.diagram.updatedAt;
     var newUpdatedAt = Date.parse(updatedAt);
     var currServerTime = Date.parse(this.props.general.serverTime);
     var difference = currServerTime - newUpdatedAt;
@@ -44,7 +44,7 @@ class Diagram extends Component {
       <tr>
         <td>
           <Link className="title-link" to="/editor" onClick={this.handleClick}>
-            {this.props.user.diagrams[this.props.index].title}
+            {this.props.diagram.title}
           </Link>
         </td>
         <td>
@@ -52,8 +52,8 @@ class Diagram extends Component {
         </td>
         <td>
           <SimpleMenu
-            id={this.props.user.diagrams[this.props.index].id}
-            title={this.props.user.diagrams[this.props.index].title}
+            id={this.props.diagram.id}
+            title={this.props.diagram.title}
             diagramsOwned={this.props.user.diagramsOwned}
             diagramLimit={diagramLimit}
           />
