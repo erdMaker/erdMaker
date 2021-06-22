@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import {
   setNameEntity,
@@ -12,165 +12,163 @@ import {
   setTypeEntity,
   repositionComponents,
 } from "../../actions/actions";
-import { getRandomInt } from "../../global/utils";
+import { randomPolarToXYCoords } from "../../global/utils";
 import { nameSize, spawnRadius } from "../../global/constants";
 import { getComponentById } from "../../global/globalFuncs";
 
-class EntityProperties extends Component {
-  componentDidMount() {
-    this.nameInput.focus();
-  }
+const EntityProperties = (props) => {
+  // Grab DOM reference to the name input field
+  const nameInput = useRef(null);
 
-  handleFocus = (e) => e.target.select();
+  useEffect(() => {
+    // Focus name input when the entity is selected
+    nameInput.current.focus();
+  }, []);
 
-  nameValueChange = (e) =>
-    this.props.setNameEntity({
-      id: this.props.selector.current.id,
+  // Name text is selected when name input is focused
+  const handleFocus = (e) => e.target.select();
+
+  const nameValueChange = (e) =>
+    props.setNameEntity({
+      id: props.selector.current.id,
       name: e.target.value,
     });
 
-  typeValueChange = (e) =>
-    this.props.setTypeEntity({
-      id: this.props.selector.current.id,
+  const typeValueChange = (e) =>
+    props.setTypeEntity({
+      id: props.selector.current.id,
       type: e.target.value,
     });
 
-  handleAddAttribute = (entity) => {
+  const handleAddAttribute = (entity) => {
     // Randomly position the attribute around the entity
-    const radius = spawnRadius;
-    var randomAngle = getRandomInt(0, 360);
-    var xOffset = radius * Math.cos(randomAngle);
-    var yOffset = radius * Math.sin(randomAngle);
-    this.props.addAttribute({
-      id: this.props.selector.current.id,
-      x: entity.x + xOffset,
-      y: entity.y + yOffset,
+    const xyOffsets = randomPolarToXYCoords(spawnRadius);
+
+    props.addAttribute({
+      id: props.selector.current.id,
+      x: entity.x + xyOffsets.xOffset,
+      y: entity.y + xyOffsets.yOffset,
     });
-    this.props.repositionComponents();
-    this.props.select({
+    props.repositionComponents();
+    props.select({
       type: "attribute",
-      id: this.props.components.count + 1,
-      parentId: this.props.selector.current.id,
+      id: props.components.count + 1,
+      parentId: props.selector.current.id,
     });
   };
 
-  handleAddExtension = (entity) => {
+  const handleAddExtension = (entity) => {
     // Randomly position the extension around the entity
-    const radius = spawnRadius;
-    var randomAngle = getRandomInt(0, 360);
-    var xOffset = radius * Math.cos(randomAngle);
-    var yOffset = radius * Math.sin(randomAngle);
-    this.props.addExtension({
-      id: this.props.selector.current.id,
-      x: entity.x + xOffset,
-      y: entity.y + yOffset,
+    const xyOffsets = randomPolarToXYCoords(spawnRadius);
+
+    props.addExtension({
+      id: props.selector.current.id,
+      x: entity.x + xyOffsets.xOffset,
+      y: entity.y + xyOffsets.yOffset,
     });
-    this.props.repositionComponents();
-    this.props.select({
+    props.repositionComponents();
+    props.select({
       type: "extension",
-      id: this.props.components.count + 1,
-      parentId: this.props.selector.current.id,
+      id: props.components.count + 1,
+      parentId: props.selector.current.id,
     });
   };
 
-  render() {
-    var entity = getComponentById(this.props.selector.current.id);
-    return (
-      <div className="sidepanel-content">
-        <h3>Entity</h3>
-        <label>
-          Name:{" "}
-          <input
-            className="big-editor-input"
-            type="text"
-            name="name"
-            id="name"
-            ref={(input) => {
-              this.nameInput = input;
-            }}
-            onFocus={this.handleFocus}
-            maxLength={nameSize}
-            value={entity.name}
-            onChange={this.nameValueChange}
-          />
-        </label>
-        <hr />
-        <h3>Type</h3>
-        <table className="type-inputs">
-          <tbody>
-            <tr>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    name="type"
-                    value="regular"
-                    checked={entity.type === "regular"}
-                    onChange={this.typeValueChange}
-                  />
-                  Regular
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    name="type"
-                    value="weak"
-                    checked={entity.type === "weak"}
-                    onChange={this.typeValueChange}
-                  />
-                  Weak
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label>
-                  <input
-                    type="radio"
-                    name="type"
-                    value="associative"
-                    checked={entity.type === "associative"}
-                    onChange={this.typeValueChange}
-                  />
-                  Associative
-                </label>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <hr />
-        <div className="buttons-list">
-          <button className="properties-neutral-button" type="button" onClick={() => this.handleAddAttribute(entity)}>
-            New Attribute
-          </button>
-          <button className="properties-neutral-button" type="button" onClick={() => this.handleAddExtension(entity)}>
-            New Extension
-          </button>
-          <button
-            className="properties-delete-button"
-            type="button"
-            onClick={() => {
-              this.props.deleteConnection({
-                id: null,
-                parentId: null,
-                connectId: this.props.selector.current.id,
-              });
-              this.props.deleteChildren({ id: this.props.selector.current.id });
-              this.props.deleteEntity({ id: this.props.selector.current.id });
-              this.props.deselect();
-            }}
-          >
-            Delete
-          </button>
-        </div>
+  const entity = getComponentById(props.selector.current.id);
+
+  return (
+    <div className="sidepanel-content">
+      <h3>Entity</h3>
+      <label>
+        Name:{" "}
+        <input
+          className="big-editor-input"
+          type="text"
+          name="name"
+          id="name"
+          ref={nameInput}
+          onFocus={handleFocus}
+          maxLength={nameSize}
+          value={entity.name}
+          onChange={nameValueChange}
+        />
+      </label>
+      <hr />
+      <h3>Type</h3>
+      <table className="type-inputs">
+        <tbody>
+          <tr>
+            <td>
+              <label>
+                <input
+                  type="radio"
+                  name="type"
+                  value="regular"
+                  checked={entity.type === "regular"}
+                  onChange={typeValueChange}
+                />
+                Regular
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>
+                <input
+                  type="radio"
+                  name="type"
+                  value="weak"
+                  checked={entity.type === "weak"}
+                  onChange={typeValueChange}
+                />
+                Weak
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>
+                <input
+                  type="radio"
+                  name="type"
+                  value="associative"
+                  checked={entity.type === "associative"}
+                  onChange={typeValueChange}
+                />
+                Associative
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr />
+      <div className="buttons-list">
+        <button className="properties-neutral-button" type="button" onClick={() => handleAddAttribute(entity)}>
+          New Attribute
+        </button>
+        <button className="properties-neutral-button" type="button" onClick={() => handleAddExtension(entity)}>
+          New Extension
+        </button>
+        <button
+          className="properties-delete-button"
+          type="button"
+          onClick={() => {
+            props.deleteConnection({
+              id: null,
+              parentId: null,
+              connectId: props.selector.current.id,
+            });
+            props.deleteChildren({ id: props.selector.current.id });
+            props.deleteEntity({ id: props.selector.current.id });
+            props.deselect();
+          }}
+        >
+          Delete
+        </button>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
   components: state.components,

@@ -48,7 +48,7 @@ class EditProfile extends Component {
       .catch(() => {});
   }
 
-  editProfile() {
+  async editProfile() {
     var newInfo = {
       username: this.state.username,
       email: this.state.email,
@@ -56,29 +56,28 @@ class EditProfile extends Component {
       lastName: this.state.lastName,
     };
 
-    editprofile(newInfo, this.cancelToken)
-      .then((res) => {
-        if (res) {
-          if (res.status === 200) {
-            this.setState({
-              response: { color: "green", data: res.data },
-            });
-          } else if (res.status === 400) {
-            this.setState({
-              response: { color: "red", data: "Bad input" },
-            });
-          } else {
-            this.setState({
-              response: { color: "red", data: "Something went wrong." },
-            });
-          }
+    try {
+      const res = await editprofile(newInfo, this.cancelToken);
+      if (res) {
+        if (res.status === 200) {
+          this.setState({
+            response: { color: "green", data: res.data },
+          });
+        } else if (res.status === 400) {
+          this.setState({
+            response: { color: "red", data: "Bad input" },
+          });
         } else {
           this.setState({
             response: { color: "red", data: "Something went wrong." },
           });
         }
-      })
-      .catch(() => {});
+      } else {
+        this.setState({
+          response: { color: "red", data: "Something went wrong." },
+        });
+      }
+    } catch (e) {}
   }
 
   handleChange = (e) => {

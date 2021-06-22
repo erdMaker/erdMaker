@@ -12,6 +12,7 @@ import {
   setDiagramFetched,
 } from "../actions/actions";
 
+// Fetch profile data of logged user
 export const getProfile = (cancelToken) => {
   return profile(cancelToken)
     .then((res) => {
@@ -37,11 +38,12 @@ export const getProfile = (cancelToken) => {
     });
 };
 
+// Fetches diagram with id = diagramId from the database
 export const getDiagram = (diagramId, cancelToken) => {
   return getdiagram(diagramId, cancelToken)
     .then((res) => {
       if (res && res.status === 200) {
-        let data = makeCompatible(res.data);
+        const data = makeCompatible(res.data);
         store.dispatch(setComponents(data.components));
         store.dispatch(setMeta(data.meta));
         store.dispatch(repositionComponents());
@@ -56,6 +58,7 @@ export const getDiagram = (diagramId, cancelToken) => {
     });
 };
 
+// Makes older diagrams compatible with the latest features upon loading
 export function makeCompatible(data) {
   if (!data.components.hasOwnProperty("extensions")) {
     return {
@@ -80,6 +83,7 @@ export const logOut = () => {
     .catch(() => {});
 };
 
+// Returns a reference to the diagram component with given id
 export function getComponentById(id) {
   const components = store.getState().components;
   const test = (component) => component.id === id;

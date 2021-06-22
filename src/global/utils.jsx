@@ -16,7 +16,7 @@ export function distance(a, b) {
 
 // Return the element of an array with the minimum prop attribute
 export function minJsonArray(arr, prop) {
-  var min;
+  let min;
   for (let i = 0; i < arr.length; i++) {
     if (min == null || parseInt(arr[i][prop]) < parseInt(min[prop])) min = arr[i];
   }
@@ -31,4 +31,12 @@ export const getChildren = (list, array, id) => {
       getChildren(list, array, element.id);
     }
   }
+};
+
+// Returns x,y coords given polar coords: radius and randomAngle
+export const randomPolarToXYCoords = (radius) => {
+  const randomAngle = getRandomInt(0, 360);
+  const xOffset = radius * Math.cos(randomAngle);
+  const yOffset = radius * Math.sin(randomAngle);
+  return { xOffset, yOffset };
 };
