@@ -75,24 +75,22 @@ const SimpleMenu = (props) => {
     };
   }, []);
 
-  const handleDuplicate = () => {
-    duplicatediagram(props.id, cancelToken.current)
-      .then((res) => {
-        getProfile(cancelToken.current);
-      })
-      .catch(() => {});
+  const handleDuplicate = async () => {
+    try {
+      await duplicatediagram(props.id, cancelToken.current);
+      getProfile(cancelToken.current);
+    } catch (e) {}
   };
 
   const handleDelete = () => {
     setShowConfirmCancel(true);
   };
 
-  const deleteConfirmed = () => {
-    deletediagram(props.id, cancelToken.current)
-      .then((res) => {
-        getProfile(cancelToken.current);
-      })
-      .catch(() => {});
+  const deleteConfirmed = async () => {
+    try {
+      await deletediagram(props.id, cancelToken.current);
+      getProfile(cancelToken.current);
+    } catch (e) {}
     setShowConfirmCancel(false);
   };
 

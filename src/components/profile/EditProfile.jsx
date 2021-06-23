@@ -32,20 +32,19 @@ class EditProfile extends Component {
     );
   };
 
-  changePassword() {
-    changepassword(this.cancelToken)
-      .then((res) => {
-        if (res && res.status === 200) {
-          this.setState({
-            response: { color: "green", data: res.data },
-          });
-        } else {
-          this.setState({
-            response: { color: "red", data: "Something went wrong." },
-          });
-        }
-      })
-      .catch(() => {});
+  async changePassword() {
+    try {
+      const res = await changepassword(this.cancelToken);
+      if (res && res.status === 200) {
+        this.setState({
+          response: { color: "green", data: res.data },
+        });
+      } else {
+        this.setState({
+          response: { color: "red", data: "Something went wrong." },
+        });
+      }
+    } catch (e) {}
   }
 
   async editProfile() {

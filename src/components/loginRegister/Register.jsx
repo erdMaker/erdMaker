@@ -30,7 +30,7 @@ class Register extends Component {
     this.cancelToken.cancel("Request is being canceled");
   }
 
-  reGister() {
+  async reGister() {
     let captchaVal = this.recaptchaRef.current.getValue();
 
     const newUser = {
@@ -41,37 +41,30 @@ class Register extends Component {
       captcha: captchaVal,
     };
 
-    //this.setState({
-    //  email: "",
-    //  username: "",
-    //  password: "",
-    //  confirmPassword: "",
-    //});
     this.recaptchaRef.current.reset();
 
-    register(newUser, this.cancelToken)
-      .then((res) => {
-        if (res) {
-          if (res.status === 200) {
-            this.setState({
-              response: { color: "green", data: res.data },
-            });
-          } else if (res.status === 400) {
-            this.setState({
-              response: { color: "red", data: "Bad Input" },
-            });
-          } else {
-            this.setState({
-              response: { color: "red", data: "Registration failed." },
-            });
-          }
+    try {
+      const res = await register(newUser, this.cancelToken);
+      if (res) {
+        if (res.status === 200) {
+          this.setState({
+            response: { color: "green", data: res.data },
+          });
+        } else if (res.status === 400) {
+          this.setState({
+            response: { color: "red", data: "Bad Input" },
+          });
         } else {
           this.setState({
             response: { color: "red", data: "Registration failed." },
           });
         }
-      })
-      .catch(() => {});
+      } else {
+        this.setState({
+          response: { color: "red", data: "Registration failed." },
+        });
+      }
+    } catch (e) {}
   }
 
   handleChange = (e) => {

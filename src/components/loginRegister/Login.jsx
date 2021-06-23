@@ -26,40 +26,34 @@ class Login extends Component {
     this.cancelToken.cancel("Request is being canceled");
   }
 
-  logIn() {
+  async logIn() {
     const user = {
       email: this.state.email,
       password: this.state.password,
     };
-    //this.setState({
-    //  email: "",
-    //  password: "",
-    //});
-    // test
 
-    login(user, this.cancelToken)
-      .then((res) => {
-        if (res) {
-          if (res.status === 200) {
-            this.props.storeUserData({
-              isLogged: true,
-            });
-          } else if (res.status === 401) {
-            this.setState({
-              response: { color: "red", data: res.data },
-            });
-          } else {
-            this.setState({
-              response: { data: "Login failed.", color: "red" },
-            });
-          }
+    try {
+      const res = await login(user, this.cancelToken);
+      if (res) {
+        if (res.status === 200) {
+          this.props.storeUserData({
+            isLogged: true,
+          });
+        } else if (res.status === 401) {
+          this.setState({
+            response: { color: "red", data: res.data },
+          });
         } else {
           this.setState({
             response: { data: "Login failed.", color: "red" },
           });
         }
-      })
-      .catch(() => {});
+      } else {
+        this.setState({
+          response: { data: "Login failed.", color: "red" },
+        });
+      }
+    } catch (e) {}
   }
 
   toggleForgotPassword = () =>

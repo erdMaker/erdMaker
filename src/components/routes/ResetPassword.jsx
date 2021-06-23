@@ -26,7 +26,7 @@ class ResetPassword extends Component {
     this.cancelToken.cancel("Request is being canceled");
   }
 
-  resetPassword() {
+  async resetPassword() {
     const token = window.location.pathname.split("/")[2];
     const newPass = {
       password: this.state.password,
@@ -34,24 +34,18 @@ class ResetPassword extends Component {
       token: token,
     };
 
-    //this.setState({
-    //  password: "",
-    //  confirmPassword: "",
-    //});
-
-    resetpassword(newPass, this.cancelToken)
-      .then((res) => {
-        if (res && res.status === 200) {
-          this.setState({
-            response: { color: "green", data: res.data },
-          });
-        } else {
-          this.setState({
-            response: { color: "red", data: "Something went wrong." },
-          });
-        }
-      })
-      .catch(() => {});
+    try {
+      const res = await resetpassword(newPass, this.cancelToken);
+      if (res && res.status === 200) {
+        this.setState({
+          response: { color: "green", data: res.data },
+        });
+      } else {
+        this.setState({
+          response: { color: "red", data: "Something went wrong." },
+        });
+      }
+    } catch (e) {}
   }
 
   handleChange = (e) => {

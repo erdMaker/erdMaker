@@ -69,19 +69,18 @@ const ImportExportMenuListComposition = (props) => {
     setOpen(false);
   };
 
-  const handleServerImport = (e) => {
-    importdiagram(e.target.result, cancelToken.current)
-      .then((res) => {
-        if (res && res.status === 200) {
-          props.resetMeta();
-          props.resetComponents();
-          let data = makeCompatible(res.data);
-          props.setMeta(data.meta);
-          props.setComponents(data.components);
-          props.repositionComponents();
-        }
-      })
-      .catch(() => {});
+  const handleServerImport = async (e) => {
+    try {
+      const res = await importdiagram(e.target.result, cancelToken.current);
+      if (res && res.status === 200) {
+        props.resetMeta();
+        props.resetComponents();
+        let data = makeCompatible(res.data);
+        props.setMeta(data.meta);
+        props.setComponents(data.components);
+        props.repositionComponents();
+      }
+    } catch (e) {}
   };
 
   // Runs when user clicks to select file for import
@@ -108,14 +107,13 @@ const ImportExportMenuListComposition = (props) => {
     e.target.value = null; // Reset the file browser
   };
 
-  const exportDiagram = () => {
-    exportdiagram(cancelToken.current)
-      .then((res) => {
-        if (res && res.status === 200) {
-          fileDownload(res.data.token, fileName + ".erdm");
-        }
-      })
-      .catch(() => {});
+  const exportDiagram = async () => {
+    try {
+      const res = await exportdiagram(cancelToken.current);
+      if (res && res.status === 200) {
+        fileDownload(res.data.token, fileName + ".erdm");
+      }
+    } catch (e) {}
   };
 
   // Calculate the rectangle area occupied by the rendered elements on the stage

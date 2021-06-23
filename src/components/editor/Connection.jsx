@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import { changeConnection, deleteConnection, modifyConnection } from "../../actions/actions";
 import IconButton from "@material-ui/core/IconButton";
@@ -6,134 +6,132 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-class Connection extends Component {
-  state = { expand: false };
+const Connection = (props) => {
+  const [expand, setExpand] = useState(false);
 
-  handleEntityChange = (e) =>
-    this.props.changeConnection({
-      id: this.props.connection.id,
-      parentId: this.props.relationshipId,
+  const handleEntityChange = (e) =>
+    props.changeConnection({
+      id: props.connection.id,
+      parentId: props.relationshipId,
       connectId: Number(e.target.value),
     });
 
-  handleModifyConnection = (e) => {
-    this.props.modifyConnection({
-      id: this.props.connection.id,
-      parentId: this.props.relationshipId,
+  const handleModifyConnection = (e) => {
+    props.modifyConnection({
+      id: props.connection.id,
+      parentId: props.relationshipId,
       prop: e.target.id,
       value: e.target.value,
     });
   };
 
-  handleExpand = () => this.setState({ expand: !this.state.expand });
+  const handleExpand = () => setExpand(!expand);
 
-  render() {
-    var specificValues = this.state.expand ? (
-      <>
-        <div className="connection-input-group">
-          <label>
-            Min:
-            <input
-              id="exactMin"
-              className="small-editor-input"
-              type="text"
-              maxLength="7"
-              value={this.props.connection.exactMin}
-              onChange={this.handleModifyConnection}
-              //disabled={this.props.connection.min === "zero" || this.props.connection.min === "one" ? true : false}
-            />
-          </label>
-        </div>
-        <div className="connection-input-group">
-          <label>
-            Max:
-            <input
-              id="exactMax"
-              className="small-editor-input"
-              type="text"
-              maxLength="7"
-              value={this.props.connection.exactMax}
-              onChange={this.handleModifyConnection}
-              //disabled={this.props.connection.max === "one" ? true : false}
-            />
-          </label>
-        </div>
-        <br />
-        <div className="connection-input-group">
-          <label>
-            Role:
-            <input
-              id="role"
-              className="small-editor-input"
-              style={{ width: "150px", marginTop: "10px" }}
-              type="text"
-              maxLength="15"
-              value={this.props.connection.role}
-              onChange={this.handleModifyConnection}
-            />
-          </label>
-        </div>
-      </>
-    ) : null;
-
-    var expandIcon = this.state.expand ? <ExpandLessIcon /> : <ExpandMoreIcon />;
-
-    return (
-      <div className="connection" style={{ backgroundColor: this.props.index % 2 ? "#c9c9c9" : "#dfdfdf" }}>
-        <div className="connection-input-group">
-          <label>
-            <b>Entity: </b>
-            <select value={this.props.connection.connectId} onChange={this.handleEntityChange}>
-              <option value={0} disabled>
-                Select an Entity
-              </option>
-              {this.props.components.entities.map((entity) => (
-                <option key={entity.id} value={entity.id} disabled={entity.connectionCount >= 8 ? true : false}>
-                  {entity.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <IconButton
-          onClick={() => {
-            this.props.deleteConnection({
-              id: this.props.connection.id,
-              parentId: this.props.selector.current.id,
-              connectId: this.props.connection.connectId,
-            });
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
-        <br />
-        <div className="connection-input-group">
-          <label>
-            Min:{" "}
-            <select id="min" value={this.props.connection.min} onChange={this.handleModifyConnection}>
-              <option value="">Undefined</option>
-              <option value="zero">Zero</option>
-              <option value="one">One</option>
-            </select>
-          </label>
-        </div>
-        <div className="connection-input-group">
-          <label>
-            Max:{" "}
-            <select id="max" value={this.props.connection.max} onChange={this.handleModifyConnection}>
-              <option value="">Undefined</option>
-              <option value="one">One</option>
-              <option value="many">Many</option>
-            </select>
-          </label>
-        </div>
-        <IconButton onClick={this.handleExpand}>{expandIcon}</IconButton>
-        <br />
-        {specificValues}
+  const specificValues = expand ? (
+    <>
+      <div className="connection-input-group">
+        <label>
+          Min:
+          <input
+            id="exactMin"
+            className="small-editor-input"
+            type="text"
+            maxLength="7"
+            value={props.connection.exactMin}
+            onChange={handleModifyConnection}
+            //disabled={props.connection.min === "zero" || props.connection.min === "one" ? true : false}
+          />
+        </label>
       </div>
-    );
-  }
-}
+      <div className="connection-input-group">
+        <label>
+          Max:
+          <input
+            id="exactMax"
+            className="small-editor-input"
+            type="text"
+            maxLength="7"
+            value={props.connection.exactMax}
+            onChange={handleModifyConnection}
+            //disabled={props.connection.max === "one" ? true : false}
+          />
+        </label>
+      </div>
+      <br />
+      <div className="connection-input-group">
+        <label>
+          Role:
+          <input
+            id="role"
+            className="small-editor-input"
+            style={{ width: "150px", marginTop: "10px" }}
+            type="text"
+            maxLength="15"
+            value={props.connection.role}
+            onChange={handleModifyConnection}
+          />
+        </label>
+      </div>
+    </>
+  ) : null;
+
+  const expandIcon = expand ? <ExpandLessIcon /> : <ExpandMoreIcon />;
+
+  return (
+    <div className="connection" style={{ backgroundColor: props.index % 2 ? "#c9c9c9" : "#dfdfdf" }}>
+      <div className="connection-input-group">
+        <label>
+          <b>Entity: </b>
+          <select value={props.connection.connectId} onChange={handleEntityChange}>
+            <option value={0} disabled>
+              Select an Entity
+            </option>
+            {props.components.entities.map((entity) => (
+              <option key={entity.id} value={entity.id} disabled={entity.connectionCount >= 8 ? true : false}>
+                {entity.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <IconButton
+        onClick={() => {
+          props.deleteConnection({
+            id: props.connection.id,
+            parentId: props.selector.current.id,
+            connectId: props.connection.connectId,
+          });
+        }}
+      >
+        <DeleteIcon />
+      </IconButton>
+      <br />
+      <div className="connection-input-group">
+        <label>
+          Min:{" "}
+          <select id="min" value={props.connection.min} onChange={handleModifyConnection}>
+            <option value="">Undefined</option>
+            <option value="zero">Zero</option>
+            <option value="one">One</option>
+          </select>
+        </label>
+      </div>
+      <div className="connection-input-group">
+        <label>
+          Max:{" "}
+          <select id="max" value={props.connection.max} onChange={handleModifyConnection}>
+            <option value="">Undefined</option>
+            <option value="one">One</option>
+            <option value="many">Many</option>
+          </select>
+        </label>
+      </div>
+      <IconButton onClick={handleExpand}>{expandIcon}</IconButton>
+      <br />
+      {specificValues}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
   components: state.components,

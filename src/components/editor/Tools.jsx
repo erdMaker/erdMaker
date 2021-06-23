@@ -49,34 +49,33 @@ class Tools extends Component {
     clearTimeout(this.clickTimer);
   }
 
-  saveDiagram = () => {
+  saveDiagram = async () => {
     if (!this.props.general.diagramFetched) return;
     this.setState({ saveStatus: { text: "Saving...", color: this.saveIconColors.blue } });
-    savediagram(this.cancelToken)
-      .then((res) => {
-        if (res && (res.status === 200 || res.status === 201)) {
-          if (!this.props.general.activeDiagramId) this.props.setActiveDiagram(res.data.id);
-          var saveTime = new Date();
-          var hours = saveTime.getHours();
-          var minutes = saveTime.getMinutes();
-          var seconds = saveTime.getSeconds();
-          this.setState({
-            saveStatus: {
-              text: "Your progress is being saved.",
-              color: this.saveIconColors.green,
-            },
-            lastSave: "Last Save " + hours + ":" + minutes + ":" + seconds,
-          });
-        } else {
-          this.setState({
-            saveStatus: {
-              text: "Not able to save. Leaving or refreshing the page might log you out.",
-              color: this.saveIconColors.red,
-            },
-          });
-        }
-      })
-      .catch(() => {});
+    try {
+      const res = await savediagram(this.cancelToken);
+      if (res && (res.status === 200 || res.status === 201)) {
+        if (!this.props.general.activeDiagramId) this.props.setActiveDiagram(res.data.id);
+        var saveTime = new Date();
+        var hours = saveTime.getHours();
+        var minutes = saveTime.getMinutes();
+        var seconds = saveTime.getSeconds();
+        this.setState({
+          saveStatus: {
+            text: "Your progress is being saved.",
+            color: this.saveIconColors.green,
+          },
+          lastSave: "Last Save " + hours + ":" + minutes + ":" + seconds,
+        });
+      } else {
+        this.setState({
+          saveStatus: {
+            text: "Not able to save. Leaving or refreshing the page might log you out.",
+            color: this.saveIconColors.red,
+          },
+        });
+      }
+    } catch (e) {}
   };
 
   clearStage = () => {
