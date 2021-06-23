@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import {
   updatePositionRelationship,
@@ -20,13 +20,13 @@ import {
   dragBoundOffset,
 } from "../../global/constants";
 
-class Relationship extends Component {
-  state = { initialPosition: { x: this.props.x, y: this.props.y } };
+const Relationship = (props) => {
+  const [initialPosition, setInitialPosition] = useState({ x: props.x, y: props.y });
 
   // Does not let the relationship to be dragged out of stage bounds
-  stageBound = (pos) => {
-    var newX;
-    var newY;
+  const stageBound = (pos) => {
+    let newX;
+    let newY;
 
     if (pos.x > stageWidth / 2)
       newX =
@@ -48,107 +48,101 @@ class Relationship extends Component {
     };
   };
 
-  render() {
-    var weakRelationshipRhombus = this.props.type.weak ? (
+  const weakRelationshipRhombus = props.type.weak ? (
+    <Line
+      fill="#94dfea"
+      stroke={
+        props.id === props.selector.current.id && props.selector.current.type === "relationship" ? "red" : "black"
+      }
+      strokeWidth={2}
+      lineJoin="bevel"
+      closed
+      points={[
+        0,
+        -relationshipHeight + weakRelationshipOffset, // TOP
+        relationshipWidth - 1.5 * weakRelationshipOffset,
+        0, // RIGHT
+        0,
+        relationshipHeight - weakRelationshipOffset, // BOTTOM
+        -relationshipWidth + 1.5 * weakRelationshipOffset,
+        0, // LEFT
+      ]}
+    />
+  ) : null;
+
+  console.log("rel " + props.id);
+
+  return (
+    <Group
+      x={props.x}
+      y={props.y}
+      draggable
+      onDragMove={(e) => {
+        props.updatePositionRelationship({
+          id: props.id,
+          x: e.target.x(),
+          y: e.target.y(),
+        });
+        props.updatePositionChildren({
+          id: props.id,
+          dx: e.target.x() - initialPosition.x,
+          dy: e.target.y() - initialPosition.y,
+        });
+        setInitialPosition({ x: e.target.x(), y: e.target.y() });
+      }}
+      onDragEnd={() => props.repositionComponents()}
+      onTap={() => {
+        props.deselect();
+        props.select({
+          type: "relationship",
+          id: props.id,
+          parentId: null,
+        });
+      }}
+      onClick={() => {
+        props.deselect();
+        props.select({
+          type: "relationship",
+          id: props.id,
+          parentId: null,
+        });
+      }}
+      dragBoundFunc={(pos) => stageBound(pos)}
+    >
       <Line
         fill="#94dfea"
         stroke={
-          this.props.id === this.props.selector.current.id && this.props.selector.current.type === "relationship"
-            ? "red"
-            : "black"
+          props.id === props.selector.current.id && props.selector.current.type === "relationship" ? "red" : "black"
         }
         strokeWidth={2}
         lineJoin="bevel"
         closed
         points={[
           0,
-          -relationshipHeight + weakRelationshipOffset, // TOP
-          relationshipWidth - 1.5 * weakRelationshipOffset,
+          -relationshipHeight, // TOP
+          relationshipWidth,
           0, // RIGHT
           0,
-          relationshipHeight - weakRelationshipOffset, // BOTTOM
-          -relationshipWidth + 1.5 * weakRelationshipOffset,
+          relationshipHeight, // BOTTOM
+          -relationshipWidth,
           0, // LEFT
         ]}
       />
-    ) : null;
-
-    return (
-      <Group
-        x={this.props.x}
-        y={this.props.y}
-        draggable
-        onDragMove={(e) => {
-          this.props.updatePositionRelationship({
-            id: this.props.id,
-            x: e.target.x(),
-            y: e.target.y(),
-          });
-          this.props.updatePositionChildren({
-            id: this.props.id,
-            dx: e.target.x() - this.state.initialPosition.x,
-            dy: e.target.y() - this.state.initialPosition.y,
-          });
-          this.setState({
-            initialPosition: { x: e.target.x(), y: e.target.y() },
-          });
-        }}
-        onDragEnd={() => this.props.repositionComponents()}
-        onTap={() => {
-          this.props.deselect();
-          this.props.select({
-            type: "relationship",
-            id: this.props.id,
-            parentId: null,
-          });
-        }}
-        onClick={() => {
-          this.props.deselect();
-          this.props.select({
-            type: "relationship",
-            id: this.props.id,
-            parentId: null,
-          });
-        }}
-        dragBoundFunc={(pos) => this.stageBound(pos)}
-      >
-        <Line
-          fill="#94dfea"
-          stroke={
-            this.props.id === this.props.selector.current.id && this.props.selector.current.type === "relationship"
-              ? "red"
-              : "black"
-          }
-          strokeWidth={2}
-          lineJoin="bevel"
-          closed
-          points={[
-            0,
-            -relationshipHeight, // TOP
-            relationshipWidth,
-            0, // RIGHT
-            0,
-            relationshipHeight, // BOTTOM
-            -relationshipWidth,
-            0, // LEFT
-          ]}
-        />
-        {weakRelationshipRhombus}
-        <Text
-          text={this.props.name}
-          fontSize={fontSize}
-          align="center"
-          verticalAlign="middle"
-          width={relationshipTextWidth}
-          height={textHeight}
-          offsetX={relationshipTextWidth / 2}
-          offsetY={textHeight / 2}
-          listening={false}
-        />
-      </Group>
-    );
-  }
-}
+      {weakRelationshipRhombus}
+      <Text
+        text={props.name}
+        fontSize={fontSize}
+        align="center"
+        verticalAlign="middle"
+        width={relationshipTextWidth}
+        height={textHeight}
+        offsetX={relationshipTextWidth / 2}
+        offsetY={textHeight / 2}
+        listening={false}
+      />
+    </Group>
+  );
+};
 
 const mapStateToProps = (state) => ({
   selector: state.selector,

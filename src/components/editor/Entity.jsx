@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import {
   updatePositionEntity,
@@ -20,13 +20,13 @@ import {
   dragBoundOffset,
 } from "../../global/constants";
 
-class Entity extends Component {
-  state = { initialPosition: { x: this.props.x, y: this.props.y } };
+const Entity = (props) => {
+  const [initialPosition, setInitialPosition] = useState({ x: props.x, y: props.y });
 
   // Does not let the entity to be dragged out of stage bounds
-  stageBound = (pos) => {
-    var newX;
-    var newY;
+  const stageBound = (pos) => {
+    let newX;
+    let newY;
 
     if (pos.x > stageWidth / 2)
       newX =
@@ -46,118 +46,103 @@ class Entity extends Component {
     };
   };
 
-  render() {
-    var weakRect =
-      this.props.type === "weak" ? (
-        <Rect
-          x={-entityWidth / 2 + entityWeakOffset / 2}
-          y={-entityHeight / 2 + entityWeakOffset / 2}
-          width={entityWidth - entityWeakOffset}
-          height={entityHeight - entityWeakOffset}
-          fill="#ffdd91"
-          stroke={
-            this.props.id === this.props.selector.current.id && this.props.selector.current.type === "entity"
-              ? "red"
-              : "black"
-          }
-          strokeWidth={2}
-        />
-      ) : null;
+  console.log("ent " + props.id);
+  const weakRect =
+    props.type === "weak" ? (
+      <Rect
+        x={-entityWidth / 2 + entityWeakOffset / 2}
+        y={-entityHeight / 2 + entityWeakOffset / 2}
+        width={entityWidth - entityWeakOffset}
+        height={entityHeight - entityWeakOffset}
+        fill="#ffdd91"
+        stroke={props.id === props.selector.current.id && props.selector.current.type === "entity" ? "red" : "black"}
+        strokeWidth={2}
+      />
+    ) : null;
 
-    var associativeDiamond =
-      this.props.type === "associative" ? (
-        <Line
-          fill="#ffdd91"
-          stroke={
-            this.props.id === this.props.selector.current.id && this.props.selector.current.type === "entity"
-              ? "red"
-              : "black"
-          }
-          strokeWidth={2}
-          lineJoin="bevel"
-          closed
-          points={[
-            0,
-            -entityHeight / 2, // TOP
-            entityWidth / 2,
-            0, // RIGHT
-            0,
-            entityHeight / 2, // BOTTOM
-            -entityWidth / 2,
-            0, // LEFT
-          ]}
-        />
-      ) : null;
+  const associativeDiamond =
+    props.type === "associative" ? (
+      <Line
+        fill="#ffdd91"
+        stroke={props.id === props.selector.current.id && props.selector.current.type === "entity" ? "red" : "black"}
+        strokeWidth={2}
+        lineJoin="bevel"
+        closed
+        points={[
+          0,
+          -entityHeight / 2, // TOP
+          entityWidth / 2,
+          0, // RIGHT
+          0,
+          entityHeight / 2, // BOTTOM
+          -entityWidth / 2,
+          0, // LEFT
+        ]}
+      />
+    ) : null;
 
-    return (
-      <Group
-        x={this.props.x}
-        y={this.props.y}
-        draggable
-        onDragMove={(e) => {
-          this.props.updatePositionEntity({
-            id: this.props.id,
-            x: e.target.x(),
-            y: e.target.y(),
-          });
-          this.props.updatePositionChildren({
-            id: this.props.id,
-            dx: e.target.x() - this.state.initialPosition.x,
-            dy: e.target.y() - this.state.initialPosition.y,
-          });
-          this.setState({
-            initialPosition: { x: e.target.x(), y: e.target.y() },
-          });
-        }}
-        onDragEnd={() => this.props.repositionComponents()}
-        onTap={() => {
-          this.props.deselect();
-          this.props.select({
-            type: "entity",
-            id: this.props.id,
-            parentId: null,
-          });
-        }}
-        onClick={() => {
-          this.props.deselect();
-          this.props.select({
-            type: "entity",
-            id: this.props.id,
-            parentId: null,
-          });
-        }}
-        dragBoundFunc={(pos) => this.stageBound(pos)}
-      >
-        <Rect
-          x={-entityWidth / 2}
-          y={-entityHeight / 2}
-          width={entityWidth}
-          height={entityHeight}
-          fill="#ffdd91"
-          stroke={
-            this.props.id === this.props.selector.current.id && this.props.selector.current.type === "entity"
-              ? "red"
-              : "black"
-          }
-          strokeWidth={2}
-        />
-        {weakRect}
-        {associativeDiamond}
-        <Text
-          text={this.props.name}
-          fontSize={fontSize}
-          align="center"
-          verticalAlign="middle"
-          width={entityTextWidth}
-          height={textHeight}
-          offsetX={entityTextWidth / 2}
-          offsetY={textHeight / 2}
-          listening={false}
-        />
-      </Group>
-    );
-  }
-}
+  return (
+    <Group
+      x={props.x}
+      y={props.y}
+      draggable
+      onDragMove={(e) => {
+        props.updatePositionEntity({
+          id: props.id,
+          x: e.target.x(),
+          y: e.target.y(),
+        });
+        props.updatePositionChildren({
+          id: props.id,
+          dx: e.target.x() - initialPosition.x,
+          dy: e.target.y() - initialPosition.y,
+        });
+        setInitialPosition({ x: e.target.x(), y: e.target.y() });
+      }}
+      onDragEnd={() => props.repositionComponents()}
+      onTap={() => {
+        props.deselect();
+        props.select({
+          type: "entity",
+          id: props.id,
+          parentId: null,
+        });
+      }}
+      onClick={() => {
+        props.deselect();
+        props.select({
+          type: "entity",
+          id: props.id,
+          parentId: null,
+        });
+      }}
+      dragBoundFunc={(pos) => stageBound(pos)}
+    >
+      <Rect
+        x={-entityWidth / 2}
+        y={-entityHeight / 2}
+        width={entityWidth}
+        height={entityHeight}
+        fill="#ffdd91"
+        stroke={props.id === props.selector.current.id && props.selector.current.type === "entity" ? "red" : "black"}
+        strokeWidth={2}
+      />
+      {weakRect}
+      {associativeDiamond}
+      <Text
+        text={props.name}
+        fontSize={fontSize}
+        align="center"
+        verticalAlign="middle"
+        width={entityTextWidth}
+        height={textHeight}
+        offsetX={entityTextWidth / 2}
+        offsetY={textHeight / 2}
+        listening={false}
+      />
+    </Group>
+  );
+};
 
 const mapStateToProps = (state) => ({
   selector: state.selector,

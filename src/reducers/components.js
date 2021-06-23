@@ -1,3 +1,4 @@
+import _ from "lodash";
 import {
   stageWidth,
   stageHeight,
@@ -83,14 +84,12 @@ const componentsReducer = (state = initialState, action) => {
           {
             id: state.count + 1,
             parentId: action.payload.id,
-            //text: "",
             x: action.payload.x,
             y: action.payload.y,
             type: "undefined",
             participation: "partial",
             cardinality: "disjoint",
             xconnections: [],
-            //connectionCount: 0, // Number of connections
           },
         ],
         count: state.count + 1,
@@ -211,12 +210,14 @@ const componentsReducer = (state = initialState, action) => {
     case "DELETE_RELATIONSHIP": {
       let newState = {};
       Object.assign(newState, state);
-      // Reduce connectionCount of involved entities
+
+      // Reduce connectionCount of involved entities //CLOSURE
       function adjustEntities(connection) {
         for (let entity of newState.entities) {
           if (entity.id === connection.connectId) entity.connectionCount--;
         }
       }
+
       for (let relationship of newState.relationships) {
         if (relationship.id === action.payload.id) relationship.connections.forEach(adjustEntities);
       }
@@ -250,46 +251,32 @@ const componentsReducer = (state = initialState, action) => {
       };
     case "CHANGE_CONNECTION": {
       // Change connected entity
-      let newState = {};
-      Object.assign(newState, state);
+      let newState = _.cloneDeep(state);
+
       let prevConnectId = 0;
       for (let relationship of newState.relationships) {
         if (relationship.id === action.payload.parentId)
           for (let connection of relationship.connections) {
             if (connection.id === action.payload.id) {
               prevConnectId = connection.connectId;
-              connection = {
-                ...connection,
-                connectId: action.payload.connectId,
-              };
+              connection.connectId = action.payload.connectId;
             }
           }
       }
       for (let entity of newState.entities) {
-        if (entity.id === prevConnectId)
-          entity = {
-            ...entity,
-            connectionCount: entity.connectionCount - 1,
-          };
-        if (entity.id === action.payload.connectId)
-          entity = {
-            ...entity,
-            connectionCount: entity.connectionCount + 1,
-          };
+        if (entity.id === prevConnectId) entity.connectionCount--;
+        if (entity.id === action.payload.connectId) entity.connectionCount++;
       }
       return newState;
     }
     case "MODIFY_CONNECTION": {
-      let newState = {};
-      Object.assign(newState, state);
+      let newState = _.cloneDeep(state);
+
       for (let relationship of newState.relationships) {
         if (relationship.id === action.payload.parentId)
           for (let connection of relationship.connections) {
             if (connection.id === action.payload.id) {
-              connection = {
-                ...connection,
-                [action.payload.prop]: action.payload.value,
-              };
+              Object.assign(connection, { ...connection, [action.payload.prop]: action.payload.value });
               break;
             }
           }
@@ -297,15 +284,11 @@ const componentsReducer = (state = initialState, action) => {
       return newState;
     }
     case "DELETE_CONNECTION": {
-      let newState = {};
-      Object.assign(newState, state);
+      let newState = _.cloneDeep(state);
+
       if (action.payload.id) {
         for (let entity of newState.entities) {
-          if (entity.id === action.payload.connectId)
-            entity = {
-              ...entity,
-              connectionCount: entity.connectionCount - 1,
-            };
+          if (entity.id === action.payload.connectId) entity.connectionCount--;
         }
         for (let relationship of newState.relationships) {
           if (relationship.id === action.payload.parentId)
@@ -460,8 +443,8 @@ const componentsReducer = (state = initialState, action) => {
       };
     case "REPOSITION_COMPONENTS": {
       // Used to return all components within stage bound if dragged off
-      let newState = {};
-      Object.assign(newState, state);
+      let newState = _.cloneDeep(state);
+
       for (let entity of newState.entities) {
         if (entity.x > stageWidth - entityWidth / 2 - dragBoundOffset)
           entity.x = stageWidth - entityWidth / 2 - dragBoundOffset;

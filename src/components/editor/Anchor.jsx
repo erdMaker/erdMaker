@@ -59,7 +59,7 @@ const Anchor = (props) => {
         />
       </Group>
     ) : null;
-
+  //console.log("anch render"+props.angle);
   return (
     <Group x={props.x} y={props.y} rotation={props.angle}>
       <Line

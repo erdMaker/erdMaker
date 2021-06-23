@@ -97,6 +97,7 @@ const Attribute = (props) => {
     }
   }
 
+  console.log("att " + props.id);
   return (
     <Group
       x={props.x}
@@ -166,7 +167,6 @@ const Attribute = (props) => {
 
 const mapStateToProps = (state) => ({
   selector: state.selector,
-  components: state.components,
 });
 
 const mapDispatchToProps = {

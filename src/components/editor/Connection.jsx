@@ -9,12 +9,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 const Connection = (props) => {
   const [expand, setExpand] = useState(false);
 
-  const handleEntityChange = (e) =>
+  const handleEntityChange = (e) => {
     props.changeConnection({
       id: props.connection.id,
       parentId: props.relationshipId,
       connectId: Number(e.target.value),
     });
+  };
 
   const handleModifyConnection = (e) => {
     props.modifyConnection({
