@@ -29,21 +29,18 @@ const Attribute = (props) => {
   const stageBound = (pos) => {
     let newX;
     let newY;
-
     if (pos.x > stageWidth / 2)
       newX =
         pos.x > stageWidth - attributeRadiusX - dragBoundOffset
           ? stageWidth - attributeRadiusX - dragBoundOffset
           : pos.x;
     else newX = pos.x < attributeRadiusX + dragBoundOffset ? attributeRadiusX + dragBoundOffset : pos.x;
-
     if (pos.y > stageHeight / 2)
       newY =
         pos.y > stageHeight - attributeRadiusY - dragBoundOffset
           ? stageHeight - attributeRadiusY - dragBoundOffset
           : pos.y;
     else newY = pos.y < attributeRadiusY + dragBoundOffset ? attributeRadiusY + dragBoundOffset : pos.y;
-
     return {
       x: newX,
       y: newY,

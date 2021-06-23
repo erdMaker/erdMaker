@@ -27,19 +27,16 @@ const Entity = (props) => {
   const stageBound = (pos) => {
     let newX;
     let newY;
-
     if (pos.x > stageWidth / 2)
       newX =
         pos.x > stageWidth - entityWidth / 2 - dragBoundOffset ? stageWidth - entityWidth / 2 - dragBoundOffset : pos.x;
     else newX = pos.x < entityWidth / 2 + dragBoundOffset ? entityWidth / 2 + dragBoundOffset : pos.x;
-
     if (pos.y > stageHeight / 2)
       newY =
         pos.y > stageHeight - entityHeight / 2 - dragBoundOffset
           ? stageHeight - entityHeight / 2 - dragBoundOffset
           : pos.y;
     else newY = pos.y < entityHeight / 2 + dragBoundOffset ? entityHeight / 2 + dragBoundOffset : pos.y;
-
     return {
       x: newX,
       y: newY,

@@ -4,7 +4,7 @@ import { labelTextSize } from "../../global/constants";
 import { getComponentById } from "../../global/globalFuncs";
 
 const LabelProperties = (props) => {
-  var label = getComponentById(props.selector.current.id);
+  const label = getComponentById(props.selector.current.id);
   return (
     <div className="sidepanel-content">
       <h3>Label</h3>

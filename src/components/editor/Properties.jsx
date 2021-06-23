@@ -16,18 +16,18 @@ import {
 import { getComponentById } from "../../global/globalFuncs";
 
 const Properties = (props) => {
-  var stage = props.getStage(); // Reference to the stage
-  var stageScrollX = stage ? stage.scrollLeft : 0; // How far we have scrolled horizontally
-  var mobile = window.innerWidth <= 768 ? true : false;
-  var scrollbarOffset = mobile ? 0 : 17; // Account for the bottom horizontal scrollbar on desktop
-  var xPosition; // Position of currently selected component on the screen that helps determine
+  const stage = props.getStage(); // Reference to the stage
+  const stageScrollX = stage ? stage.scrollLeft : 0; // How far we have scrolled horizontally
+  const mobile = window.innerWidth <= 768 ? true : false;
+  const scrollbarOffset = mobile ? 0 : 17; // Account for the bottom horizontal scrollbar on desktop
+  let xPosition; // Position of currently selected component on the screen that helps determine
   //on which side of the screen the sidepanel will be drawn
-  var loadedProperties; // Determines what kind of properties will be drawn on the sidepanel
-  var rightSide = true;
-  var sidepanelActive = "";
-  var closeActive = "";
-  var sidepanelHeightCutoff = 0; // In the case of Label it shortens the sidepanel's height to enable dragndrop of the label
-  var sidepanelWidth = // Wider sidepanel for relationships
+  let loadedProperties; // Determines what kind of properties will be drawn on the sidepanel
+  let rightSide = true;
+  let sidepanelActive = "";
+  let closeActive = "";
+  let sidepanelHeightCutoff = 0; // In the case of Label it shortens the sidepanel's height to enable dragndrop of the label
+  const sidepanelWidth = // Wider sidepanel for relationships
     props.selector.current.type === "relationship" || props.selector.current.type === "extension"
       ? props.general.sidepanelWidth.wide
       : props.general.sidepanelWidth.standard;
@@ -75,8 +75,8 @@ const Properties = (props) => {
     }
   }
 
-  var sidepanelClasses = "sidepanel" + sidepanelActive;
-  var closeClasses = "close" + closeActive;
+  const sidepanelClasses = "sidepanel" + sidepanelActive;
+  const closeClasses = "close" + closeActive;
 
   return (
     <div

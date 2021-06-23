@@ -27,21 +27,18 @@ const Relationship = (props) => {
   const stageBound = (pos) => {
     let newX;
     let newY;
-
     if (pos.x > stageWidth / 2)
       newX =
         pos.x > stageWidth - relationshipWidth - dragBoundOffset
           ? stageWidth - relationshipWidth - dragBoundOffset
           : pos.x;
     else newX = pos.x < relationshipWidth + dragBoundOffset ? relationshipWidth + dragBoundOffset : pos.x;
-
     if (pos.y > stageHeight / 2)
       newY =
         pos.y > stageHeight - relationshipHeight - dragBoundOffset
           ? stageHeight - relationshipHeight - dragBoundOffset
           : pos.y;
     else newY = pos.y < relationshipHeight + dragBoundOffset ? relationshipHeight + dragBoundOffset : pos.y;
-
     return {
       x: newX,
       y: newY,

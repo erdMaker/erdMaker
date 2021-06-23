@@ -1,6 +1,6 @@
 import { Group, Text, Label, Tag } from "react-konva";
 import { fontSize } from "../../global/constants";
-var pixelWidth = require("string-pixel-width");
+const pixelWidth = require("string-pixel-width");
 
 const SpecificValues = (props) => {
   return (

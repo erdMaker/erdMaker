@@ -1,4 +1,3 @@
-import { Component } from "react";
 import { connect } from "react-redux";
 import {
   modifyExtension,
@@ -12,72 +11,70 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { getComponentById } from "../../global/globalFuncs";
 
-class ExtensionProperties extends Component {
-  handleModifyExtension = (e) => {
-    this.props.modifyExtension({
-      id: this.props.selector.current.id,
+const ExtensionProperties = (props) => {
+  const handleModifyExtension = (e) => {
+    props.modifyExtension({
+      id: props.selector.current.id,
       prop: e.target.id,
       value: e.target.value,
     });
   };
 
-  render() {
-    var extension = getComponentById(this.props.selector.current.id);
-    var parent = getComponentById(this.props.selector.current.parentId);
-    var content;
-    if (extension.type === "specialize")
-      content = <Specialize extension={extension} parent={parent} handleModifyExtension={this.handleModifyExtension} />;
-    else if (extension.type === "union")
-      content = <Union extension={extension} parent={parent} handleModifyExtension={this.handleModifyExtension} />;
-    else content = null;
+  const extension = getComponentById(props.selector.current.id);
+  const parent = getComponentById(props.selector.current.parentId);
+  let content;
+  if (extension.type === "specialize")
+    content = <Specialize extension={extension} parent={parent} handleModifyExtension={handleModifyExtension} />;
+  else if (extension.type === "union")
+    content = <Union extension={extension} parent={parent} handleModifyExtension={handleModifyExtension} />;
+  else content = null;
 
-    const addEntityButton =
-      extension.type !== "undefined" && extension.xconnections.length < 30 ? (
+  const addEntityButton =
+    extension.type !== "undefined" && extension.xconnections.length < 30 ? (
+      <button
+        className="properties-neutral-button"
+        type="button"
+        onClick={() => {
+          props.addXConnection({ id: props.selector.current.id });
+        }}
+      >
+        Add Entity
+      </button>
+    ) : null;
+
+  return (
+    <div className="sidepanel-content">
+      <h3>Extension</h3>
+      <div className="extension-group">
+        Type:
+        <select id="type" value={extension.type} onChange={handleModifyExtension}>
+          <option value="undefined" disabled>
+            Select Type
+          </option>
+          <option value="specialize">Specialize</option>
+          <option value="union">Union</option>
+        </select>
+      </div>
+      {content}
+      <div className="connections-list">
+        <XConnections extension={extension} />
+      </div>
+      <div className="buttons-list">
+        {addEntityButton}
         <button
-          className="properties-neutral-button"
+          className="properties-delete-button"
           type="button"
           onClick={() => {
-            this.props.addXConnection({ id: this.props.selector.current.id });
+            props.deleteExtension({ id: props.selector.current.id });
+            props.deselect();
           }}
         >
-          Add Entity
+          Delete
         </button>
-      ) : null;
-
-    return (
-      <div className="sidepanel-content">
-        <h3>Extension</h3>
-        <div className="extension-group">
-          Type:
-          <select id="type" value={extension.type} onChange={this.handleModifyExtension}>
-            <option value="undefined" disabled>
-              Select Type
-            </option>
-            <option value="specialize">Specialize</option>
-            <option value="union">Union</option>
-          </select>
-        </div>
-        {content}
-        <div className="connections-list">
-          <XConnections extension={extension} />
-        </div>
-        <div className="buttons-list">
-          {addEntityButton}
-          <button
-            className="properties-delete-button"
-            type="button"
-            onClick={() => {
-              this.props.deleteExtension({ id: this.props.selector.current.id });
-              this.props.deselect();
-            }}
-          >
-            Delete
-          </button>
-        </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const Specialize = (props) => {
   return (
@@ -137,7 +134,7 @@ const XConnections = connect(
   mapStateToProps,
   mapDispatchToProps
 )((props) => {
-  let xconnectionList = [];
+  const xconnectionList = [];
   const handleChangeXConnection = (xconnectionId, e) =>
     props.changeXConnection({
       id: props.extension.id,
@@ -174,8 +171,8 @@ const XEntityList = connect(
   mapStateToProps,
   mapDispatchToProps
 )((props) => {
-  var entityList = [];
-  var found;
+  const entityList = [];
+  let found;
   for (let entity of props.components.entities) {
     found = false;
     if (entity.id === props.extension.parentId) continue;
