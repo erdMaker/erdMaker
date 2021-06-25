@@ -67,8 +67,6 @@ const Relationship = (props) => {
     />
   ) : null;
 
-  console.log("rel " + props.id);
-
   return (
     <Group
       x={props.x}

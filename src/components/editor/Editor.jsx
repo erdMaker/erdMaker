@@ -62,9 +62,9 @@ const Editor = (props) => {
       window.removeEventListener("resize", props.updateSidepanelWidth);
       window.removeEventListener("beforeunload", clearEditor);
     };
+    // eslint-disable-next-line
   }, []);
 
-  console.log("editor");
   const saveEnabled =
     props.user.confirmed && (props.user.diagramsOwned < diagramLimit || props.general.activeDiagramId) ? true : false;
 

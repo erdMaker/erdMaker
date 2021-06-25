@@ -487,7 +487,8 @@ const componentsReducer = (state = initialState, action) => {
           label.y = stageHeight - label.height / 2 - dragBoundOffset;
         else if (label.y < label.height / 2 + dragBoundOffset) label.y = label.height / 2 + dragBoundOffset;
       }
-      return newState;
+      if (JSON.stringify(state) === JSON.stringify(newState)) return state;
+      else return newState;
     }
     case "SET_COMPONENTS":
       return action.payload;

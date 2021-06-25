@@ -347,7 +347,7 @@ const Surface = (props) => {
   };
 
   const getStage = () => stage; // Get reference to the stage
-  console.log("surface");
+
   return (
     <ReactReduxContext.Consumer>
       {({ store }) => (

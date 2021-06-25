@@ -43,7 +43,6 @@ const Entity = (props) => {
     };
   };
 
-  console.log("ent " + props.id);
   const weakRect =
     props.type === "weak" ? (
       <Rect

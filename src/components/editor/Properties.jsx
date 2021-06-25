@@ -95,7 +95,6 @@ const Properties = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  components: state.components,
   selector: state.selector,
   general: state.general,
 });

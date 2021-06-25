@@ -94,7 +94,6 @@ const Attribute = (props) => {
     }
   }
 
-  console.log("att " + props.id);
   return (
     <Group
       x={props.x}
