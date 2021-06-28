@@ -28,14 +28,14 @@ class ResetPassword extends Component {
 
   async resetPassword() {
     const token = window.location.pathname.split("/")[2];
-    const newPass = {
+    const payload = {
       password: this.state.password,
       confirmPassword: this.state.confirmPassword,
       token: token,
     };
 
     try {
-      const res = await resetpassword(newPass, this.cancelToken);
+      const res = await resetpassword(payload, this.cancelToken);
       if (res && res.status === 200) {
         this.setState({
           response: { color: "green", data: res.data },
@@ -65,9 +65,9 @@ class ResetPassword extends Component {
   validate = () => {
     let passwordError = 0;
     let confirmPasswordError = 0;
-    let lowerCaseLetters = /[a-z]/g;
-    let upperCaseLetters = /[A-Z]/g;
-    let numbers = /[0-9]/g;
+    const lowerCaseLetters = /[a-z]/g;
+    const upperCaseLetters = /[A-Z]/g;
+    const numbers = /[0-9]/g;
 
     if (
       this.state.password.length >= 8 &&

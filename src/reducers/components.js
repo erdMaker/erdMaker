@@ -211,7 +211,7 @@ const componentsReducer = (state = initialState, action) => {
       let newState = {};
       Object.assign(newState, state);
 
-      // Reduce connectionCount of involved entities //CLOSURE
+      // Reduce connectionCount of involved entities
       function adjustEntities(connection) {
         for (let entity of newState.entities) {
           if (entity.id === connection.connectId) entity.connectionCount--;

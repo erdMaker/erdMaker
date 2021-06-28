@@ -7,7 +7,7 @@ const ServerMessage = () => {
   let icon = fofImg;
   let paragraph = "Message not found.";
 
-  let queryString = window.location.search.split("=", 2);
+  const queryString = window.location.search.split("=", 2);
   if (queryString[0] === "?res") {
     switch (queryString[1]) {
       case "email_confirmed":

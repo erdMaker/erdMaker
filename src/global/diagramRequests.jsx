@@ -48,12 +48,12 @@ export const savediagram = async (cancelToken) => {
   }
 };
 
-export const duplicatediagram = async (diagramid, cancelToken) => {
+export const duplicatediagram = async (payload, cancelToken) => {
   try {
     return await axios.post(
       serverHost + "/diagram/duplicatediagram",
       {
-        id: diagramid,
+        id: payload,
       },
       {
         withCredentials: true,
@@ -70,12 +70,12 @@ export const duplicatediagram = async (diagramid, cancelToken) => {
   }
 };
 
-export const deletediagram = async (diagramid, cancelToken) => {
+export const deletediagram = async (payload, cancelToken) => {
   try {
     return await axios.post(
       serverHost + "/diagram/deletediagram",
       {
-        id: diagramid,
+        id: payload,
       },
       {
         withCredentials: true,
@@ -113,12 +113,12 @@ export const exportdiagram = async (cancelToken) => {
   }
 };
 
-export const importdiagram = async (diagram, cancelToken) => {
+export const importdiagram = async (payload, cancelToken) => {
   try {
     return await axios.post(
       serverHost + "/diagram/importdiagram",
       {
-        data: diagram,
+        data: payload,
       },
       {
         timeout: timeout,

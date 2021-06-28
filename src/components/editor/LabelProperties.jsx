@@ -38,6 +38,7 @@ const LabelProperties = (props) => {
 };
 
 const mapStateToProps = (state) => ({
+  components: state.components,
   selector: state.selector,
 });
 

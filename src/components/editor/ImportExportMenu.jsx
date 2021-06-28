@@ -1,5 +1,4 @@
-import { useEffect, useRef } from "react";
-import * as React from "react";
+import { useState, useEffect, useRef } from "react";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
@@ -32,7 +31,7 @@ import {
   extensionRadius,
   dragBoundOffset,
 } from "../../global/constants";
-var fileDownload = require("js-file-download");
+const fileDownload = require("js-file-download");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,10 +45,10 @@ const useStyles = makeStyles((theme) => ({
 const ImportExportMenuListComposition = (props) => {
   const upload = useRef(null);
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
   const cancelToken = useRef(null);
-  var fileName = props.meta.title ? props.meta.title : "diagram";
+  const fileName = props.meta.title ? props.meta.title : "diagram";
 
   useEffect(() => {
     cancelToken.current = axios.CancelToken.source();
@@ -63,9 +62,6 @@ const ImportExportMenuListComposition = (props) => {
   };
 
   const handleClose = (event) => {
-    //if (anchorRef.current && anchorRef.current.contains(event.target)) {
-    //  return;
-    //}
     setOpen(false);
   };
 
@@ -90,7 +86,7 @@ const ImportExportMenuListComposition = (props) => {
       return;
     }
 
-    var file = e.target.files[0];
+    const file = e.target.files[0];
     const name = file.name;
     const lastDot = name.lastIndexOf(".");
 
@@ -100,7 +96,7 @@ const ImportExportMenuListComposition = (props) => {
 
     if (ext !== "erdm") return;
 
-    var fr = new FileReader();
+    let fr = new FileReader();
     fr.onloadend = handleServerImport;
     fr.readAsText(file);
 
@@ -118,7 +114,7 @@ const ImportExportMenuListComposition = (props) => {
 
   // Calculate the rectangle area occupied by the rendered elements on the stage
   const getStageUsedArea = () => {
-    var edges = [
+    const edges = [
       stageWidth, // leftMost x
       stageHeight, // topMost y
       0, // rightMost x
@@ -158,20 +154,20 @@ const ImportExportMenuListComposition = (props) => {
   };
 
   const exportImage = () => {
-    var edges = getStageUsedArea();
+    const edges = getStageUsedArea();
 
-    var canvas = document.getElementsByTagName("CANVAS")[0];
+    const canvas = document.getElementsByTagName("CANVAS")[0];
 
     //Make a Canvas to copy the data you would like to download to
-    var hidden_canvas = document.createElement("canvas");
+    let hidden_canvas = document.createElement("canvas");
     hidden_canvas.style.display = "none";
     document.body.appendChild(hidden_canvas);
-    var hiddenCanvasScaling = window.devicePixelRatio;
+    const hiddenCanvasScaling = window.devicePixelRatio;
     hidden_canvas.width = (edges[2] - edges[0]) * hiddenCanvasScaling + 2 * dragBoundOffset; // Multiplying by 1.25 because it seems there is internal
     hidden_canvas.height = (edges[3] - edges[1]) * hiddenCanvasScaling + 2 * dragBoundOffset; // scaling taking place. Found out by trial and error
 
     //Draw the data you want to download to the hidden canvas
-    var hidden_ctx = hidden_canvas.getContext("2d");
+    const hidden_ctx = hidden_canvas.getContext("2d");
     hidden_ctx.drawImage(
       canvas,
       edges[0] * hiddenCanvasScaling - dragBoundOffset, //Start Clipping
@@ -184,8 +180,8 @@ const ImportExportMenuListComposition = (props) => {
       hidden_canvas.height //Place Height
     );
 
-    var downloadImg = document.getElementById("downloadImg");
-    var img = hidden_canvas.toDataURL("image/jpg").replace("image/jpg", "image/octet-stream");
+    const downloadImg = document.getElementById("downloadImg");
+    const img = hidden_canvas.toDataURL("image/jpg").replace("image/jpg", "image/octet-stream");
     downloadImg.setAttribute("href", img);
   };
 
@@ -197,8 +193,8 @@ const ImportExportMenuListComposition = (props) => {
   }
 
   // Return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
+  const prevOpen = useRef(open);
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }

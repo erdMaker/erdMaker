@@ -22,9 +22,9 @@ class ForgotPassword extends Component {
   }
 
   async forgotPassword() {
-    let captchaVal = this.recaptchaRef.current.getValue();
+    const captchaVal = this.recaptchaRef.current.getValue();
 
-    const email = {
+    const payload = {
       email: this.state.email,
       captcha: captchaVal,
     };
@@ -32,7 +32,7 @@ class ForgotPassword extends Component {
     this.recaptchaRef.current.reset();
 
     try {
-      const res = await forgotpassword(email, this.cancelToken);
+      const res = await forgotpassword(payload, this.cancelToken);
       if (res) {
         if (res.status === 200) {
           this.setState({

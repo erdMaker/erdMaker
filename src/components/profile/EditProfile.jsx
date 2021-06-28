@@ -48,7 +48,7 @@ class EditProfile extends Component {
   }
 
   async editProfile() {
-    var newInfo = {
+    const payload = {
       username: this.state.username,
       email: this.state.email,
       firstName: this.state.firstName,
@@ -56,7 +56,7 @@ class EditProfile extends Component {
     };
 
     try {
-      const res = await editprofile(newInfo, this.cancelToken);
+      const res = await editprofile(payload, this.cancelToken);
       if (res) {
         if (res.status === 200) {
           this.setState({
@@ -133,7 +133,7 @@ class EditProfile extends Component {
   };
 
   render() {
-    var mobile = window.innerWidth <= 768 ? true : false;
+    const mobile = window.innerWidth <= 768 ? true : false;
     return (
       <div className="container">
         <h2>Edit Profile</h2>

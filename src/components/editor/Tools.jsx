@@ -26,7 +26,7 @@ const Tools = (props) => {
     green: "#00b53c",
   };
   const cancelToken = axios.CancelToken.source();
-  let saveTimer = useRef(null);
+  let saveTimer = null;
   let clickTimer;
 
   const [saveStatus, setSaveStatus] = useState({ text: "Your progress is being saved.", color: saveIconColors.green });
@@ -36,7 +36,7 @@ const Tools = (props) => {
 
   useEffect(() => {
     window.addEventListener("beforeunload", timerCleanup);
-    if (props.saveEnabled) saveTimer.current = setInterval(() => saveDiagram(), savePeriod);
+    if (props.saveEnabled) saveTimer = setInterval(() => saveDiagram(), savePeriod);
 
     return () => {
       timerCleanup();
@@ -47,12 +47,18 @@ const Tools = (props) => {
   }, []);
 
   const timerCleanup = () => {
-    clearInterval(saveTimer.current);
+    clearInterval(saveTimer);
     clearTimeout(clickTimer);
   };
 
   const saveDiagram = async () => {
-    if (!props.general.diagramFetched) return;
+    console.log("save1");
+    console.log(props.general.diagramFetched);
+    if (!props.general.diagramFetched) {
+      console.log("return");
+      return;
+    }
+    console.log("save2");
     setSaveStatus({ ...saveStatus, text: "Saving...", color: saveIconColors.blue });
     try {
       const res = await savediagram(cancelToken);

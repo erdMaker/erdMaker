@@ -21,7 +21,7 @@ class Profile extends Component {
   }
 
   render() {
-    var profileContent;
+    let profileContent;
     if (!this.state.loadingProfile) {
       profileContent = (
         <>

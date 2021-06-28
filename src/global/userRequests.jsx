@@ -1,9 +1,9 @@
 import axios from "axios";
 import { serverHost, timeout } from "./constants";
 
-export const register = async (newUser, cancelToken) => {
+export const register = async (payload, cancelToken) => {
   try {
-    return await axios.post(serverHost + "/user/register", newUser, {
+    return await axios.post(serverHost + "/user/register", payload, {
       timeout: timeout,
       cancelToken: cancelToken.token,
     });
@@ -16,9 +16,9 @@ export const register = async (newUser, cancelToken) => {
   }
 };
 
-export const login = async (user, cancelToken) => {
+export const login = async (payload, cancelToken) => {
   try {
-    return await axios.post(serverHost + "/user/login", user, {
+    return await axios.post(serverHost + "/user/login", payload, {
       withCredentials: true,
       timeout: timeout,
       cancelToken: cancelToken.token,
@@ -64,9 +64,9 @@ export const profile = async (cancelToken) => {
   }
 };
 
-export const editprofile = async (newInfo, cancelToken) => {
+export const editprofile = async (payload, cancelToken) => {
   try {
-    return await axios.post(serverHost + "/user/editprofile", newInfo, {
+    return await axios.post(serverHost + "/user/editprofile", payload, {
       withCredentials: true,
       timeout: timeout,
       cancelToken: cancelToken.token,
@@ -91,9 +91,9 @@ export const logout = async () => {
   }
 };
 
-export const forgotpassword = async (email, cancelToken) => {
+export const forgotpassword = async (payload, cancelToken) => {
   try {
-    return await axios.post(serverHost + "/user/forgotpassword", email, {
+    return await axios.post(serverHost + "/user/forgotpassword", payload, {
       timeout: timeout,
       cancelToken: cancelToken.token,
     });
@@ -122,13 +122,13 @@ export const changepassword = async (cancelToken) => {
   }
 };
 
-export const resetpassword = async (newPass, cancelToken) => {
+export const resetpassword = async (payload, cancelToken) => {
   try {
     return await axios.post(
       serverHost + "/user/resetpassword",
-      { password: newPass.password, confirmPassword: newPass.confirmPassword },
+      { password: payload.password, confirmPassword: payload.confirmPassword },
       {
-        headers: { Authorization: "Bearer " + newPass.token },
+        headers: { Authorization: "Bearer " + payload.token },
         timeout: timeout,
         cancelToken: cancelToken.token,
       }

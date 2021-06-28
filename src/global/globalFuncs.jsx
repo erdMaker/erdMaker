@@ -84,11 +84,11 @@ export const logOut = async () => {
 export function getComponentById(id) {
   const components = store.getState().components;
   const test = (component) => component.id === id;
-  let x = null;
-  if ((x = components.entities.find(test))) return x;
-  else if ((x = components.attributes.find(test))) return x;
-  else if ((x = components.extensions.find(test))) return x;
-  else if ((x = components.labels.find(test))) return x;
+  let component = null;
+  if ((component = components.entities.find(test))) return component;
+  else if ((component = components.attributes.find(test))) return component;
+  else if ((component = components.extensions.find(test))) return component;
+  else if ((component = components.labels.find(test))) return component;
   else {
     for (let relationship of components.relationships) {
       if (relationship.id === id) return relationship;
@@ -97,5 +97,5 @@ export function getComponentById(id) {
       }
     }
   }
-  return x;
+  return component;
 }

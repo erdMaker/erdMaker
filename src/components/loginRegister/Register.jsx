@@ -31,9 +31,9 @@ class Register extends Component {
   }
 
   async reGister() {
-    let captchaVal = this.recaptchaRef.current.getValue();
+    const captchaVal = this.recaptchaRef.current.getValue();
 
-    const newUser = {
+    const payload = {
       username: this.state.username,
       email: this.state.email,
       password: this.state.password,
@@ -44,7 +44,7 @@ class Register extends Component {
     this.recaptchaRef.current.reset();
 
     try {
-      const res = await register(newUser, this.cancelToken);
+      const res = await register(payload, this.cancelToken);
       if (res) {
         if (res.status === 200) {
           this.setState({
@@ -88,10 +88,10 @@ class Register extends Component {
     let usernameError = 0;
     let passwordError = 0;
     let confirmPasswordError = 0;
-    let lowerCaseLetters = /[a-z]/g;
-    let upperCaseLetters = /[A-Z]/g;
-    let numbers = /[0-9]/g;
-    let alphanum = /^[a-zA-Z0-9]+$/;
+    const lowerCaseLetters = /[a-z]/g;
+    const upperCaseLetters = /[A-Z]/g;
+    const numbers = /[0-9]/g;
+    const alphanum = /^[a-zA-Z0-9]+$/;
 
     if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || this.state.email.length > 60) {
       emailError = 1;

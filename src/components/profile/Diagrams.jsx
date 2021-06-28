@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { diagramLimit } from "../../global/constants.js";
 
 const Diagrams = (props) => {
-  var unsortedDiagramsList = [];
-  var sortedDiagramsList = [];
+  const unsortedDiagramsList = [];
+  const sortedDiagramsList = [];
 
   // Place user diagram info in a list
   for (let diagram of props.user.diagrams) {

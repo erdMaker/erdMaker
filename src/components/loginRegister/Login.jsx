@@ -27,13 +27,13 @@ class Login extends Component {
   }
 
   async logIn() {
-    const user = {
+    const payload = {
       email: this.state.email,
       password: this.state.password,
     };
 
     try {
-      const res = await login(user, this.cancelToken);
+      const res = await login(payload, this.cancelToken);
       if (res) {
         if (res.status === 200) {
           this.props.storeUserData({
@@ -78,9 +78,9 @@ class Login extends Component {
   validate = () => {
     let emailError = 0;
     let passwordError = 0;
-    let lowerCaseLetters = /[a-z]/g;
-    let upperCaseLetters = /[A-Z]/g;
-    let numbers = /[0-9]/g;
+    const lowerCaseLetters = /[a-z]/g;
+    const upperCaseLetters = /[A-Z]/g;
+    const numbers = /[0-9]/g;
 
     if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || this.state.email.length > 60) {
       emailError = 1;

@@ -22,15 +22,15 @@ class Diagram extends Component {
 
   // Calculates how much time has passed since each diagram got updated
   calculateLastUpdate = () => {
-    var lastUpdate;
-    var updatedAt = this.props.diagram.updatedAt;
-    var newUpdatedAt = Date.parse(updatedAt);
-    var currServerTime = Date.parse(this.props.general.serverTime);
-    var difference = currServerTime - newUpdatedAt;
-    var inDays = difference / 86400000;
-    var inHours = difference / 3600000;
-    var inMinutes = difference / 60000;
-    var inSeconds = difference / 1000;
+    let lastUpdate;
+    const updatedAt = this.props.diagram.updatedAt;
+    const newUpdatedAt = Date.parse(updatedAt);
+    const currServerTime = Date.parse(this.props.general.serverTime);
+    const difference = currServerTime - newUpdatedAt;
+    const inDays = difference / 86400000;
+    const inHours = difference / 3600000;
+    const inMinutes = difference / 60000;
+    const inSeconds = difference / 1000;
     if (inDays >= 1) lastUpdate = Math.floor(inDays) + " day(s) ago";
     else if (inHours >= 1) lastUpdate = Math.floor(inHours) + " hour(s) ago";
     else if (inMinutes >= 1) lastUpdate = Math.floor(inMinutes) + " minute(s) ago";
@@ -39,7 +39,7 @@ class Diagram extends Component {
   };
 
   render() {
-    var lastUpdate = this.calculateLastUpdate();
+    const lastUpdate = this.calculateLastUpdate();
     return (
       <tr>
         <td>
