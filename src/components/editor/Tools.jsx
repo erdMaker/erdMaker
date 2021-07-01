@@ -26,8 +26,6 @@ const Tools = (props) => {
     green: "#00b53c",
   };
   const cancelToken = axios.CancelToken.source();
-  let saveTimer = null;
-  let clickTimer;
 
   const [saveStatus, setSaveStatus] = useState({ text: "Your progress is being saved.", color: saveIconColors.green });
   const [lastSave, setLastSave] = useState(" ");
@@ -35,30 +33,22 @@ const Tools = (props) => {
   const [toolsListActive, setToolsListActive] = useState(false);
 
   useEffect(() => {
-    window.addEventListener("beforeunload", timerCleanup);
-    if (props.saveEnabled) saveTimer = setInterval(() => saveDiagram(), savePeriod);
+    let saveTimer;
+    if (props.saveEnabled && props.general.diagramFetched) saveTimer = setInterval(() => saveDiagram(), savePeriod);
 
     return () => {
-      timerCleanup();
+      clearInterval(saveTimer);
+      clearTimeout(clickTimer.current);
       cancelToken.cancel("Request is being canceled");
-      window.removeEventListener("beforeunload", timerCleanup);
     };
     // eslint-disable-next-line
-  }, []);
-
-  const timerCleanup = () => {
-    clearInterval(saveTimer);
-    clearTimeout(clickTimer);
-  };
+  }, [props.general.diagramFetched]);
 
   const saveDiagram = async () => {
-    console.log("save1");
-    console.log(props.general.diagramFetched);
     if (!props.general.diagramFetched) {
-      console.log("return");
       return;
     }
-    console.log("save2");
+
     setSaveStatus({ ...saveStatus, text: "Saving...", color: saveIconColors.blue });
     try {
       const res = await savediagram(cancelToken);
@@ -86,14 +76,16 @@ const Tools = (props) => {
     props.resetComponents();
   };
 
+  let clickTimer = useRef(null);
+
   // Functions that handle the hold-click on "Clear Diagram" button
   const start = () => {
-    clickTimer = setTimeout(() => timerReached(), 3000);
+    clickTimer.current = setTimeout(() => timerReached(), 3000);
     setClearButtonText("Hold to clear");
   };
 
   const end = () => {
-    clearTimeout(clickTimer);
+    clearTimeout(clickTimer.current);
     setClearButtonText("Clear Diagram");
   };
 
@@ -137,7 +129,9 @@ const Tools = (props) => {
         onTouchCancel={end}
         onMouseDown={start}
         onMouseUp={end}
-        onMouseOut={end}
+        onMouseOut={() => {
+          if (clickTimer.current) end();
+        }}
       >
         {clearButtonText}
       </button>
