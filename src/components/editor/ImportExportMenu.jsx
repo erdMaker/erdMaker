@@ -90,8 +90,7 @@ const ImportExportMenuListComposition = (props) => {
     const name = file.name;
     const lastDot = name.lastIndexOf(".");
 
-    // Get filename and extension of selected file
-    //const fileName = name.substring(0, lastDot);
+    // Get extension of selected file
     const ext = name.substring(lastDot + 1);
 
     if (ext !== "erdm") return;

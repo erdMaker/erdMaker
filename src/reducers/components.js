@@ -31,7 +31,7 @@ const initialState = {
 const componentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_ENTITY": {
-      let stage = document.querySelector(".stage");
+      const stage = document.querySelector(".stage");
       return {
         ...state,
         entities: [
@@ -163,7 +163,7 @@ const componentsReducer = (state = initialState, action) => {
         ),
       };
     case "ADD_RELATIONSHIP": {
-      let stage = document.querySelector(".stage");
+      const stage = document.querySelector(".stage");
       return {
         ...state,
         relationships: [
@@ -366,7 +366,7 @@ const componentsReducer = (state = initialState, action) => {
     }
     case "UPDATE_POSITION_CHILDREN": {
       // Moves children along with parent component
-      let childrenList = [];
+      const childrenList = [];
       getChildren(childrenList, state.attributes, action.payload.id); // Retrieve children of component with provided id
       return {
         ...state,
@@ -382,7 +382,7 @@ const componentsReducer = (state = initialState, action) => {
       };
     }
     case "ADD_LABEL": {
-      let stage = document.querySelector(".stage");
+      const stage = document.querySelector(".stage");
       return {
         ...state,
         labels: [

@@ -40,7 +40,6 @@ const Connection = (props) => {
             maxLength="7"
             value={props.connection.exactMin}
             onChange={handleModifyConnection}
-            //disabled={props.connection.min === "zero" || props.connection.min === "one" ? true : false}
           />
         </label>
       </div>
@@ -54,7 +53,6 @@ const Connection = (props) => {
             maxLength="7"
             value={props.connection.exactMax}
             onChange={handleModifyConnection}
-            //disabled={props.connection.max === "one" ? true : false}
           />
         </label>
       </div>

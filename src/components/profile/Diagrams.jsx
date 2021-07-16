@@ -24,7 +24,7 @@ const Diagrams = (props) => {
     sortedDiagramsList.push(unsortedDiagram.diagram);
   }
 
-  var diagramCountText = (
+  const diagramCountText = (
     <span
       style={{
         color: props.user.diagramsOwned >= diagramLimit ? "red" : "black",

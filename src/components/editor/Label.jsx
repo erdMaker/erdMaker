@@ -53,7 +53,7 @@ const Label = (props) => {
       width={resizeRectSize}
       height={resizeRectSize}
       visible={showResizeRect}
-      //fill="yellow"
+      //fill="yellow"  // Uncomment these to see the functionality of this component
       //opacity={0.5}
       onTouchMove={(e) => {
         if (isDragging) resize(e);

@@ -99,8 +99,8 @@ class EditProfile extends Component {
     let usernameError = 0;
     let firstNameError = 0;
     let lastNameError = 0;
-    let englishGreek = /^[a-zA-ZΑ-Ωα-ωίϊΐόάέύϋΰήώ' ]+$/;
-    let alphanum = /^[a-zA-Z0-9]+$/;
+    const englishGreek = /^[a-zA-ZΑ-Ωα-ωίϊΐόάέύϋΰήώ' ]+$/;
+    const alphanum = /^[a-zA-Z0-9]+$/;
 
     if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || this.state.email.length > 60) {
       emailError = 1;

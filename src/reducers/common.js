@@ -56,7 +56,7 @@ export const generalReducer = (state = generalInitialState, action) => {
         diagramFetched: action.payload.fetched,
       };
     case "UPDATE_SIDEPANEL_WIDTH":
-      var sidepanelWidth;
+      let sidepanelWidth;
       if (window.innerWidth <= 527) sidepanelWidth = { standard: 100, wide: 100 };
       else if (window.innerWidth <= 1060) sidepanelWidth = { standard: 40, wide: 50 };
       else sidepanelWidth = { standard: 25, wide: 30 };
