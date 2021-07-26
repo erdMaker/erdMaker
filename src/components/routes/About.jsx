@@ -63,10 +63,12 @@ const About = () => {
       {konvaLink} to draw the diagrams.
     </p>
   );
-  const paragraph3 = (
+  const contact = (
     <p className="about-text">
-      If you are facing any issue, would like to submit a bug report or provide feedback you can do so in the{" "}
-      {issuesLink} section of the Github page.
+      If you are facing any issue, would like to submit a bug report or provide feedback, you can do so in the{" "}
+      {issuesLink} section of the Github page. For additional support, you can reach us via e-mail at{" "}
+      <span style={{ fontWeight: "bold" }}>erdmakerapp@gmail.com</span>. For account-related issues, please use your
+      registered account's e-mail address.
     </p>
   );
   const disclaimer = (
@@ -87,7 +89,10 @@ const About = () => {
         <p>Version: {process.env.REACT_APP_VERSION}</p>
         {paragraph1}
         {paragraph2}
-        {paragraph3}
+        <br/>
+        <h3>Contact</h3>
+        {contact}
+        <br/>
         <h3>***</h3>
         <h3>LIABILITY DISCLAIMER (06/07/21)</h3>
         {disclaimer}
