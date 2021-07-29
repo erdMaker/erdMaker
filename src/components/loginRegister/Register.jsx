@@ -16,8 +16,8 @@ class Register extends Component {
     usernameError: 0,
     passwordError: 0,
     confirmPasswordError: 0,
-    passwordHint: "Password must be 8-16 characters long and contain at least one number and one letter.",
-    usernameHint: "Username can only contain letters and numbers.",
+    passwordHint: "Your password must be 8-16 characters long and contain at least one number and one letter.",
+    usernameHint: "Your username can only contain letters and numbers and can only be changed once every 6 months.",
     response: {
       data: ".",
       color: "#dfdfdf",

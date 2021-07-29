@@ -10,7 +10,7 @@ class ResetPassword extends Component {
     confirmPassword: "",
     passwordError: 0,
     confirmPasswordError: 0,
-    passwordHint: "Password must be 8-16 characters long and contain at least one number and one letter.",
+    passwordHint: "Your password must be 8-16 characters long and contain at least one number and one letter.",
     response: {
       data: ".",
       color: "#dfdfdf",

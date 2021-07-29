@@ -13,8 +13,8 @@ class EditProfile extends Component {
     usernameError: 0,
     firstNameError: 0,
     lastNameError: 0,
-    nameHint: "Name can only contain letters.",
-    usernameHint: "Username can only contain letters and numbers.",
+    nameHint: "Your name can only contain letters.",
+    usernameHint: "Your username can only contain letters and numbers and can only be changed once every 6 months.",
     response: {
       data: ".",
       color: "#dfdfdf",
@@ -64,7 +64,7 @@ class EditProfile extends Component {
           });
         } else if (res.status === 400) {
           this.setState({
-            response: { color: "red", data: "Bad input" },
+            response: { color: "red", data: res.data },
           });
         } else {
           this.setState({
