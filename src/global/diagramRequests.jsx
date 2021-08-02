@@ -22,12 +22,12 @@ export const getdiagram = async (diagramId, cancelToken) => {
   }
 };
 
-export const savediagram = async (cancelToken) => {
+export const savediagram = async (diagramId, cancelToken) => {
   try {
     return await axios.post(
       serverHost + "/diagram/savediagram",
       {
-        id: store.getState().general.activeDiagramId,
+        id: diagramId,
         data: {
           components: store.getState().components,
           meta: store.getState().meta,

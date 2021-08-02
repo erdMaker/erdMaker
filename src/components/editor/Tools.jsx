@@ -42,7 +42,7 @@ const Tools = (props) => {
       cancelToken.cancel("Request is being canceled");
     };
     // eslint-disable-next-line
-  }, [props.general.diagramFetched]);
+  }, [props.general.diagramFetched, props.general.activeDiagramId]);
 
   const saveDiagram = async () => {
     if (!props.general.diagramFetched) {
@@ -51,7 +51,7 @@ const Tools = (props) => {
 
     setSaveStatus({ ...saveStatus, text: "Saving...", color: saveIconColors.blue });
     try {
-      const res = await savediagram(cancelToken);
+      const res = await savediagram(props.general.activeDiagramId, cancelToken);
       if (res && (res.status === 200 || res.status === 201)) {
         if (!props.general.activeDiagramId) props.setActiveDiagram(res.data.id);
         const saveTime = new Date();

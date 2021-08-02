@@ -34,7 +34,7 @@ const Editor = (props) => {
       if (props.general.activeDiagramId) {
         props.resetComponents();
         props.resetMeta();
-        // We do not clear the activeDiagramId so that the user can resume to their most recent diagram
+        // We do not clear activeDiagramId so that the user can resume to their most recent diagram
         // after they leave the page and press Back to return
       }
     };
@@ -63,7 +63,7 @@ const Editor = (props) => {
       window.removeEventListener("beforeunload", clearEditor);
     };
     // eslint-disable-next-line
-  }, []);
+  }, [props.general.activeDiagramId]);
 
   const saveEnabled =
     props.user.confirmed && (props.user.diagramsOwned < diagramLimit || props.general.activeDiagramId) ? true : false;
