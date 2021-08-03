@@ -26,40 +26,34 @@ class Login extends Component {
     this.cancelToken.cancel("Request is being canceled");
   }
 
-  logIn() {
-    const user = {
+  async logIn() {
+    const payload = {
       email: this.state.email,
       password: this.state.password,
     };
-    //this.setState({
-    //  email: "",
-    //  password: "",
-    //});
-    // test
 
-    login(user, this.cancelToken)
-      .then((res) => {
-        if (res) {
-          if (res.status === 200) {
-            this.props.storeUserData({
-              isLogged: true,
-            });
-          } else if (res.status === 401) {
-            this.setState({
-              response: { color: "red", data: res.data },
-            });
-          } else {
-            this.setState({
-              response: { data: "Login failed.", color: "red" },
-            });
-          }
+    try {
+      const res = await login(payload, this.cancelToken);
+      if (res) {
+        if (res.status === 200) {
+          this.props.storeUserData({
+            isLogged: true,
+          });
+        } else if (res.status === 401) {
+          this.setState({
+            response: { color: "red", data: res.data },
+          });
         } else {
           this.setState({
             response: { data: "Login failed.", color: "red" },
           });
         }
-      })
-      .catch(() => {});
+      } else {
+        this.setState({
+          response: { data: "Login failed.", color: "red" },
+        });
+      }
+    } catch (e) {}
   }
 
   toggleForgotPassword = () =>
@@ -84,9 +78,9 @@ class Login extends Component {
   validate = () => {
     let emailError = 0;
     let passwordError = 0;
-    let lowerCaseLetters = /[a-z]/g;
-    let upperCaseLetters = /[A-Z]/g;
-    let numbers = /[0-9]/g;
+    const lowerCaseLetters = /[a-z]/g;
+    const upperCaseLetters = /[A-Z]/g;
+    const numbers = /[0-9]/g;
 
     if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || this.state.email.length > 60) {
       emailError = 1;

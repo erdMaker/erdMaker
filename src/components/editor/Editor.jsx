@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import Surface from "./Surface";
 import Tools from "./Tools";
 import { getDiagram, makeCompatible } from "../../global/globalFuncs";
@@ -14,83 +14,76 @@ import {
 } from "../../actions/actions";
 import axios from "axios";
 import { diagramLimit } from "../../global/constants.js";
+import { store } from "../../index.js";
 
-class Editor extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showSaveWarning: true,
-      saveEnabled:
-        this.props.user.confirmed &&
-        (this.props.user.diagramsOwned < diagramLimit || this.props.general.activeDiagramId)
-          ? true
-          : false,
-    };
-    this.props.updateSidepanelWidth();
-    this.cancelToken = axios.CancelToken.source();
-    var storedDiagram = { meta: this.props.meta, components: this.props.components };
-    var compatibleDiagram = makeCompatible(storedDiagram);
-    this.props.setMeta(compatibleDiagram.meta);
-    this.props.setComponents(compatibleDiagram.components);
-  }
-
-  componentDidMount = () => {
-    document.title = "ERD Maker - Editor";
-    window.addEventListener("resize", this.props.updateSidepanelWidth);
-    window.addEventListener("beforeunload", this.clearEditor);
-    this.props.deselect();
-    if (this.props.user.isLogged) {
-      if (this.props.general.activeDiagramId) getDiagram(this.props.general.activeDiagramId, this.cancelToken);
-      // Fetch the diagram
-      else this.props.setDiagramFetched({ fetched: true }); // No diagram to fetch so set it to true anyway so the saving process can proceed
-    }
-  };
-
-  componentWillUnmount() {
-    this.clearEditor();
-    this.cancelToken.cancel("Request is being canceled");
-    this.props.setDiagramFetched({ fetched: false });
-    window.removeEventListener("resize", this.props.updateSidepanelWidth);
-    window.removeEventListener("beforeunload", this.clearEditor);
-  }
-
-  clearEditor = () => {
-    this.props.deselect();
-    if (this.props.general.activeDiagramId) {
-      this.props.resetComponents();
-      this.props.resetMeta();
-      // We do not clear the activeDiagramId so that the user can resume to their most recent diagram
-      // after they leave the page and press Back to return
-    }
-  };
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.showSaveWarning === nextState.showSaveWarning) {
-      return false;
-    }
-    return true;
-  }
-
-  render() {
-    return (
-      <div className="editor" onClick={() => this.setState({ showSaveWarning: false })}>
-        <Tools saveEnabled={this.state.saveEnabled} />
-        {this.state.saveEnabled && (
-          <div className="save-warning" style={{ visibility: this.state.showSaveWarning ? "visible" : "hidden" }}>
-            Please make sure you manually save your progress by clicking the 'Save' button, before exiting the editor.
-          </div>
-        )}
-        <Surface />
-      </div>
-    );
-  }
+// By having this function make the loaded diagram compatible,
+// the editor doesnt depend on global state components and, thus,
+// we avoid unnecessary rerenders.
+function makeLoadedDiagramCompatible() {
+  const state = store.getState();
+  const storedDiagram = { meta: state.meta, components: state.components };
+  return makeCompatible(storedDiagram);
 }
+
+const Editor = (props) => {
+  const [showSaveWarning, setShowSaveWarning] = useState(true);
+
+  useEffect(() => {
+    const clearEditor = () => {
+      props.deselect();
+      if (props.general.activeDiagramId) {
+        props.resetComponents();
+        props.resetMeta();
+        // We do not clear activeDiagramId so that the user can resume to their most recent diagram
+        // after they leave the page and press Back to return
+      }
+    };
+
+    props.updateSidepanelWidth();
+    const cancelToken = axios.CancelToken.source();
+    const compatibleDiagram = makeLoadedDiagramCompatible();
+    props.deselect();
+    props.setMeta(compatibleDiagram.meta);
+    props.setComponents(compatibleDiagram.components);
+
+    document.title = "ERD Maker - Editor";
+    window.addEventListener("resize", props.updateSidepanelWidth);
+    window.addEventListener("beforeunload", clearEditor);
+    if (props.user.isLogged) {
+      if (props.general.activeDiagramId) getDiagram(props.general.activeDiagramId, cancelToken);
+      // Fetch the diagram
+      else props.setDiagramFetched({ fetched: true }); // No diagram to fetch so set it to true anyway so the saving process can proceed
+    }
+
+    return () => {
+      clearEditor();
+      cancelToken.cancel("Request is being canceled");
+      props.setDiagramFetched({ fetched: false });
+      window.removeEventListener("resize", props.updateSidepanelWidth);
+      window.removeEventListener("beforeunload", clearEditor);
+    };
+    // eslint-disable-next-line
+  }, [props.general.activeDiagramId]);
+
+  const saveEnabled =
+    props.user.confirmed && (props.user.diagramsOwned < diagramLimit || props.general.activeDiagramId) ? true : false;
+
+  return (
+    <div className="editor" onClick={() => setShowSaveWarning(false)}>
+      <Tools saveEnabled={saveEnabled} />
+      {saveEnabled && (
+        <div className="save-warning" style={{ visibility: showSaveWarning ? "visible" : "hidden" }}>
+          Please make sure you manually save your progress by clicking the 'Save' button, before exiting the editor.
+        </div>
+      )}
+      <Surface />
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
   user: state.user,
   general: state.general,
-  meta: state.meta,
-  components: state.components,
 });
 
 const mapDispatchToProps = {

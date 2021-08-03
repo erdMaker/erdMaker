@@ -1,7 +1,8 @@
 import { Group, Line, Ellipse } from "react-konva";
 
 const Anchor = (props) => {
-  var mandatory = props.minimum === "one" ? (
+  const mandatory =
+    props.minimum === "one" ? (
       <Line
         stroke={"black"}
         strokeWidth={2}
@@ -14,11 +15,13 @@ const Anchor = (props) => {
       />
     ) : null;
 
-  var optional = props.minimum === "zero" ? (
+  const optional =
+    props.minimum === "zero" ? (
       <Ellipse y={10} radiusX={8} radiusY={4} fill="white" stroke={"black"} strokeWidth={2} />
     ) : null;
 
-  var one = props.maximum === "one" ? (
+  const one =
+    props.maximum === "one" ? (
       <Line
         stroke={"black"}
         strokeWidth={2}
@@ -31,7 +34,8 @@ const Anchor = (props) => {
       />
     ) : null;
 
-  var many = props.maximum === "many" ? (
+  const many =
+    props.maximum === "many" ? (
       <Group>
         <Line
           stroke={"black"}

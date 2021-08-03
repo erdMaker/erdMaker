@@ -19,7 +19,6 @@
   background-color: $appThemeColor;
   min-width: 100vw;
   min-height: $toolsHeight;
-  //box-shadow: 0px 2px 24px 0px rgba(0, 0, 0, 0.15);
 }
 
 .tools__list {
@@ -77,13 +76,11 @@
 .sidepanel-active-right {
   visibility: visible;
   right: 0px;
-  //transform: translateX(0%);
 }
 
 .sidepanel-active-left {
   visibility: visible;
   left: 0px;
-  //transform: translateX(0%);
 }
 
 .close-active {

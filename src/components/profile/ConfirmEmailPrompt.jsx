@@ -30,23 +30,22 @@ class ConfirmEmailPrompt extends Component {
     );
   };
 
-  reSend = () => {
-    resend(this.cancelToken)
-      .then((res) => {
-        if (res && res.status === 200) {
-          this.setState({
-            response: { color: "green", data: res.data },
-          });
-        } else {
-          this.setState({
-            response: {
-              color: "red",
-              data: "Could not send confirmation e-mail.",
-            },
-          });
-        }
-      })
-      .catch(() => {});
+  reSend = async () => {
+    try {
+      const res = await resend(this.cancelToken);
+      if (res && res.status === 200) {
+        this.setState({
+          response: { color: "green", data: res.data },
+        });
+      } else {
+        this.setState({
+          response: {
+            color: "red",
+            data: "Could not send confirmation e-mail.",
+          },
+        });
+      }
+    } catch (e) {}
   };
 
   render() {

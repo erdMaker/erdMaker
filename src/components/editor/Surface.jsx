@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useRef } from "react";
 import Entity from "./Entity";
 import Relationship from "./Relationship";
 import Attribute from "./Attribute";
@@ -13,61 +13,63 @@ import { Provider, ReactReduxContext, connect } from "react-redux";
 import { deselect } from "../../actions/actions";
 import { distance, minJsonArray } from "../../global/utils";
 import { stageWidth, stageHeight, entityWidth, entityHeight, anchorLength } from "../../global/constants";
+import { getComponentById } from "../../global/globalFuncs";
 
-class Surface extends Component {
-  state = {
-    // Define the anchor points for entities
-    entityAnchors: [
-      {
-        x: -(entityWidth / 2) - anchorLength,
-        y: 0,
-        angle: -90,
-      },
-      {
-        x: -(entityWidth / 3),
-        y: -(entityHeight / 2) - anchorLength,
-        angle: 0,
-      },
-      {
-        x: 0,
-        y: -(entityHeight / 2) - anchorLength,
-        angle: 0,
-      },
-      {
-        x: entityWidth / 3,
-        y: -(entityHeight / 2) - anchorLength,
-        angle: 0,
-      },
-      {
-        x: entityWidth / 2 + anchorLength,
-        y: 0,
-        angle: 90,
-      },
-      {
-        x: entityWidth / 3,
-        y: entityHeight / 2 + anchorLength,
-        angle: 180,
-      },
-      {
-        x: 0,
-        y: entityHeight / 2 + anchorLength,
-        angle: 180,
-      },
-      {
-        x: -(entityWidth / 3),
-        y: entityHeight / 2 + anchorLength,
-        angle: 180,
-      },
-    ],
-  };
+const Surface = (props) => {
+  // DOM reference to the stage
+  const stage = useRef(null);
 
-  drawEntities = () =>
-    this.props.components.entities.map((entity) => (
+  // Define the anchor points for entities
+  const entityAnchors = [
+    {
+      x: -(entityWidth / 2) - anchorLength,
+      y: 0,
+      angle: -90,
+    },
+    {
+      x: -(entityWidth / 3),
+      y: -(entityHeight / 2) - anchorLength,
+      angle: 0,
+    },
+    {
+      x: 0,
+      y: -(entityHeight / 2) - anchorLength,
+      angle: 0,
+    },
+    {
+      x: entityWidth / 3,
+      y: -(entityHeight / 2) - anchorLength,
+      angle: 0,
+    },
+    {
+      x: entityWidth / 2 + anchorLength,
+      y: 0,
+      angle: 90,
+    },
+    {
+      x: entityWidth / 3,
+      y: entityHeight / 2 + anchorLength,
+      angle: 180,
+    },
+    {
+      x: 0,
+      y: entityHeight / 2 + anchorLength,
+      angle: 180,
+    },
+    {
+      x: -(entityWidth / 3),
+      y: entityHeight / 2 + anchorLength,
+      angle: 180,
+    },
+  ];
+
+  const drawEntities = () =>
+    props.components.entities.map((entity) => (
       <Entity key={entity.id} id={entity.id} name={entity.name} type={entity.type} x={entity.x} y={entity.y} />
     ));
 
-  drawExtensions = () =>
-    this.props.components.extensions.map((extension) => (
+  const drawExtensions = () =>
+    props.components.extensions.map((extension) => (
       <Extension
         key={extension.id}
         id={extension.id}
@@ -80,8 +82,8 @@ class Surface extends Component {
       />
     ));
 
-  drawRelationships = () =>
-    this.props.components.relationships.map((relationship) => (
+  const drawRelationships = () =>
+    props.components.relationships.map((relationship) => (
       <Relationship
         key={relationship.id}
         id={relationship.id}
@@ -92,8 +94,8 @@ class Surface extends Component {
       />
     ));
 
-  drawAttributes = () =>
-    this.props.components.attributes.map((attribute) => (
+  const drawAttributes = () =>
+    props.components.attributes.map((attribute) => (
       <Attribute
         key={attribute.id}
         id={attribute.id}
@@ -105,8 +107,8 @@ class Surface extends Component {
       />
     ));
 
-  drawLabels = () =>
-    this.props.components.labels.map((label) => (
+  const drawLabels = () =>
+    props.components.labels.map((label) => (
       <Label
         key={label.id}
         id={label.id}
@@ -119,105 +121,46 @@ class Surface extends Component {
     ));
 
   // Responsible  for drawing every line connecting things in the diagram
-  drawLines = () => {
-    // Used with array.findIndex() to find the index of the component with id = connectId
-    function locateIndex(element) {
-      return element.id === connectId;
-    }
-
-    var lineList = []; // The list with all the lines eventually being rendered
-    var lockedAnchorPoints = []; // Array with the anchor points that are occupied for the current entity
-
-    // I use connectId to find the index of the parent in its array and then finally retrieve its coordinates
-    var connectId; // parentId of current attribute
-    var index; // Index of component in its respective array with id = connectId
-    var parentCoords; // Location of the parent component
-    var childCoords; // Location of a child component
-
-    var anchor; // Object that holds the location of the anchor to connect too and the angle at which it ll be displayed
-    var specificValuesPoints; // Object that holds the location for specificValues text
-    var specificValuesText; // Object that holds the value for the text of specificValues
-
-    var keyIndex = 0; // Only used to distinguish items in a list
+  const drawLines = () => {
+    const lineList = []; // The list with all the lines eventually being rendered
+    const lockedAnchorPoints = []; // Array with the anchor points that are occupied for the current entity
+    let connectId; // parentId of current attribute
+    let child;
+    let anchor; // Object that holds the location of the anchor to connect too and the angle at which it ll be displayed
+    let specificValuesPoints; // Object that holds the location for specificValues text
+    let specificValuesText; // Object that holds the value for the text of specificValues
+    let parent;
+    let keyIndex = 0; // Only used to distinguish items in a list
 
     // This loop creates the lines that connect attributes to their parents
-    for (let i in this.props.components.attributes) {
-      connectId = this.props.components.attributes[i].parentId;
-      if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
-        parentCoords = {
-          x: this.props.components.entities[index].x,
-          y: this.props.components.entities[index].y,
-        };
-      } else if ((index = this.props.components.relationships.findIndex(locateIndex)) !== -1) {
-        parentCoords = {
-          x: this.props.components.relationships[index].x,
-          y: this.props.components.relationships[index].y,
-        };
-      } else if ((index = this.props.components.attributes.findIndex(locateIndex)) !== -1) {
-        parentCoords = {
-          x: this.props.components.attributes[index].x,
-          y: this.props.components.attributes[index].y,
-        };
-      } else {
-        continue;
-      }
+    for (let attribute of props.components.attributes) {
+      connectId = attribute.parentId;
+      if (!(parent = getComponentById(connectId))) continue;
+
       lineList.push(
-        <Line
-          key={keyIndex}
-          stroke="black"
-          strokeWidth={2}
-          points={[
-            this.props.components.attributes[i].x,
-            this.props.components.attributes[i].y,
-            parentCoords.x,
-            parentCoords.y,
-          ]}
-        />
+        <Line key={keyIndex} stroke="black" strokeWidth={2} points={[attribute.x, attribute.y, parent.x, parent.y]} />
       );
       keyIndex = keyIndex + 1;
     }
 
     // This loop creates the lines that connect extensions to their parents and children
-    for (let i in this.props.components.extensions) {
+    for (let extension of props.components.extensions) {
       // Extension-Children lines
-      for (let j in this.props.components.extensions[i].xconnections) {
-        connectId = this.props.components.extensions[i].xconnections[j].connectId;
-        if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
-          childCoords = {
-            x: this.props.components.entities[index].x,
-            y: this.props.components.entities[index].y,
-          };
-        } else {
-          continue;
-        }
+      for (let xconnection of extension.xconnections) {
+        connectId = xconnection.connectId;
+        if (!(child = getComponentById(connectId))) continue;
         lineList.push(
-          <Line
-            key={keyIndex}
-            stroke={"black"}
-            strokeWidth={2}
-            points={[
-              this.props.components.extensions[i].x,
-              this.props.components.extensions[i].y,
-              childCoords.x,
-              childCoords.y,
-            ]}
-          />
+          <Line key={keyIndex} stroke={"black"} strokeWidth={2} points={[extension.x, extension.y, child.x, child.y]} />
         );
         keyIndex = keyIndex + 1;
-        if (this.props.components.extensions[i].type === "specialize") {
+        if (extension.type === "specialize") {
           let extensionSplinePos = {
-            x: (this.props.components.extensions[i].x + childCoords.x) / 2,
-            y: (this.props.components.extensions[i].y + childCoords.y) / 2,
+            x: (extension.x + child.x) / 2,
+            y: (extension.y + child.y) / 2,
           };
-          let angle =
-            (Math.atan(
-              (this.props.components.extensions[i].y - childCoords.y) /
-                (this.props.components.extensions[i].x - childCoords.x)
-            ) *
-              180) /
-            Math.PI;
+          let angle = (Math.atan((extension.y - child.y) / (extension.x - child.x)) * 180) / Math.PI;
           let auxAngle;
-          if (childCoords.x > this.props.components.extensions[i].x) auxAngle = 90;
+          if (child.x > extension.x) auxAngle = 90;
           else auxAngle = 270;
           angle = angle - auxAngle;
           lineList.push(
@@ -228,60 +171,32 @@ class Surface extends Component {
       }
 
       // Extension-Parent lines
-      connectId = this.props.components.extensions[i].parentId;
-      if ((index = this.props.components.entities.findIndex(locateIndex)) !== -1) {
-        parentCoords = {
-          x: this.props.components.entities[index].x,
-          y: this.props.components.entities[index].y,
-        };
-      } else {
-        continue;
-      }
+      connectId = extension.parentId;
+      if (!(parent = getComponentById(connectId))) continue;
       lineList.push(
         <Line
           key={keyIndex}
           stroke="black"
-          strokeWidth={this.props.components.extensions[i].participation === "partial" ? 2 : 6}
-          points={[
-            this.props.components.extensions[i].x,
-            this.props.components.extensions[i].y,
-            parentCoords.x,
-            parentCoords.y,
-          ]}
+          strokeWidth={extension.participation === "partial" ? 2 : 6}
+          points={[extension.x, extension.y, parent.x, parent.y]}
         />
       );
       keyIndex = keyIndex + 1;
-      if (this.props.components.extensions[i].participation === "total") {
+      if (extension.participation === "total") {
         lineList.push(
-          <Line
-            key={keyIndex}
-            stroke="white"
-            strokeWidth={2}
-            points={[
-              this.props.components.extensions[i].x,
-              this.props.components.extensions[i].y,
-              parentCoords.x,
-              parentCoords.y,
-            ]}
-          />
+          <Line key={keyIndex} stroke="white" strokeWidth={2} points={[extension.x, extension.y, parent.x, parent.y]} />
         );
         keyIndex = keyIndex + 1;
       }
 
-      if (this.props.components.extensions[i].type === "union") {
+      if (extension.type === "union") {
         let extensionSplinePos = {
-          x: (this.props.components.extensions[i].x + parentCoords.x) / 2,
-          y: (this.props.components.extensions[i].y + parentCoords.y) / 2,
+          x: (extension.x + parent.x) / 2,
+          y: (extension.y + parent.y) / 2,
         };
-        let angle =
-          (Math.atan(
-            (this.props.components.extensions[i].y - parentCoords.y) /
-              (this.props.components.extensions[i].x - parentCoords.x)
-          ) *
-            180) /
-          Math.PI;
+        let angle = (Math.atan((extension.y - parent.y) / (extension.x - parent.x)) * 180) / Math.PI;
         let auxAngle;
-        if (parentCoords.x > this.props.components.extensions[i].x) auxAngle = 90;
+        if (parent.x > extension.x) auxAngle = 90;
         else auxAngle = 270;
         angle = angle - auxAngle;
         lineList.push(
@@ -292,31 +207,26 @@ class Surface extends Component {
     }
 
     // This loop creates the lines that connect relationships with entities
-    for (let i = 0; i < this.props.components.relationships.length; i++) {
-      for (let j = 0; j < this.props.components.relationships[i].connections.length; j++) {
-        if (this.props.components.relationships[i].connections[j].connectId !== 0) {
-          connectId = this.props.components.relationships[i].connections[j].connectId;
-          index = this.props.components.entities.findIndex(locateIndex);
+    for (let relationship of props.components.relationships) {
+      for (let connection of relationship.connections) {
+        if (connection.connectId !== 0) {
+          connectId = connection.connectId;
+          let entity = getComponentById(connectId);
 
           // If current connection 8 connections don't draw any line
-          if (this.props.components.entities[index].connectionCount > 8) continue;
+          if (entity.connectionCount > 8) continue;
 
           // Get the nearest available anchor to this relationship for this connected entity
-          anchor = this.findNearestAnchor(lockedAnchorPoints, index, i);
+          anchor = findNearestAnchor(lockedAnchorPoints, entity, relationship);
 
-          specificValuesPoints = this.calculateSpecificValuesPoints(anchor, this.props.components.relationships[i]);
+          specificValuesPoints = calculateSpecificValuesPoints(anchor, relationship);
 
           lineList.push(
             <Line
               key={keyIndex}
               stroke="black"
               strokeWidth={2}
-              points={[
-                this.props.components.relationships[i].x,
-                this.props.components.relationships[i].y,
-                anchor.x,
-                anchor.y,
-              ]}
+              points={[relationship.x, relationship.y, anchor.x, anchor.y]}
             />
           );
           keyIndex = keyIndex + 1;
@@ -327,37 +237,30 @@ class Surface extends Component {
               x={anchor.x}
               y={anchor.y}
               angle={anchor.angle}
-              minimum={this.props.components.relationships[i].connections[j].min}
-              maximum={this.props.components.relationships[i].connections[j].max}
+              minimum={connection.min}
+              maximum={connection.max}
             />
           );
           keyIndex = keyIndex + 1;
 
-          if (this.props.components.relationships[i].connections[j].role) {
+          if (connection.role) {
             lineList.push(
               <SpecificValues
                 key={keyIndex}
                 x={specificValuesPoints.roleTextPos.x}
                 y={specificValuesPoints.roleTextPos.y}
-                text={this.props.components.relationships[i].connections[j].role}
+                text={connection.role}
               />
             );
             keyIndex = keyIndex + 1;
           }
 
-          if (
-            this.props.components.relationships[i].connections[j].exactMin ||
-            this.props.components.relationships[i].connections[j].exactMax
-          ) {
+          if (connection.exactMin || connection.exactMax) {
             specificValuesText =
               "(" +
-              (this.props.components.relationships[i].connections[j].exactMin === ""
-                ? "-"
-                : this.props.components.relationships[i].connections[j].exactMin) +
+              (connection.exactMin === "" ? "-" : connection.exactMin) +
               "," +
-              (this.props.components.relationships[i].connections[j].exactMax === ""
-                ? "N"
-                : this.props.components.relationships[i].connections[j].exactMax) +
+              (connection.exactMax === "" ? "N" : connection.exactMax) +
               ")";
 
             lineList.push(
@@ -377,15 +280,15 @@ class Surface extends Component {
   };
 
   // Calculates locations for specific values
-  calculateSpecificValuesPoints = (anchor, relationship) => {
+  const calculateSpecificValuesPoints = (anchor, relationship) => {
     // Place role text between relationship and entity
-    var roleTextPos = {
+    const roleTextPos = {
       x: (anchor.x + relationship.x) / 2,
       y: (anchor.y + relationship.y) / 2,
     };
 
     // Relatively position anchor text based on the angle of the anchor
-    var anchorTextPoint = { x: anchor.x, y: anchor.y };
+    let anchorTextPoint = { x: anchor.x, y: anchor.y };
     switch (anchor.angle) {
       case 0:
         anchorTextPoint.y -= 15;
@@ -405,11 +308,11 @@ class Surface extends Component {
     return { roleTextPos: roleTextPos, anchorTextPoint: anchorTextPoint };
   };
 
-  findNearestAnchor = (lockedAnchorPoints, entityIndex, relationshipIndex) => {
-    var distances = []; // All distances from the relationship to the entity's anchors
-    var anchorId;
-    for (let i in this.state.entityAnchors) {
-      anchorId = this.props.components.entities[entityIndex].id.toString() + i.toString();
+  const findNearestAnchor = (lockedAnchorPoints, entity, relationship) => {
+    const distances = []; // All distances from the relationship to the entity's anchors
+    let anchorId;
+    for (let i in entityAnchors) {
+      anchorId = entity.id.toString() + i.toString();
 
       // If current anchor is occupied then ignore it, else include its distance for calculation
       if (!lockedAnchorPoints.includes(anchorId)) {
@@ -418,60 +321,58 @@ class Surface extends Component {
           anchorId: anchorId,
           distance: distance(
             {
-              x: this.props.components.entities[entityIndex].x + this.state.entityAnchors[i].x,
-              y: this.props.components.entities[entityIndex].y + this.state.entityAnchors[i].y,
+              x: entity.x + entityAnchors[i].x,
+              y: entity.y + entityAnchors[i].y,
             },
             {
-              x: this.props.components.relationships[relationshipIndex].x,
-              y: this.props.components.relationships[relationshipIndex].y,
+              x: relationship.x,
+              y: relationship.y,
             }
           ),
         });
       }
     }
-    var min = minJsonArray(distances, "distance"); // Get the anchor with the smallest distance
+    const min = minJsonArray(distances, "distance"); // Get the anchor with the smallest distance
     lockedAnchorPoints.push(min.anchorId);
     return {
-      x: this.props.components.entities[entityIndex].x + this.state.entityAnchors[min.anchorIndex].x,
-      y: this.props.components.entities[entityIndex].y + this.state.entityAnchors[min.anchorIndex].y,
-      angle: this.state.entityAnchors[min.anchorIndex].angle,
+      x: entity.x + entityAnchors[min.anchorIndex].x,
+      y: entity.y + entityAnchors[min.anchorIndex].y,
+      angle: entityAnchors[min.anchorIndex].angle,
     };
   };
 
-  stageClicked = (e) => {
+  const stageClicked = (e) => {
     // Deselect when user clicks the white space
-    if (e.target === e.target.getStage()) this.props.deselect();
+    if (e.target === e.target.getStage()) props.deselect();
   };
 
-  getStage = () => this.stage; // Get reference to the stage
+  const getStage = () => stage; // Get reference to the stage
 
-  render() {
-    return (
-      <ReactReduxContext.Consumer>
-        {({ store }) => (
-          <div>
-            <div ref={(ref) => (this.stage = ref)} className="stage">
-              <Stage width={stageWidth} height={stageHeight} onClick={(e) => this.stageClicked(e)}>
-                <Provider store={store}>
-                  <Layer>
-                    <Rect width={stageWidth} height={stageHeight} fill="white" listening={false} />
-                    {this.drawLines()}
-                    {this.drawExtensions()}
-                    {this.drawRelationships()}
-                    {this.drawEntities()}
-                    {this.drawAttributes()}
-                    {this.drawLabels()}
-                  </Layer>
-                </Provider>
-              </Stage>
-            </div>
-            <Properties getStage={this.getStage} />
+  return (
+    <ReactReduxContext.Consumer>
+      {({ store }) => (
+        <div>
+          <div ref={stage} className="stage">
+            <Stage width={stageWidth} height={stageHeight} onClick={(e) => stageClicked(e)}>
+              <Provider store={store}>
+                <Layer>
+                  <Rect width={stageWidth} height={stageHeight} fill="white" listening={false} />
+                  {drawLines()}
+                  {drawExtensions()}
+                  {drawRelationships()}
+                  {drawEntities()}
+                  {drawAttributes()}
+                  {drawLabels()}
+                </Layer>
+              </Provider>
+            </Stage>
           </div>
-        )}
-      </ReactReduxContext.Consumer>
-    );
-  }
-}
+          <Properties getStage={getStage} />
+        </div>
+      )}
+    </ReactReduxContext.Consumer>
+  );
+};
 
 const mapStateToProps = (state) => ({
   components: state.components,

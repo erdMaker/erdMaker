@@ -13,8 +13,8 @@ class EditProfile extends Component {
     usernameError: 0,
     firstNameError: 0,
     lastNameError: 0,
-    nameHint: "Name can only contain letters.",
-    usernameHint: "Username can only contain letters and numbers.",
+    nameHint: "Your name can only contain letters.",
+    usernameHint: "Your username can only contain letters and numbers and can only be changed once every 6 months.",
     response: {
       data: ".",
       color: "#dfdfdf",
@@ -32,53 +32,51 @@ class EditProfile extends Component {
     );
   };
 
-  changePassword() {
-    changepassword(this.cancelToken)
-      .then((res) => {
-        if (res && res.status === 200) {
-          this.setState({
-            response: { color: "green", data: res.data },
-          });
-        } else {
-          this.setState({
-            response: { color: "red", data: "Something went wrong." },
-          });
-        }
-      })
-      .catch(() => {});
+  async changePassword() {
+    try {
+      const res = await changepassword(this.cancelToken);
+      if (res && res.status === 200) {
+        this.setState({
+          response: { color: "green", data: res.data },
+        });
+      } else {
+        this.setState({
+          response: { color: "red", data: "Something went wrong." },
+        });
+      }
+    } catch (e) {}
   }
 
-  editProfile() {
-    var newInfo = {
+  async editProfile() {
+    const payload = {
       username: this.state.username,
       email: this.state.email,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
     };
 
-    editprofile(newInfo, this.cancelToken)
-      .then((res) => {
-        if (res) {
-          if (res.status === 200) {
-            this.setState({
-              response: { color: "green", data: res.data },
-            });
-          } else if (res.status === 400) {
-            this.setState({
-              response: { color: "red", data: "Bad input" },
-            });
-          } else {
-            this.setState({
-              response: { color: "red", data: "Something went wrong." },
-            });
-          }
+    try {
+      const res = await editprofile(payload, this.cancelToken);
+      if (res) {
+        if (res.status === 200) {
+          this.setState({
+            response: { color: "green", data: res.data },
+          });
+        } else if (res.status === 400) {
+          this.setState({
+            response: { color: "red", data: res.data },
+          });
         } else {
           this.setState({
             response: { color: "red", data: "Something went wrong." },
           });
         }
-      })
-      .catch(() => {});
+      } else {
+        this.setState({
+          response: { color: "red", data: "Something went wrong." },
+        });
+      }
+    } catch (e) {}
   }
 
   handleChange = (e) => {
@@ -101,8 +99,8 @@ class EditProfile extends Component {
     let usernameError = 0;
     let firstNameError = 0;
     let lastNameError = 0;
-    let englishGreek = /^[a-zA-ZΑ-Ωα-ωίϊΐόάέύϋΰήώ' ]+$/;
-    let alphanum = /^[a-zA-Z0-9]+$/;
+    const englishGreek = /^[a-zA-ZΑ-Ωα-ωίϊΐόάέύϋΰήώ' ]+$/;
+    const alphanum = /^[a-zA-Z0-9]+$/;
 
     if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || this.state.email.length > 60) {
       emailError = 1;
@@ -135,7 +133,7 @@ class EditProfile extends Component {
   };
 
   render() {
-    var mobile = window.innerWidth <= 768 ? true : false;
+    const mobile = window.innerWidth <= 768 ? true : false;
     return (
       <div className="container">
         <h2>Edit Profile</h2>

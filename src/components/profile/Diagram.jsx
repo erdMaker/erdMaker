@@ -17,20 +17,20 @@ class Diagram extends Component {
   handleClick = () => {
     this.props.resetComponents();
     this.props.resetMeta();
-    this.props.setActiveDiagram(this.props.user.diagrams[this.props.index].id);
+    this.props.setActiveDiagram(this.props.diagram.id);
   };
 
   // Calculates how much time has passed since each diagram got updated
   calculateLastUpdate = () => {
-    var lastUpdate;
-    var updatedAt = this.props.user.diagrams[this.props.index].updatedAt;
-    var newUpdatedAt = Date.parse(updatedAt);
-    var currServerTime = Date.parse(this.props.general.serverTime);
-    var difference = currServerTime - newUpdatedAt;
-    var inDays = difference / 86400000;
-    var inHours = difference / 3600000;
-    var inMinutes = difference / 60000;
-    var inSeconds = difference / 1000;
+    let lastUpdate;
+    const updatedAt = this.props.diagram.updatedAt;
+    const newUpdatedAt = Date.parse(updatedAt);
+    const currServerTime = Date.parse(this.props.general.serverTime);
+    const difference = currServerTime - newUpdatedAt;
+    const inDays = difference / 86400000;
+    const inHours = difference / 3600000;
+    const inMinutes = difference / 60000;
+    const inSeconds = difference / 1000;
     if (inDays >= 1) lastUpdate = Math.floor(inDays) + " day(s) ago";
     else if (inHours >= 1) lastUpdate = Math.floor(inHours) + " hour(s) ago";
     else if (inMinutes >= 1) lastUpdate = Math.floor(inMinutes) + " minute(s) ago";
@@ -39,12 +39,12 @@ class Diagram extends Component {
   };
 
   render() {
-    var lastUpdate = this.calculateLastUpdate();
+    const lastUpdate = this.calculateLastUpdate();
     return (
       <tr>
         <td>
           <Link className="title-link" to="/editor" onClick={this.handleClick}>
-            {this.props.user.diagrams[this.props.index].title}
+            {this.props.diagram.title}
           </Link>
         </td>
         <td>
@@ -52,8 +52,8 @@ class Diagram extends Component {
         </td>
         <td>
           <SimpleMenu
-            id={this.props.user.diagrams[this.props.index].id}
-            title={this.props.user.diagrams[this.props.index].title}
+            id={this.props.diagram.id}
+            title={this.props.diagram.title}
             diagramsOwned={this.props.user.diagramsOwned}
             diagramLimit={diagramLimit}
           />
@@ -75,24 +75,22 @@ const SimpleMenu = (props) => {
     };
   }, []);
 
-  const handleDuplicate = () => {
-    duplicatediagram(props.id, cancelToken.current)
-      .then((res) => {
-        getProfile(cancelToken.current);
-      })
-      .catch(() => {});
+  const handleDuplicate = async () => {
+    try {
+      await duplicatediagram(props.id, cancelToken.current);
+      getProfile(cancelToken.current);
+    } catch (e) {}
   };
 
   const handleDelete = () => {
     setShowConfirmCancel(true);
   };
 
-  const deleteConfirmed = () => {
-    deletediagram(props.id, cancelToken.current)
-      .then((res) => {
-        getProfile(cancelToken.current);
-      })
-      .catch(() => {});
+  const deleteConfirmed = async () => {
+    try {
+      await deletediagram(props.id, cancelToken.current);
+      getProfile(cancelToken.current);
+    } catch (e) {}
     setShowConfirmCancel(false);
   };
 
