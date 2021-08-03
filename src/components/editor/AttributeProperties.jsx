@@ -21,7 +21,7 @@ const AttributeProperties = (props) => {
   useEffect(() => {
     // Focus name input when the attribute is selected
     nameInput.current.focus();
-  }, []);
+  }, [props.selector.current.id]);
 
   // Name text is selected when name input is focused
   const handleFocus = (e) => e.target.select();
@@ -58,7 +58,6 @@ const AttributeProperties = (props) => {
       id: props.components.count + 1,
       parentId: props.selector.current.parentId,
     });
-    nameInput.current.focus();
   };
 
   const handleAddAttribute = (attribute) => {
@@ -76,7 +75,6 @@ const AttributeProperties = (props) => {
       id: props.components.count + 1,
       parentId: props.selector.current.id,
     });
-    nameInput.current.focus();
   };
 
   const parent = getComponentById(props.selector.current.parentId);

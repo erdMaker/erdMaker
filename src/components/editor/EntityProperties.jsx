@@ -23,7 +23,7 @@ const EntityProperties = (props) => {
   useEffect(() => {
     // Focus name input when the entity is selected
     nameInput.current.focus();
-  }, []);
+  }, [props.selector.current.id]);
 
   // Name text is selected when name input is focused
   const handleFocus = (e) => e.target.select();
