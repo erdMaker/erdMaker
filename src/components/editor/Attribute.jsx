@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import {
   updatePositionAttribute,
@@ -19,172 +19,150 @@ import {
   textHeight,
   dragBoundOffset,
 } from "../../global/constants";
-var pixelWidth = require("string-pixel-width");
+import { getComponentById } from "../../global/globalFuncs";
+const pixelWidth = require("string-pixel-width");
 
-class Attribute extends Component {
-  state = { initialPosition: { x: this.props.x, y: this.props.y } };
-
-  findParentIndex = (parent) => parent.id === this.props.parentId;
+const Attribute = (props) => {
+  const [initialPosition, setInitialPosition] = useState({ x: props.x, y: props.y });
 
   // Does not let the attribute to be dragged out of stage bounds
-  stageBound = (pos) => {
-    var newX;
-    var newY;
-
+  const stageBound = (pos) => {
+    let newX;
+    let newY;
     if (pos.x > stageWidth / 2)
       newX =
         pos.x > stageWidth - attributeRadiusX - dragBoundOffset
           ? stageWidth - attributeRadiusX - dragBoundOffset
           : pos.x;
     else newX = pos.x < attributeRadiusX + dragBoundOffset ? attributeRadiusX + dragBoundOffset : pos.x;
-
     if (pos.y > stageHeight / 2)
       newY =
         pos.y > stageHeight - attributeRadiusY - dragBoundOffset
           ? stageHeight - attributeRadiusY - dragBoundOffset
           : pos.y;
     else newY = pos.y < attributeRadiusY + dragBoundOffset ? attributeRadiusY + dragBoundOffset : pos.y;
-
     return {
       x: newX,
       y: newY,
     };
   };
 
-  render() {
-    var nameText = this.props.name;
-    var namePixelWidth = pixelWidth(nameText, {
-      font: "Arial",
-      size: fontSize,
-    });
+  let nameText = props.name;
+  const namePixelWidth = pixelWidth(nameText, {
+    font: "Arial",
+    size: fontSize,
+  });
 
-    if (this.props.type.optional) nameText = nameText + " (O)";
+  if (props.type.optional) nameText = nameText + " (O)";
 
-    if (this.props.type.composite) nameText = "(" + nameText + ")";
+  if (props.type.composite) nameText = "(" + nameText + ")";
 
-    var multivaluedEllipse = this.props.type.multivalued ? (
-      <Ellipse
-        radiusX={attributeRadiusX - multivaluedAttributeOffset}
-        radiusY={attributeRadiusY - multivaluedAttributeOffset}
-        fill="#ff9b8e"
-        dash={this.props.type.derived ? [10, 3] : false}
-        stroke={
-          this.props.id === this.props.selector.current.id && this.props.selector.current.type === "attribute"
-            ? "red"
-            : "black"
-        }
-        strokeWidth={2}
-      />
-    ) : null;
+  const multivaluedEllipse = props.type.multivalued ? (
+    <Ellipse
+      radiusX={attributeRadiusX - multivaluedAttributeOffset}
+      radiusY={attributeRadiusY - multivaluedAttributeOffset}
+      fill="#ff9b8e"
+      dash={props.type.derived ? [10, 3] : false}
+      stroke={props.id === props.selector.current.id && props.selector.current.type === "attribute" ? "red" : "black"}
+      strokeWidth={2}
+    />
+  ) : null;
 
-    // Implementation of dashed text underline
-    var textRows = Math.ceil(namePixelWidth / attributeTextWidth);
-    var parentIndex;
-    if (
-      this.props.components.entities.length &&
-      (parentIndex = this.props.components.entities.findIndex(this.findParentIndex)) !== -1
-    ) {
-      if (this.props.type.unique && this.props.components.entities[parentIndex].type === "weak") {
-        var dashedUnderlineList = [];
-        if (textRows < 4) {
-          for (let i = 0; i < textRows; i++) {
-            let lineOffset =
-              textRows % 2
-                ? fontSize / 2 + 0.8 + i * fontSize - Math.floor(textRows / 2) * fontSize
-                : fontSize / 2 + 0.8 + i * fontSize - (Math.floor(textRows / 2) * fontSize) / 2;
-            dashedUnderlineList.push(
-              <Line
-                key={i}
-                stroke="#ff9b8e"
-                strokeWidth={2}
-                dash={[3, 5]}
-                points={[-attributeTextWidth / 2 + 5, lineOffset, attributeTextWidth / 2 - 5, lineOffset]}
-              />
-            );
-          }
+  // Implementation of dashed text underline
+  const textRows = Math.ceil(namePixelWidth / attributeTextWidth);
+  const dashedUnderlineList = [];
+  const parent = getComponentById(props.parentId);
+  if (parent) {
+    if (props.type.unique && parent.type === "weak") {
+      if (textRows < 4) {
+        for (let i = 0; i < textRows; i++) {
+          const lineOffset =
+            textRows % 2
+              ? fontSize / 2 + 0.8 + i * fontSize - Math.floor(textRows / 2) * fontSize
+              : fontSize / 2 + 0.8 + i * fontSize - (Math.floor(textRows / 2) * fontSize) / 2;
+          dashedUnderlineList.push(
+            <Line
+              key={i}
+              stroke="#ff9b8e"
+              strokeWidth={2}
+              dash={[3, 5]}
+              points={[-attributeTextWidth / 2 + 5, lineOffset, attributeTextWidth / 2 - 5, lineOffset]}
+            />
+          );
         }
       }
     }
-
-    return (
-      <Group
-        x={this.props.x}
-        y={this.props.y}
-        draggable
-        onDragStart={(e) => {
-          this.setState({
-            initialPosition: { x: e.target.x(), y: e.target.y() },
-          });
-        }}
-        onDragMove={(e) => {
-          this.props.updatePositionAttribute({
-            id: this.props.id,
-            parentId: this.props.parentId,
-            x: e.target.x(),
-            y: e.target.y(),
-          });
-          this.props.updatePositionChildren({
-            id: this.props.id,
-            dx: e.target.x() - this.state.initialPosition.x,
-            dy: e.target.y() - this.state.initialPosition.y,
-          });
-          this.setState({
-            initialPosition: { x: e.target.x(), y: e.target.y() },
-          });
-        }}
-        onDragEnd={() => this.props.repositionComponents()}
-        onTap={() => {
-          this.props.deselect();
-          this.props.select({
-            type: "attribute",
-            id: this.props.id,
-            parentId: this.props.parentId,
-          });
-        }}
-        onClick={() => {
-          this.props.deselect();
-          this.props.select({
-            type: "attribute",
-            id: this.props.id,
-            parentId: this.props.parentId,
-          });
-        }}
-        dragBoundFunc={(pos) => this.stageBound(pos)}
-      >
-        <Ellipse
-          radiusX={attributeRadiusX}
-          radiusY={attributeRadiusY}
-          fill="#ff9b8e"
-          dash={this.props.type.derived ? [10, 3] : false}
-          stroke={
-            this.props.id === this.props.selector.current.id && this.props.selector.current.type === "attribute"
-              ? "red"
-              : "black"
-          }
-          strokeWidth={2}
-        />
-        {multivaluedEllipse}
-        <Text
-          text={nameText}
-          fontSize={fontSize}
-          textDecoration={this.props.type.unique ? "underline" : ""}
-          align="center"
-          verticalAlign="middle"
-          width={attributeTextWidth}
-          height={textHeight}
-          offsetX={attributeTextWidth / 2}
-          offsetY={textHeight / 2}
-          listening={false}
-        />
-        {dashedUnderlineList}
-      </Group>
-    );
   }
-}
+
+  return (
+    <Group
+      x={props.x}
+      y={props.y}
+      draggable
+      onDragStart={(e) => {
+        setInitialPosition({ x: e.target.x(), y: e.target.y() });
+      }}
+      onDragMove={(e) => {
+        props.updatePositionAttribute({
+          id: props.id,
+          parentId: props.parentId,
+          x: e.target.x(),
+          y: e.target.y(),
+        });
+        props.updatePositionChildren({
+          id: props.id,
+          dx: e.target.x() - initialPosition.x,
+          dy: e.target.y() - initialPosition.y,
+        });
+        setInitialPosition({ x: e.target.x(), y: e.target.y() });
+      }}
+      onDragEnd={() => props.repositionComponents()}
+      onTap={() => {
+        props.deselect();
+        props.select({
+          type: "attribute",
+          id: props.id,
+          parentId: props.parentId,
+        });
+      }}
+      onClick={() => {
+        props.deselect();
+        props.select({
+          type: "attribute",
+          id: props.id,
+          parentId: props.parentId,
+        });
+      }}
+      dragBoundFunc={(pos) => stageBound(pos)}
+    >
+      <Ellipse
+        radiusX={attributeRadiusX}
+        radiusY={attributeRadiusY}
+        fill="#ff9b8e"
+        dash={props.type.derived ? [10, 3] : false}
+        stroke={props.id === props.selector.current.id && props.selector.current.type === "attribute" ? "red" : "black"}
+        strokeWidth={2}
+      />
+      {multivaluedEllipse}
+      <Text
+        text={nameText}
+        fontSize={fontSize}
+        textDecoration={props.type.unique ? "underline" : ""}
+        align="center"
+        verticalAlign="middle"
+        width={attributeTextWidth}
+        height={textHeight}
+        offsetX={attributeTextWidth / 2}
+        offsetY={textHeight / 2}
+        listening={false}
+      />
+      {dashedUnderlineList}
+    </Group>
+  );
+};
 
 const mapStateToProps = (state) => ({
   selector: state.selector,
-  components: state.components,
 });
 
 const mapDispatchToProps = {

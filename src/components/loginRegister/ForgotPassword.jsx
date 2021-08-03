@@ -21,42 +21,38 @@ class ForgotPassword extends Component {
     this.cancelToken.cancel("Request is being canceled");
   }
 
-  forgotPassword() {
-    let captchaVal = this.recaptchaRef.current.getValue();
+  async forgotPassword() {
+    const captchaVal = this.recaptchaRef.current.getValue();
 
-    const email = {
+    const payload = {
       email: this.state.email,
       captcha: captchaVal,
     };
 
-    //this.setState({
-    //  email: "",
-    //});
     this.recaptchaRef.current.reset();
 
-    forgotpassword(email, this.cancelToken)
-      .then((res) => {
-        if (res) {
-          if (res.status === 200) {
-            this.setState({
-              response: { color: "green", data: res.data },
-            });
-          } else if (res.status === 400) {
-            this.setState({
-              response: { color: "red", data: res.data },
-            });
-          } else {
-            this.setState({
-              response: { color: "red", data: "Something went wrong." },
-            });
-          }
+    try {
+      const res = await forgotpassword(payload, this.cancelToken);
+      if (res) {
+        if (res.status === 200) {
+          this.setState({
+            response: { color: "green", data: res.data },
+          });
+        } else if (res.status === 400) {
+          this.setState({
+            response: { color: "red", data: res.data },
+          });
         } else {
           this.setState({
             response: { color: "red", data: "Something went wrong." },
           });
         }
-      })
-      .catch(() => {});
+      } else {
+        this.setState({
+          response: { color: "red", data: "Something went wrong." },
+        });
+      }
+    } catch (e) {}
   }
 
   clearForm() {

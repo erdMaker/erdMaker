@@ -34,10 +34,10 @@ const Header = () => {
   });
 
   // CSS classes are set for the burger menu (whether its displayed or not)
-  var headerNavClasses = "header-nav__list";
-  var line1Class = "";
-  var line2Class = "";
-  var line3Class = "";
+  let headerNavClasses = "header-nav__list";
+  let line1Class = "";
+  let line2Class = "";
+  let line3Class = "";
 
   if (headerNavListActive) {
     headerNavClasses += " header-nav__list-active";

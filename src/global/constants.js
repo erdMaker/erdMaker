@@ -1,6 +1,6 @@
 export const serverHost =
   process.env.NODE_ENV === "production" ? process.env.REACT_APP_PROD_SERVER_HOST : process.env.REACT_APP_LOCALHOST;
-export const diagramLimit = 15;
+export const diagramLimit = process.env.REACT_APP_DIAGRAM_LIMIT;
 export const nameSize = 80; // For entities, relationships and attributes
 export const fontSize = 13; // In the canvas stage
 export const textHeight = 500; // Height of the name text on canvas
@@ -28,6 +28,6 @@ export const labelMaxHeight = 400;
 export const spawnRadius = 110;
 export const weakRelationshipOffset = 6;
 export const anchorLength = 30;
-export const savePeriod = 10000; // How often auto-saving is triggered in ms
+export const savePeriod = process.env.REACT_APP_SAVE_PERIOD; // How often auto-saving is triggered in ms
 export const resizeRectSize = 1000; // Rectangle used for resizing labels
-export const timeout = 20000; // Requests timeout after this many milliseconds
+export const timeout = process.env.REACT_APP_TIMEOUT; // Requests timeout after this many milliseconds

@@ -10,7 +10,7 @@ class ResetPassword extends Component {
     confirmPassword: "",
     passwordError: 0,
     confirmPasswordError: 0,
-    passwordHint: "Password must be 8-16 characters long and contain at least one number and one letter.",
+    passwordHint: "Your password must be 8-16 characters long and contain at least one number and one letter.",
     response: {
       data: ".",
       color: "#dfdfdf",
@@ -26,32 +26,26 @@ class ResetPassword extends Component {
     this.cancelToken.cancel("Request is being canceled");
   }
 
-  resetPassword() {
+  async resetPassword() {
     const token = window.location.pathname.split("/")[2];
-    const newPass = {
+    const payload = {
       password: this.state.password,
       confirmPassword: this.state.confirmPassword,
       token: token,
     };
 
-    //this.setState({
-    //  password: "",
-    //  confirmPassword: "",
-    //});
-
-    resetpassword(newPass, this.cancelToken)
-      .then((res) => {
-        if (res && res.status === 200) {
-          this.setState({
-            response: { color: "green", data: res.data },
-          });
-        } else {
-          this.setState({
-            response: { color: "red", data: "Something went wrong." },
-          });
-        }
-      })
-      .catch(() => {});
+    try {
+      const res = await resetpassword(payload, this.cancelToken);
+      if (res && res.status === 200) {
+        this.setState({
+          response: { color: "green", data: res.data },
+        });
+      } else {
+        this.setState({
+          response: { color: "red", data: "Something went wrong." },
+        });
+      }
+    } catch (e) {}
   }
 
   handleChange = (e) => {
@@ -71,9 +65,9 @@ class ResetPassword extends Component {
   validate = () => {
     let passwordError = 0;
     let confirmPasswordError = 0;
-    let lowerCaseLetters = /[a-z]/g;
-    let upperCaseLetters = /[A-Z]/g;
-    let numbers = /[0-9]/g;
+    const lowerCaseLetters = /[a-z]/g;
+    const upperCaseLetters = /[A-Z]/g;
+    const numbers = /[0-9]/g;
 
     if (
       this.state.password.length >= 8 &&

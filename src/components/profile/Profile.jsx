@@ -9,12 +9,11 @@ class Profile extends Component {
   state = { loadingProfile: true };
   cancelToken = axios.CancelToken.source();
 
-  componentDidMount() {
-    getProfile(this.cancelToken)
-      .then(() => {
-        this.setState({ loadingProfile: false });
-      })
-      .catch(() => {});
+  async componentDidMount() {
+    try {
+      await getProfile(this.cancelToken);
+      this.setState({ loadingProfile: false });
+    } catch (e) {}
   }
 
   componentWillUnmount() {
@@ -22,7 +21,7 @@ class Profile extends Component {
   }
 
   render() {
-    var profileContent;
+    let profileContent;
     if (!this.state.loadingProfile) {
       profileContent = (
         <>

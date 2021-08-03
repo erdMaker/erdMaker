@@ -16,8 +16,8 @@ class Register extends Component {
     usernameError: 0,
     passwordError: 0,
     confirmPasswordError: 0,
-    passwordHint: "Password must be 8-16 characters long and contain at least one number and one letter.",
-    usernameHint: "Username can only contain letters and numbers.",
+    passwordHint: "Your password must be 8-16 characters long and contain at least one number and one letter.",
+    usernameHint: "Your username can only contain letters and numbers and can only be changed once every 6 months.",
     response: {
       data: ".",
       color: "#dfdfdf",
@@ -30,10 +30,10 @@ class Register extends Component {
     this.cancelToken.cancel("Request is being canceled");
   }
 
-  reGister() {
-    let captchaVal = this.recaptchaRef.current.getValue();
+  async reGister() {
+    const captchaVal = this.recaptchaRef.current.getValue();
 
-    const newUser = {
+    const payload = {
       username: this.state.username,
       email: this.state.email,
       password: this.state.password,
@@ -41,37 +41,30 @@ class Register extends Component {
       captcha: captchaVal,
     };
 
-    //this.setState({
-    //  email: "",
-    //  username: "",
-    //  password: "",
-    //  confirmPassword: "",
-    //});
     this.recaptchaRef.current.reset();
 
-    register(newUser, this.cancelToken)
-      .then((res) => {
-        if (res) {
-          if (res.status === 200) {
-            this.setState({
-              response: { color: "green", data: res.data },
-            });
-          } else if (res.status === 400) {
-            this.setState({
-              response: { color: "red", data: "Bad Input" },
-            });
-          } else {
-            this.setState({
-              response: { color: "red", data: "Registration failed." },
-            });
-          }
+    try {
+      const res = await register(payload, this.cancelToken);
+      if (res) {
+        if (res.status === 200) {
+          this.setState({
+            response: { color: "green", data: res.data },
+          });
+        } else if (res.status === 400) {
+          this.setState({
+            response: { color: "red", data: "Bad Input" },
+          });
         } else {
           this.setState({
             response: { color: "red", data: "Registration failed." },
           });
         }
-      })
-      .catch(() => {});
+      } else {
+        this.setState({
+          response: { color: "red", data: "Registration failed." },
+        });
+      }
+    } catch (e) {}
   }
 
   handleChange = (e) => {
@@ -95,10 +88,10 @@ class Register extends Component {
     let usernameError = 0;
     let passwordError = 0;
     let confirmPasswordError = 0;
-    let lowerCaseLetters = /[a-z]/g;
-    let upperCaseLetters = /[A-Z]/g;
-    let numbers = /[0-9]/g;
-    let alphanum = /^[a-zA-Z0-9]+$/;
+    const lowerCaseLetters = /[a-z]/g;
+    const upperCaseLetters = /[A-Z]/g;
+    const numbers = /[0-9]/g;
+    const alphanum = /^[a-zA-Z0-9]+$/;
 
     if (!this.state.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || this.state.email.length > 60) {
       emailError = 1;

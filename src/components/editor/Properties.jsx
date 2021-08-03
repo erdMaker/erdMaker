@@ -13,20 +13,21 @@ import {
   relationshipWidth,
   attributeRadiusX,
 } from "../../global/constants";
+import { getComponentById } from "../../global/globalFuncs";
 
 const Properties = (props) => {
-  var stage = props.getStage(); // Reference to the stage
-  var stageScrollX = stage ? stage.scrollLeft : 0; // How far we have scrolled horizontally
-  var mobile = window.innerWidth <= 768 ? true : false;
-  var scrollbarOffset = mobile ? 0 : 17; // Account for the bottom horizontal scrollbar on desktop
-  var xPosition; // Position of currently selected component on the screen that helps determine
+  const stage = props.getStage(); // Reference to the stage
+  const stageScrollX = stage ? stage.scrollLeft : 0; // How far we have scrolled horizontally
+  const mobile = window.innerWidth <= 768 ? true : false;
+  const scrollbarOffset = mobile ? 0 : 17; // Account for the bottom horizontal scrollbar on desktop
+  let xPosition; // Position of currently selected component on the screen that helps determine
   //on which side of the screen the sidepanel will be drawn
-  var loadedProperties; // Determines what kind of properties will be drawn on the sidepanel
-  var rightSide = true;
-  var sidepanelActive = "";
-  var closeActive = "";
-  var sidepanelHeightCutoff = 0; // In the case of Label it shortens the sidepanel's height to enable dragndrop of the label
-  var sidepanelWidth = // Wider sidepanel for relationships
+  let loadedProperties; // Determines what kind of properties will be drawn on the sidepanel
+  let rightSide = true;
+  let sidepanelActive = "";
+  let closeActive = "";
+  let sidepanelHeightCutoff = 0; // In the case of Label it shortens the sidepanel's height to enable dragndrop of the label
+  const sidepanelWidth = // Wider sidepanel for relationships
     props.selector.current.type === "relationship" || props.selector.current.type === "extension"
       ? props.general.sidepanelWidth.wide
       : props.general.sidepanelWidth.standard;
@@ -37,35 +38,29 @@ const Properties = (props) => {
     // Configure sidepanel based on what kind of component is selected
     switch (props.selector.current.type) {
       case "entity":
-        let entityIndex = props.components.entities.findIndex((entity) => entity.id === props.selector.current.id);
-        xPosition = props.components.entities[entityIndex].x + entityWidth / 2;
+        let entity = getComponentById(props.selector.current.id);
+        xPosition = entity.x + entityWidth / 2;
         loadedProperties = <EntityProperties />;
         break;
       case "extension":
-        let extensionIndex = props.components.extensions.findIndex(
-          (extension) => extension.id === props.selector.current.id
-        );
-        xPosition = props.components.extensions[extensionIndex].x + extensionRadius;
+        let extension = getComponentById(props.selector.current.id);
+        xPosition = extension.x + extensionRadius;
         loadedProperties = <ExtensionProperties />;
         break;
       case "relationship":
-        let relationshipIndex = props.components.relationships.findIndex(
-          (relationship) => relationship.id === props.selector.current.id
-        );
-        xPosition = props.components.relationships[relationshipIndex].x + relationshipWidth;
+        let relationship = getComponentById(props.selector.current.id);
+        xPosition = relationship.x + relationshipWidth;
         loadedProperties = <RelationshipProperties />;
         break;
       case "attribute":
-        let attributeIndex = props.components.attributes.findIndex(
-          (attribute) => attribute.id === props.selector.current.id
-        );
-        xPosition = props.components.attributes[attributeIndex].x + attributeRadiusX;
+        let attribute = getComponentById(props.selector.current.id);
+        xPosition = attribute.x + attributeRadiusX;
         loadedProperties = <AttributeProperties />;
         break;
       case "label":
         sidepanelHeightCutoff = mobile ? 300 : 0;
-        let labelIndex = props.components.labels.findIndex((label) => label.id === props.selector.current.id);
-        xPosition = props.components.labels[labelIndex].x + props.components.labels[labelIndex].width / 2;
+        let label = getComponentById(props.selector.current.id);
+        xPosition = label.x + label.width / 2;
         loadedProperties = <LabelProperties />;
         break;
       default:
@@ -80,8 +75,8 @@ const Properties = (props) => {
     }
   }
 
-  var sidepanelClasses = "sidepanel" + sidepanelActive;
-  var closeClasses = "close" + closeActive;
+  const sidepanelClasses = "sidepanel" + sidepanelActive;
+  const closeClasses = "close" + closeActive;
 
   return (
     <div
@@ -100,7 +95,6 @@ const Properties = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  components: state.components,
   selector: state.selector,
   general: state.general,
 });

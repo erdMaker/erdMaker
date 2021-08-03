@@ -31,7 +31,7 @@ const saveState = (state) => {
 };
 const persistedStore = loadState();
 
-//Disable Redux DevTools for production
+// Disable Redux DevTools for production
 export const store =
   process.env.NODE_ENV === "production"
     ? createStore(finalReducer, persistedStore)
