@@ -5,6 +5,7 @@ import { createStore } from "redux";
 import finalReducer from "./reducers";
 import { Provider } from "react-redux";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import { pwaOn } from "./global/constants";
 
 // Disable React DevTools for production
 if (process.env.NODE_ENV === "production" && typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
@@ -56,4 +57,5 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.unregister();
+if (pwaOn) serviceWorkerRegistration.register();
+else serviceWorkerRegistration.unregister();

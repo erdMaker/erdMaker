@@ -31,3 +31,4 @@ export const anchorLength = 30;
 export const savePeriod = process.env.REACT_APP_SAVE_PERIOD; // How often auto-saving is triggered in ms
 export const resizeRectSize = 1000; // Rectangle used for resizing labels
 export const timeout = process.env.REACT_APP_TIMEOUT; // Requests timeout after this many milliseconds
+export const pwaOn = process.env.REACT_APP_PWA_ON; // Indicates whether the service worker will be registered
