@@ -8,8 +8,8 @@
       "sizes": "192x192"
     }
   ],
-  "start_url": "https://erdmaker.com",
-  "scope": "https://erdmaker.com",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "theme_color": "#dfdfdf",
   "background_color": "#ffffff"
