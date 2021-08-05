@@ -1,2 +1,2 @@
 # erdMaker
-Welcome to ERD Maker 
+Welcome to ERD Maker! 
