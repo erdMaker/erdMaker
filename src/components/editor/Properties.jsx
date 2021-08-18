@@ -17,7 +17,7 @@ import { getComponentById } from "../../global/globalFuncs";
 
 const Properties = (props) => {
   const stage = props.getStage(); // Reference to the stage
-  const stageScrollX = stage ? stage.scrollLeft : 0; // How far we have scrolled horizontally
+  const stageScrollX = stage.current ? stage.current.scrollLeft : 0; // How far we have scrolled horizontally
   const mobile = window.innerWidth <= 768 ? true : false;
   const scrollbarOffset = mobile ? 0 : 17; // Account for the bottom horizontal scrollbar on desktop
   let xPosition; // Position of currently selected component on the screen that helps determine
