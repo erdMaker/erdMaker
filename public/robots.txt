@@ -1,8 +1,3 @@
 # https://www.robotstxt.org/robotstxt.html
-User-agent: Applebot
-User-agent: Bingbot
-User-agent: Googlebot
-Allow: /
-
 User-agent: *
 Disallow: /
