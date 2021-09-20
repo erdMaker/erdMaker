@@ -148,20 +148,18 @@ const componentsReducer = (state = initialState, action) => {
             : extension
         ),
       };
-    case "DELETE_XCONNECTION":
-      return {
-        ...state,
-        extensions: state.extensions.map((extension) =>
-          extension.id === action.payload.extensionId
-            ? {
-                ...extension,
-                xconnections: extension.xconnections.filter(
-                  (xconnection) => xconnection.id !== action.payload.xconnectionId
-                ),
-              }
-            : extension
-        ),
-      };
+    case "DELETE_XCONNECTION": {
+      let newState = _.cloneDeep(state);
+
+      let test = ()=> true;
+      if (action.payload.xconnectionId) test = (xconnection) => xconnection.id !== action.payload.xconnectionId;
+      else if (action.payload.entityId) test = (xconnection) => xconnection.connectId !== action.payload.entityId;
+
+      for (let extension of newState.extensions) extension.xconnections = extension.xconnections.filter(test);
+
+      if (JSON.stringify(state) === JSON.stringify(newState)) return state;
+      else return newState;
+    }
     case "ADD_RELATIONSHIP": {
       const stage = document.querySelector(".stage");
       return {

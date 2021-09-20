@@ -7,6 +7,7 @@ import {
   deleteChildren,
   deleteEntity,
   deleteConnection,
+  deleteXConnection,
   select,
   deselect,
   setTypeEntity,
@@ -158,6 +159,10 @@ const EntityProperties = (props) => {
               parentId: null,
               connectId: props.selector.current.id,
             });
+            props.deleteXConnection({
+              xconnectionId: null,
+              entityId: props.selector.current.id
+            });
             props.deleteChildren({ id: props.selector.current.id });
             props.deleteEntity({ id: props.selector.current.id });
             props.deselect();
@@ -182,6 +187,7 @@ const mapDispatchToProps = {
   deleteChildren,
   deleteEntity,
   deleteConnection,
+  deleteXConnection,
   select,
   deselect,
   setTypeEntity,

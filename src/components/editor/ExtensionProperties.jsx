@@ -154,8 +154,8 @@ const XConnections = connect(
         <IconButton
           onClick={() => {
             props.deleteXConnection({
-              extensionId: props.extension.id,
               xconnectionId: xconnection.id,
+              entityId: null
             });
           }}
         >
