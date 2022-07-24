@@ -53,8 +53,6 @@ const Attribute = (props) => {
     size: fontSize,
   });
 
-  //if (props.type.optional) nameText = nameText + " (O)";
-
   if (props.type.composite) nameText = "(" + nameText + ")";
 
   const multivaluedEllipse = props.type.multivalued ? (
