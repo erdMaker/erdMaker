@@ -163,6 +163,7 @@ const Attribute = (props) => {
 
 const mapStateToProps = (state) => ({
   selector: state.selector,
+  components: state.components,
 });
 
 const mapDispatchToProps = {
