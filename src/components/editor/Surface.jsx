@@ -137,8 +137,10 @@ const Surface = (props) => {
       connectId = attribute.parentId;
       if (!(parent = getComponentById(connectId))) continue;
 
+      let dash = attribute.type.optional ? [3,3] : false;
+
       lineList.push(
-        <Line key={keyIndex} stroke="black" strokeWidth={2} points={[attribute.x, attribute.y, parent.x, parent.y]} />
+        <Line key={keyIndex} stroke="black" strokeWidth={2} dash={dash} points={[attribute.x, attribute.y, parent.x, parent.y]} />
       );
       keyIndex = keyIndex + 1;
     }
