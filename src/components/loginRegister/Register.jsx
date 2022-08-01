@@ -52,7 +52,7 @@ class Register extends Component {
           });
         } else if (res.status === 400) {
           this.setState({
-            response: { color: "red", data: "Bad Input" },
+            response: { color: "red", data: res.data },
           });
         } else {
           this.setState({
