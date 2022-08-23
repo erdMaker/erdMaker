@@ -49,9 +49,10 @@ const About = () => {
   );
   const paragraph1 = (
     <p className="about-text">
-      ERD Maker is a free and open-source web application used for the design of Extended {erdLink} (EERD). No account
-      creation is required to start designing but, by registering an account, users can take advantage of the cloud-save
-      feature, allowing them to save up to {diagramLimit} diagrams on the cloud and work across many devices.
+      ERD Maker is a free and open-source web application used to design {erdLink} (ERD), including the Extended model
+      (EER). No account creation is required to start designing but, by registering an account, users can take advantage
+      of the cloud-save feature, allowing them to save up to {diagramLimit} diagrams on the cloud and work across many
+      devices.
     </p>
   );
   const paragraph2 = (
@@ -89,10 +90,10 @@ const About = () => {
         <p>Version: {process.env.REACT_APP_VERSION}</p>
         {paragraph1}
         {paragraph2}
-        <br/>
+        <br />
         <h3>Contact</h3>
         {contact}
-        <br/>
+        <br />
         <h3>***</h3>
         <h3>LIABILITY DISCLAIMER (06/07/21)</h3>
         {disclaimer}

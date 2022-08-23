@@ -32,6 +32,8 @@ const componentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_ENTITY": {
       const stage = document.querySelector(".stage");
+      const xPosition = window.innerWidth >= stageWidth ? stageWidth / 2 : stage.scrollLeft + window.innerWidth / 2;
+      const yPosition = window.innerHeight >= stageHeight ? stageHeight / 2 : stage.scrollTop + window.innerHeight / 2;
       return {
         ...state,
         entities: [
@@ -39,8 +41,8 @@ const componentsReducer = (state = initialState, action) => {
           {
             id: state.count + 1,
             name: "<New>",
-            x: stage.scrollLeft + window.innerWidth / 2,
-            y: stage.scrollTop + window.innerHeight / 2,
+            x: xPosition,
+            y: yPosition,
             type: "regular",
             connectionCount: 0, // Number of connections
           },
@@ -151,7 +153,7 @@ const componentsReducer = (state = initialState, action) => {
     case "DELETE_XCONNECTION": {
       let newState = _.cloneDeep(state);
 
-      let test = ()=> true;
+      let test = () => true;
       if (action.payload.xconnectionId) test = (xconnection) => xconnection.id !== action.payload.xconnectionId;
       else if (action.payload.entityId) test = (xconnection) => xconnection.connectId !== action.payload.entityId;
 
@@ -162,6 +164,8 @@ const componentsReducer = (state = initialState, action) => {
     }
     case "ADD_RELATIONSHIP": {
       const stage = document.querySelector(".stage");
+      const xPosition = window.innerWidth >= stageWidth ? stageWidth / 2 : stage.scrollLeft + window.innerWidth / 2;
+      const yPosition = window.innerHeight >= stageHeight ? stageHeight / 2 : stage.scrollTop + window.innerHeight / 2;
       return {
         ...state,
         relationships: [
@@ -169,8 +173,8 @@ const componentsReducer = (state = initialState, action) => {
           {
             id: state.count + 1,
             name: "<New>",
-            x: stage.scrollLeft + window.innerWidth / 2,
-            y: stage.scrollTop + window.innerHeight / 2,
+            x: xPosition,
+            y: yPosition,
             type: {
               weak: false,
             },
@@ -381,6 +385,8 @@ const componentsReducer = (state = initialState, action) => {
     }
     case "ADD_LABEL": {
       const stage = document.querySelector(".stage");
+      const xPosition = window.innerWidth >= stageWidth ? stageWidth / 2 : stage.scrollLeft + window.innerWidth / 2;
+      const yPosition = window.innerHeight >= stageHeight ? stageHeight / 2 : stage.scrollTop + window.innerHeight / 2;
       return {
         ...state,
         labels: [
@@ -388,8 +394,8 @@ const componentsReducer = (state = initialState, action) => {
           {
             id: state.count + 1,
             text: "<New>",
-            x: stage.scrollLeft + window.innerWidth / 2,
-            y: stage.scrollTop + window.innerHeight / 2,
+            x: xPosition,
+            y: yPosition,
             width: 150,
             height: labelMinHeight,
           },
