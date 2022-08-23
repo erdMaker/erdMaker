@@ -1,14 +1,14 @@
 {
   "name": "erdmaker",
-  "version": "2.2.20",
+  "version": "2.2.21",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "js-file-download": "^0.4.12",
     "konva": "^4.2.2",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-google-recaptcha": "^2.1.0",
@@ -31,7 +31,7 @@
     "workbox-streams": "^5.1.4"
   },
   "devDependencies": {
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
