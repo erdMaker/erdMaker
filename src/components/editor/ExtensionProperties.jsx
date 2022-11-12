@@ -44,14 +44,18 @@ const ExtensionProperties = (props) => {
 
   return (
     <div className="sidepanel-content">
-      <h3>Extension</h3>
       <div className="extension-group">
-        Type:
-        <select id="type" value={extension.type} onChange={handleModifyExtension}>
+        <select
+          id="type"
+          className="extension-title"
+          style={{ marginTop: "10px", fontSize: "1.17em", fontWeight: "bold" }}
+          value={extension.type}
+          onChange={handleModifyExtension}
+        >
           <option value="undefined" disabled>
             Select Type
           </option>
-          <option value="specialize">Specialize</option>
+          <option value="specialize">Specialization</option>
           <option value="union">Union</option>
         </select>
       </div>
@@ -142,9 +146,13 @@ const XConnections = connect(
       connectId: Number(e.target.value),
     });
 
+  let xconnectionIndex = 0;
   for (let xconnection of props.extension.xconnections) {
     xconnectionList.push(
-      <span key={xconnection.id} style={{ margin: "auto", marginBottom: "10px" }}>
+      <span
+        key={xconnection.id}
+        style={{ margin: "auto", marginBottom: "10px", backgroundColor: xconnectionIndex % 2 ? "#c9c9c9" : "#dfdfdf" }}
+      >
         <select value={xconnection.connectId} onChange={(e) => handleChangeXConnection(xconnection.id, e)}>
           <option value={0} disabled>
             Select Entity
@@ -155,7 +163,7 @@ const XConnections = connect(
           onClick={() => {
             props.deleteXConnection({
               xconnectionId: xconnection.id,
-              entityId: null
+              entityId: null,
             });
           }}
         >
@@ -163,6 +171,7 @@ const XConnections = connect(
         </IconButton>
       </span>
     );
+    xconnectionIndex++;
   }
   return <div style={{ display: "flex", flexDirection: "column" }}>{xconnectionList}</div>;
 });

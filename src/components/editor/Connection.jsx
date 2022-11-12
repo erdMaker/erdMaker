@@ -80,7 +80,7 @@ const Connection = (props) => {
     <div className="connection" style={{ backgroundColor: props.index % 2 ? "#c9c9c9" : "#dfdfdf" }}>
       <div className="connection-input-group">
         <label>
-          <b>Entity: </b>
+          <b>Entity:</b>
           <select value={props.connection.connectId} onChange={handleEntityChange}>
             <option value={0} disabled>
               Select an Entity
@@ -107,7 +107,7 @@ const Connection = (props) => {
       <br />
       <div className="connection-input-group">
         <label>
-          Min:{" "}
+          Min:
           <select id="min" value={props.connection.min} onChange={handleModifyConnection}>
             <option value="">Undefined</option>
             <option value="zero">Zero</option>
@@ -117,7 +117,7 @@ const Connection = (props) => {
       </div>
       <div className="connection-input-group">
         <label>
-          Max:{" "}
+          Max:
           <select id="max" value={props.connection.max} onChange={handleModifyConnection}>
             <option value="">Undefined</option>
             <option value="one">One</option>

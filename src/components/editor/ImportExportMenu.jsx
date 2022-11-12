@@ -249,7 +249,7 @@ const ImportExportMenuListComposition = (props) => {
                         upload.current.click();
                       }}
                     >
-                      Import...
+                      Import File
                     </MenuItem>
                     <MenuItem
                       type="button"

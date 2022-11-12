@@ -73,7 +73,7 @@ const Editor = (props) => {
       <Tools saveEnabled={saveEnabled} />
       {saveEnabled && (
         <div className="save-warning" style={{ visibility: showSaveWarning ? "visible" : "hidden" }}>
-          Please make sure you manually save your progress by clicking the 'Save' button, before exiting the editor.
+          Please make sure you manually save your progress by clicking the 'Save' button before exiting the editor.
         </div>
       )}
       <Surface />

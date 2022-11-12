@@ -148,7 +148,7 @@ const EntityProperties = (props) => {
           New Attribute
         </button>
         <button className="properties-neutral-button" type="button" onClick={() => handleAddExtension(entity)}>
-          New Extension
+          Extend
         </button>
         <button
           className="properties-delete-button"
@@ -161,7 +161,7 @@ const EntityProperties = (props) => {
             });
             props.deleteXConnection({
               xconnectionId: null,
-              entityId: props.selector.current.id
+              entityId: props.selector.current.id,
             });
             props.deleteChildren({ id: props.selector.current.id });
             props.deleteEntity({ id: props.selector.current.id });

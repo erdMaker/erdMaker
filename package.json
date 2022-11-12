@@ -1,6 +1,6 @@
 {
   "name": "erdmaker",
-  "version": "2.2.21",
+  "version": "2.2.22",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.4",
