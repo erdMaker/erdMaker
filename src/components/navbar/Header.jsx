@@ -12,8 +12,8 @@ const Header = () => {
       type: "ext",
     },
     {
-      label: "Academic Department",
-      link: "http://www.ece.upatras.gr/index.php/el/",
+      label: "The Lab",
+      link: "https://hci.ece.upatras.gr/",
       type: "ext",
     },
   ];

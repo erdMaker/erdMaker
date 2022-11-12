@@ -20,7 +20,7 @@ const Description = (props) => (
       Design Extended Entity - Relationship (EER) Diagrams.
       <br />
       <br />
-      Get started immediately or use an account to keep your diagrams saved.
+      Get started as a guest or use an account to keep your diagrams saved.
     </div>
     <LinkButton
       className="launch-button"
