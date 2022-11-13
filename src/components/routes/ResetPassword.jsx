@@ -40,6 +40,10 @@ class ResetPassword extends Component {
         this.setState({
           response: { color: "green", data: res.data },
         });
+      } else if (res && res.status === 401) {
+        this.setState({
+          response: { color: "red", data: res.data },
+        });
       } else {
         this.setState({
           response: { color: "red", data: "Something went wrong." },
