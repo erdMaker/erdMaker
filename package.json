@@ -40,8 +40,8 @@
     "eject": "react-scripts eject"
   },
   "engines": {
-    "node": "=18.12.1",
-    "npm": "=9.1.1"
+    "node": "18.12.1",
+    "npm": "9.1.1"
   },
   "eslintConfig": {
     "extends": "react-app"
