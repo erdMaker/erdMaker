@@ -30,7 +30,7 @@ const Extension = (props) => {
     if (props.cardinality === "disjoint") text = "d";
     else if (props.cardinality === "overlap") text = "o";
     else text = "";
-  else if (props.type === "union") text = "u";
+  else if (props.type === "union") text = "U";
 
   const textPixelWidth = pixelWidth(text, {
     font: "Arial",
@@ -72,7 +72,7 @@ const Extension = (props) => {
         stroke={props.id === props.selector.current.id && props.selector.current.type === "extension" ? "red" : "black"}
         strokeWidth={2}
       />
-      <Text text={text} fontSize={fontSize} x={-textPixelWidth / 2} y={-fontSize / 2} />
+      <Text text={text} fontSize={fontSize} fontStyle="bold" x={-textPixelWidth / 2} y={-fontSize / 2} />
     </Group>
   );
 };
