@@ -98,7 +98,9 @@ const Specialize = (props) => {
         </select>
       </div>
       <hr />
-      <div className="extension-group">{props.parent.name} specializes at:</div>
+      <div className="extension-group">
+        <span style={{ fontWeight: "bold" }}>{props.parent.name}</span> specializes at:
+      </div>
     </>
   );
 };
@@ -114,7 +116,9 @@ const Union = (props) => {
         </select>
       </div>
       <hr />
-      <div className="extension-group">{props.parent.name} is a Union of:</div>
+      <div className="extension-group">
+        <span style={{ fontWeight: "bold" }}>{props.parent.name}</span> is a Union of:
+      </div>
     </>
   );
 };
